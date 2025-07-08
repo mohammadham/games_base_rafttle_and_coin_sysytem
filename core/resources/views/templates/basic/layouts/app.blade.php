@@ -21,6 +21,10 @@
     @stack('style')
 
     <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/color.php') }}?color={{ gs('base_color') }}&secondColor={{ gs('secondary_color') }}">
+
+    @if(app()->getLocale() == 'fa')
+        <link rel="stylesheet" href="{{ asset('assets/global/css/custom-rtl.css') }}">
+    @endif
 </head>
 
 @php echo loadExtension('google-analytics') @endphp

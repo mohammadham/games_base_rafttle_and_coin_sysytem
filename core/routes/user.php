@@ -85,4 +85,13 @@ Route::middleware('auth')->name('user.')->group(function () {
             Route::post('manual', 'manualDepositUpdate')->name('manual.update');
         });
     });
+
+    // New Payment Gateway Routes (for Zarinpal and other new gateways)
+    Route::controller(App\Http\Controllers\User\PaymentController::class)
+        ->prefix('gateway-payment')
+        ->name('gateway.payment.')
+        ->group(function () {
+            Route::post('/initiate', 'initiatePayment')->name('initiate');
+            Route::match(['get', 'post'], '/callback/{gatewayName}/{trx}', 'paymentCallback')->name('callback');
+    });
 });

@@ -20,6 +20,10 @@
     <link rel="stylesheet" href="{{asset('assets/admin/css/app.css')}}">
 
 
+    @if(app()->getLocale() == 'fa')
+        <link rel="stylesheet" href="{{ asset('assets/global/css/custom-rtl.css') }}">
+    @endif
+
     @stack('style')
 </head>
 <body>
