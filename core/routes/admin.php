@@ -339,4 +339,33 @@ Route::middleware('admin')->group(function () {
         Route::get('/', 'winners')->name('index');
         Route::get('user/{id}', 'winnerDetail')->name('user.detail');
     });
+
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // MODULE: Coin Management - ADDED
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Route::name('coin.type.')->prefix('coin-types')->controller(App\Http\Controllers\Admin\CoinTypeController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('create', 'create')->name('create');
+        Route::post('store', 'store')->name('store');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::post('update/{id}', 'update')->name('update');
+        Route::post('toggle-status/{id}', 'toggleStatus')->name('toggle.status');
+        Route::post('delete/{id}', 'destroy')->name('delete');
+    });
+
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // MODULE: Game API Key Management - ADDED
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Route::name('api.key.')->prefix('api-keys')->controller(App\Http\Controllers\Admin\ApiKeyController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('create', 'create')->name('create');
+        Route::post('store', 'store')->name('store');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::post('update/{id}', 'update')->name('update');
+        Route::post('toggle-status/{id}', 'toggleStatus')->name('toggle.status');
+        Route::post('revoke/{id}', 'revoke')->name('revoke');
+        Route::post('delete/{id}', 'destroy')->name('delete');
+        Route::post('regenerate-secret/{id}', 'regenerateSecret')->name('regenerate.secret');
+    });
+
 });
