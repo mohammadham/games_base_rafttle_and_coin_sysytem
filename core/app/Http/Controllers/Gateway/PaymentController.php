@@ -16,12 +16,20 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller {
     public function deposit() {
-        $gatewayCurrency = GatewayCurrency::whereHas('method', function ($gate) {
+        $existingGatewayCurrency = GatewayCurrency::whereHas('method', function ($gate) {
             $gate->where('status', Status::ENABLE);
         })->with('method')->orderby('name')->get();
+
         $pageTitle = 'Deposit Methods';
 
-        return view('Template::user.payment.deposit', compact('gatewayCurrency', 'pageTitle'));
+        // Get new gateways from PaymentManager
+        $newGateways = \App\Lib\PaymentGateway\PaymentManager::getAvailableGateways();
+        // This returns an array like: [['code' => 'zarinpal', 'name' => 'ZarinPal', 'alias' => 'zarinpal', 'image' => 'path/to/image.png', 'note' => '...'], ...]
+        // We need to make sure its structure is somewhat compatible or adapt it for the view.
+        // The view expects objects with properties like `method_code`, `name`, `method->image`, `min_amount`, `max_amount`, `currency`.
+        // For simplicity, we'll pass them separately and handle in view, or adapt $newGateways structure if possible.
+
+        return view('Template::user.payment.deposit', compact('existingGatewayCurrency', 'newGateways', 'pageTitle'));
     }
 
     public function depositInsert(Request $request) {

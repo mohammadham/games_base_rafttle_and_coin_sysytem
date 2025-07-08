@@ -131,6 +131,36 @@ Route::middleware('admin')->group(function () {
         Route::post('delete/{id}', 'ticketDelete')->name('delete');
     });
 
+    // Coin Management
+    Route::name('coin.')->prefix('coin')->group(function () {
+        Route::controller('CoinTypeController')->name('types.')->prefix('types')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('create', 'create')->name('create');
+            Route::post('store', 'store')->name('store');
+            Route::get('edit/{id}', 'edit')->name('edit');
+            Route::put('update/{id}', 'update')->name('update');
+            Route::post('status/{id}', 'toggleStatus')->name('status.toggle');
+        });
+        // UserCoinBalance routes will be added here later
+        // Route::get('balances', ['Admin\UserCoinBalanceController', 'index'])->name('balances.index');
+
+        // CoinTransaction routes will be added here later
+        // Route::get('transactions', ['Admin\CoinTransactionController', 'index'])->name('transactions.index');
+    });
+
+    // Game API Settings
+    Route::name('game.api.')->prefix('game-api')->group(function () {
+        Route::controller('ApiKeyController')->name('keys.')->prefix('keys')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('create', 'create')->name('create');
+            Route::post('store', 'store')->name('store');
+            Route::get('edit/{id}', 'edit')->name('edit');
+            Route::put('update/{id}', 'update')->name('update');
+            Route::post('status/{id}', 'toggleStatus')->name('status.toggle');
+            // Route::post('delete/{id}', 'destroy')->name('delete'); // If you implement delete
+        });
+    });
+
     // Language Manager
     Route::controller('LanguageController')->prefix('language')->name('language.')->group(function () {
         Route::get('/', 'langManage')->name('manage');

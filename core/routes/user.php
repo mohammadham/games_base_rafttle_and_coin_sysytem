@@ -69,6 +69,15 @@ Route::middleware('auth')->name('user.')->group(function () {
                 Route::post('change-password', 'submitPassword');
             });
 
+        // Coin Wallet Routes
+        Route::controller(App\Http\Controllers\User\CoinWalletController::class)
+            ->prefix('coin-wallet')
+            ->name('coin.wallet.')
+            ->group(function () {
+                Route::get('balances', 'balances')->name('balances');
+                Route::get('history', 'history')->name('history');
+        });
+
             Route::prefix('lottery')->name('lottery')->controller('LotteryController')->group(function () {
                 Route::get('cart/items', 'cartItems')->name('.cart.items');
                 Route::get('purchased', 'purchasedLottery')->name('.purchased');
