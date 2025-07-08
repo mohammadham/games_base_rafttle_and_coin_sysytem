@@ -69,6 +69,15 @@ Route::middleware('auth')->name('user.')->group(function () {
                 Route::post('change-password', 'submitPassword');
             });
 
+        // Coin Wallet Routes
+        Route::controller(App\Http\Controllers\User\CoinWalletController::class)
+            ->prefix('coin-wallet')
+            ->name('coin.wallet.')
+            ->group(function () {
+                Route::get('balances', 'balances')->name('balances');
+                Route::get('history', 'history')->name('history');
+        });
+
             Route::prefix('lottery')->name('lottery')->controller('LotteryController')->group(function () {
                 Route::get('cart/items', 'cartItems')->name('.cart.items');
                 Route::get('purchased', 'purchasedLottery')->name('.purchased');
@@ -84,5 +93,14 @@ Route::middleware('auth')->name('user.')->group(function () {
             Route::get('manual', 'manualDepositConfirm')->name('manual.confirm');
             Route::post('manual', 'manualDepositUpdate')->name('manual.update');
         });
+    });
+
+    // New Payment Gateway Routes (for Zarinpal and other new gateways)
+    Route::controller(App\Http\Controllers\User\PaymentController::class)
+        ->prefix('gateway-payment')
+        ->name('gateway.payment.')
+        ->group(function () {
+            Route::post('/initiate', 'initiatePayment')->name('initiate');
+            Route::match(['get', 'post'], '/callback/{gatewayName}/{trx}', 'paymentCallback')->name('callback');
     });
 });

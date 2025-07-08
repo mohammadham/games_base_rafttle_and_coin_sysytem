@@ -1,0 +1,216 @@
+body {
+  direction: rtl;
+  text-align: right;
+}
+
+/* چپ‌چین کردن عناصری که نباید راست‌چین شوند (مانند لوگو اگر طراحی خاصی دارد) */
+/* .force-ltr { direction: ltr; text-align: left; } */
+
+/* تنظیمات مربوط به float */
+.float-left {
+  float: right !important; /* In RTL, float-left becomes float-right */
+}
+
+.float-right {
+  float: left !important; /* In RTL, float-right becomes float-left */
+}
+
+/* تنظیمات مربوط به margin و padding */
+/* Bootstrap 4 & 5 use start/end for LTR/RTL sensitive spacing */
+/* We might need to override specific classes if they use left/right explicitly */
+
+.mr-1, .mx-1, .ms-1 { margin-right: 0 !important; margin-left: 0.25rem !important; }
+.ml-1, .mx-1, .me-1 { margin-left: 0 !important; margin-right: 0.25rem !important; }
+.mr-2, .mx-2, .ms-2 { margin-right: 0 !important; margin-left: 0.5rem !important; }
+.ml-2, .mx-2, .me-2 { margin-left: 0 !important; margin-right: 0.5rem !important; }
+.mr-3, .mx-3, .ms-3 { margin-right: 0 !important; margin-left: 1rem !important; }
+.ml-3, .mx-3, .me-3 { margin-left: 0 !important; margin-right: 1rem !important; }
+.mr-4, .mx-4, .ms-4 { margin-right: 0 !important; margin-left: 1.5rem !important; }
+.ml-4, .mx-4, .me-4 { margin-left: 0 !important; margin-right: 1.5rem !important; }
+.mr-5, .mx-5, .ms-5 { margin-right: 0 !important; margin-left: 3rem !important; }
+.ml-5, .mx-5, .me-5 { margin-left: 0 !important; margin-right: 3rem !important; }
+
+.pr-1, .px-1, .ps-1 { padding-right: 0 !important; padding-left: 0.25rem !important; }
+.pl-1, .px-1, .pe-1 { padding-left: 0 !important; padding-right: 0.25rem !important; }
+.pr-2, .px-2, .ps-2 { padding-right: 0 !important; padding-left: 0.5rem !important; }
+.pl-2, .px-2, .pe-2 { padding-left: 0 !important; padding-right: 0.5rem !important; }
+.pr-3, .px-3, .ps-3 { padding-right: 0 !important; padding-left: 1rem !important; }
+.pl-3, .px-3, .pe-3 { padding-left: 0 !important; padding-right: 1rem !important; }
+.pr-4, .px-4, .ps-4 { padding-right: 0 !important; padding-left: 1.5rem !important; }
+.pl-4, .px-4, .pe-4 { padding-left: 0 !important; padding-right: 1.5rem !important; }
+.pr-5, .px-5, .ps-5 { padding-right: 0 !important; padding-left: 3rem !important; }
+.pl-5, .px-5, .pe-5 { padding-left: 0 !important; padding-right: 3rem !important; }
+
+
+/* تنظیمات مربوط به text-align */
+.text-left {
+  text-align: right !important;
+}
+
+.text-right {
+  text-align: left !important;
+}
+
+/* تنظیمات spezifisch برای کامپوننت‌های بوت‌استرپ مانند dropdown ها، carousel ها و ... */
+.dropdown-menu {
+  text-align: right; /* Ensure dropdown items are right-aligned */
+}
+
+.dropdown-menu-right, .dropdown-menu-end {
+    right: auto !important;
+    left: 0 !important;
+}
+.dropdown-menu-left, .dropdown-menu-start {
+    left: auto !important;
+    right: 0 !important;
+}
+
+
+/* اطمینان از اینکه لیست‌ها به درستی نمایش داده می‌شوند */
+ul, ol {
+  padding-right: 20px; /* Adjust default padding for RTL */
+  padding-left: 0;
+}
+
+/* Specific for navigation items if they use float or text-align */
+.navbar-nav {
+  padding-right: 0; /* Reset padding if necessary */
+}
+
+.navbar-nav .nav-item + .nav-item {
+  margin-left: 0;
+  margin-right: 1rem; /* Adjust spacing for RTL */
+}
+
+/* For forms */
+.form-check {
+    padding-right: 1.25rem; /* Adjust for RTL checkbox/radio */
+    padding-left: 0;
+}
+
+.form-check-input {
+    margin-right: -1.25rem;
+    margin-left: 0;
+}
+
+/* Breadcrumbs */
+.breadcrumb-item + .breadcrumb-item::before {
+    float: right; /* Ensure separator is on the correct side */
+    padding-left: .5rem;
+    padding-right: 0;
+    content: var(--bs-breadcrumb-divider, "/") A; /* Bootstrap 5 uses a CSS variable, ensure it's flipped or use a different one for RTL */
+}
+
+/* Close buttons in modals, alerts */
+.btn-close, .close {
+    float: left !important; /* Move close button to the left in RTL */
+}
+
+/* Pagination */
+.pagination {
+    padding-right: 0; /* Reset padding */
+}
+.page-item:first-child .page-link {
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.page-item:last-child .page-link {
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* Input group addons */
+.input-group > .input-group-prepend > .input-group-text,
+.input-group > .input-group-prepend > .btn,
+.input-group > .form-control:not(:last-child),
+.input-group > .custom-select:not(:last-child) {
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.input-group > .input-group-append > .input-group-text,
+.input-group > .input-group-append > .btn,
+.input-group > .form-control:not(:first-child),
+.input-group > .custom-select:not(:first-child) {
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group-prepend {
+    margin-right: -1px;
+    margin-left: 0;
+}
+
+.input-group-append {
+    margin-left: -1px;
+    margin-right: 0;
+}
+
+/* For iziToast */
+.iziToast-rtl {
+    direction: rtl !important;
+}
+.iziToast-rtl .iziToast-title {
+    margin-left: 10px;
+    margin-right: 0;
+}
+.iziToast-rtl .iziToast-message {
+    text-align: right !important;
+}
+.iziToast-rtl .iziToast-inputs input:first-child {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+/* For select2 */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding-right: 20px !important;
+    padding-left: 8px !important;
+    text-align: right !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    right: auto !important;
+    left: 1px !important;
+}
+.select2-dropdown {
+    text-align: right !important;
+}
+
+/* Line Awesome icons may need flipping for RTL if they are directional */
+[class*="la-angle-double-left"]:before { content: "\f101"; }
+[class*="la-angle-double-right"]:before { content: "\f100"; }
+[class*="la-angle-left"]:before { content: "\f105"; }
+[class*="la-angle-right"]:before { content: "\f104"; }
+[class*="la-arrow-left"]:before { content: "\f061"; }
+[class*="la-arrow-right"]:before { content: "\f060"; }
+[class*="la-long-arrow-left"]:before { content: "\f178"; }
+[class*="la-long-arrow-right"]:before { content: "\f177"; }
+[class*="la-caret-left"]:before { content: "\f0da"; }
+[class*="la-caret-right"]:before { content: "\f0d9"; }
+/* Add more icon flipping as needed */
+
+/* Custom classes for components if needed */
+/* Example for a specific sidebar */
+/*
+.sidebar {
+  left: auto;
+  right: 0;
+}
+.main-content {
+  margin-left: 0;
+  margin-right: 250px; // Assuming sidebar width is 250px
+}
+*/
+
+/* Ensure html tag also has direction attribute if not already set by server-side logic */
+html:lang(fa) {
+    direction: rtl;
+}

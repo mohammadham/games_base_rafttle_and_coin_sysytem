@@ -423,6 +423,47 @@
             }
         ]
     },
+
+    "coin_management": {
+        "title": "Coin Management",
+        "icon": "las la-coins",
+        "menu_active": "admin.coin.*",
+        "submenu": [
+            {
+                "keyword": ["Coin Types", "Manage Coin Types", "Cryptocurrency settings"],
+                "title": "Coin Types",
+                "route_name": "admin.coin.types.index",
+                "menu_active": "admin.coin.types.*"
+            },
+            {
+                "keyword": ["User Coin Balances", "View User Balances"],
+                "title": "User Balances",
+                "route_name": "admin.coin.balances.index",
+                "menu_active": "admin.coin.balances.*"
+            },
+            {
+                "keyword": ["Coin Transactions", "Coin Transaction History"],
+                "title": "Coin Transactions",
+                "route_name": "admin.coin.transactions.index",
+                "menu_active": "admin.coin.transactions.*"
+            }
+        ]
+    },
+
+    "game_api_settings": {
+        "title": "Game API Settings",
+        "icon": "las la-gamepad",
+        "menu_active": "admin.game.api.*",
+        "submenu": [
+            {
+                "keyword": ["API Keys", "Manage API Keys", "Developer API"],
+                "title": "API Keys",
+                "route_name": "admin.game.api.keys.index",
+                "menu_active": "admin.game.api.keys.*"
+            }
+        ]
+    },
+
     "system_setting": {
         "keyword": [
             "System Setting",

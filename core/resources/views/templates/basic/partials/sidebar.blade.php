@@ -34,6 +34,27 @@
                 </a>
             </li>
 
+            <li class="sidebar-menu-list__item has-dropdown {{ menuActive(['user.coin.wallet.*']) }}">
+                <a href="javascript:void(0)" class="sidebar-menu-list__link {{ menuActive(['user.coin.wallet.*']) }}">
+                    <span class="icon"><i class="las la-wallet"></i></span>
+                    <span class="text"> @lang('My Coin Wallet') </span>
+                </a>
+                <div class="sidebar-submenu">
+                    <ul class="sidebar-submenu-list">
+                        <li class="sidebar-submenu-list__item {{ menuActive('user.coin.wallet.balances') }}">
+                            <a href="{{ route('user.coin.wallet.balances') }}" class="sidebar-submenu-list__link">
+                                <span class="text"> @lang('Coin Balances') </span>
+                            </a>
+                        </li>
+                        <li class="sidebar-submenu-list__item {{ menuActive('user.coin.wallet.history') }}">
+                            <a href="{{ route('user.coin.wallet.history') }}" class="sidebar-submenu-list__link">
+                                <span class="text"> @lang('Coin History') </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
             <li class="sidebar-menu-list__item has-dropdown {{ menuActive(['ticket.*']) }}">
                 <a href="javascript:void(0)" class="sidebar-menu-list__link {{ menuActive(['ticket.*']) }}">
                     <span class="icon"><i class="las la-ticket-alt"></i></span>
