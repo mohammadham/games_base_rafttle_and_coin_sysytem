@@ -8,6 +8,7 @@ use App\Models\CoinTransaction;
 use App\Models\CoinType; // Added for type hinting and static calls
 use App\Constants\Status; // Added for status checks
 use Illuminate\Http\Request;
+use App\Lib\PaymentGateway\PaymentManager; // Added for fetching gateways
 use Illuminate\Support\Facades\Auth; // Using Auth facade
 
 class CoinWalletController extends Controller
@@ -88,5 +89,20 @@ class CoinWalletController extends Controller
 
 
         return view(activeTemplate() . 'user.coin_wallet.history', compact('pageTitle', 'coinTransactions', 'coinTypes', 'remarks'));
+    }
+
+    public function showPurchaseForm()
+    {
+        $pageTitle = trans('Buy Coins / Add Credit');
+        $gateways = PaymentManager::getAvailableGateways(); // Fetch active payment gateways
+        $baseCoin = CoinType::getBaseCoin();
+
+        if (!$baseCoin) {
+            $notify[] = ['error', trans('The base coin is not configured in the system. Please contact support.')];
+            return redirect()->route('user.home')->withNotify($notify);
+        }
+
+        // Assuming purchase is always for the base coin or general site credit convertible to base coin.
+        return view(activeTemplate() . 'user.coin_wallet.purchase_form', compact('pageTitle', 'gateways', 'baseCoin'));
     }
 }

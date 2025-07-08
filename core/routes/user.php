@@ -76,6 +76,7 @@ Route::middleware('auth')->name('user.')->group(function () {
             ->group(function () {
                 Route::get('balances', 'balances')->name('balances');
                 Route::get('history', 'history')->name('history');
+                Route::get('purchase', 'showPurchaseForm')->name('purchase.form'); // New route for coin purchase form
         });
 
             Route::prefix('lottery')->name('lottery')->controller('LotteryController')->group(function () {
