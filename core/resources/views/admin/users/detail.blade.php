@@ -156,6 +156,46 @@
                     </form>
                 </div>
             </div>
+
+            {{-- User Coin Balances Card --}}
+            <div class="card mt-30">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">@lang('Coin Balances of') {{ $user->fullname }}</h5>
+                </div>
+                <div class="card-body p-0">
+                    @if(isset($userCoinBalances) && $userCoinBalances->count() > 0)
+                        <div class="table-responsive--md table-responsive">
+                            <table class="table table--light style--two">
+                                <thead>
+                                    <tr>
+                                        <th>@lang('S.N.')</th>
+                                        <th>@lang('Coin Name')</th>
+                                        <th>@lang('Symbol')</th>
+                                        <th>@lang('Balance')</th>
+                                        <th>@lang('Last Transaction')</th>
+                                        {{-- Add actions like 'Adjust Balance' if needed later --}}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($userCoinBalances as $balance)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ __($balance->coinType->name) }} ({{ $balance->coinType->code }})</td>
+                                            <td>{{ $balance->coinType->symbol }}</td>
+                                            <td class="fw-bold">{{ showAmount($balance->balance, $balance->coinType->meta['precision'] ?? 8) }}</td>
+                                            <td>{{ $balance->last_transaction_at ? showDateTime($balance->last_transaction_at) : trans('N/A') }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div class="card-body text-center">
+                            <p>{{ __($emptyCoinBalanceMessage ?? 'This user has no coin balances yet.') }}</p>
+                        </div>
+                    @endif
+                </div>
+            </div> {{-- End User Coin Balances Card --}}
         </div>
     </div>
 

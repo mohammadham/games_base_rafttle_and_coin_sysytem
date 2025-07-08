@@ -426,13 +426,19 @@
     "coin_management": {
         "title": "Coin Management",
         "icon": "las la-coins",
-        "menu_active": "admin.coin.type.*",
+        "menu_active": ["admin.coin.type.*", "admin.coin.transaction.*"],
         "submenu": [
             {
                 "keyword": ["Coin Types", "Manage Coin Types", "Define coin properties", "Cryptocurrency settings"],
                 "title": "Coin Types",
                 "route_name": "admin.coin.type.index",
                 "menu_active": "admin.coin.type.*"
+            },
+            {
+                "keyword": ["Coin Transactions", "Coin Transaction History", "Coin audit trail", "User coin activity"],
+                "title": "Coin Transactions",
+                "route_name": "admin.coin.transaction.index",
+                "menu_active": "admin.coin.transaction.*"
             }
         ]
     },

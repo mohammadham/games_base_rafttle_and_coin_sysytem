@@ -10,6 +10,7 @@ use App\Models\NotificationTemplate;
 use App\Models\PickedTicket;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\UserCoinBalance; // Added for coin balances
 use App\Models\Winner;
 use App\Rules\FileTypeValidate;
 use Illuminate\Http\Request;
@@ -87,7 +88,12 @@ class ManageUsersController extends Controller {
         $attendedLottery = PickedTicket::where('user_id', $id)->pluck('choosen_tickets')->toArray();
         $totalPurchased  = count(array_merge(...@$attendedLottery ?? []));
 
-        return view('admin.users.detail', compact('pageTitle', 'user', 'totalDeposit', 'totalTransaction', 'countries', 'totalWins', 'totalPurchased'));
+        // Fetch user coin balances with their coin types
+        $userCoinBalances = UserCoinBalance::where('user_id', $user->id)
+                                           ->with('coinType') // Eager load the coin type information
+                                           ->get();
+
+        return view('admin.users.detail', compact('pageTitle', 'user', 'totalDeposit', 'totalTransaction', 'countries', 'totalWins', 'totalPurchased', 'userCoinBalances'));
     }
 
     public function update(Request $request, $id) {

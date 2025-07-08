@@ -144,8 +144,9 @@ Route::middleware('admin')->group(function () {
         // UserCoinBalance routes will be added here later
         // Route::get('balances', ['Admin\UserCoinBalanceController', 'index'])->name('balances.index');
 
-        // CoinTransaction routes will be added here later
-        // Route::get('transactions', ['Admin\CoinTransactionController', 'index'])->name('transactions.index');
+        // CoinTransaction routes
+        Route::get('coin-transactions', [App\Http\Controllers\Admin\CoinTransactionController::class, 'index'])->name('transaction.index');
+        // Route::get('coin-transactions/{id}', [App\Http\Controllers\Admin\CoinTransactionController::class, 'detail'])->name('transaction.detail'); // Optional
     });
 
     // Game API Settings
