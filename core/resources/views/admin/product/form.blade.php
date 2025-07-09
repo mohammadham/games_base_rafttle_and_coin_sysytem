@@ -35,8 +35,12 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="price">@lang('Price') ({{ __(gs('cur_text')) }})</label>
+                                            @php $baseCoin = \App\Models\CoinType::getBaseCoin(); @endphp
+                                            <label for="price">@lang('Price') (@lang('in') {{ $baseCoin ? __($baseCoin->name) . ' - ' . $baseCoin->symbol : gs('cur_text') }})</label>
                                             <input type="number" name="price" class="form-control" id="price" value="{{ old('price', showAmount($product->price, allowZeros:true)) }}" step="any" min="0" required placeholder="0.00">
+                                            @if (!$baseCoin)
+                                            <small class="text-danger">@lang('Warning: Base coin is not configured. Price will be in default site currency.')</small>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -63,27 +67,48 @@
                                     <small class="text-muted">@lang('E.g., Download link, license key format, instructions to user after purchase.')</small>
                                 </div>
 
-                                 {{-- Optional: Categories --}}
-                                {{--
                                 <div class="form-group">
-                                    <label for="category_id">@lang('Category')</label>
-                                    <select name="category_id" id="category_id" class="form-control">
-                                        <option value="">@lang('Select Category')</option>
-                                        @foreach($categories as $category)
-                                            <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                                    <label for="categories">@lang('Categories')</label>
+                                    <select name="categories[]" id="categories" class="form-control select2-multi-select" multiple="multiple" data-placeholder="@lang('Select categories')">
+                                        {{-- Loop through $categories passed from controller --}}
+                                        @if(isset($categories))
+                                            @foreach($categories as $category)
+                                            <option value="{{ $category->id }}"
+                                                {{ (is_array(old('categories', $product->exists ? $product->categories->pluck('id')->toArray() : [])) && in_array($category->id, old('categories', $product->exists ? $product->categories->pluck('id')->toArray() : []))) ? 'selected' : '' }}>
                                                 {{ __($category->name) }}
                                             </option>
-                                        @endforeach
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
-                                --}}
+
+                                <div class="form-group">
+                                    <label for="tags">@lang('Tags')</label>
+                                    <select name="tags[]" id="tags" class="form-control select2-tags" multiple="multiple" data-placeholder="@lang('Add tags')">
+                                        {{-- Loop through existing tags for product or allow new tags via select2-tags --}}
+                                        @if(isset($allTags)) {{-- All available tags for dropdown --}}
+                                            @foreach($allTags as $tag)
+                                                <option value="{{ $tag->name }}"
+                                                    {{ (is_array(old('tags', $product->exists ? $product->tags->pluck('name')->toArray() : [])) && in_array($tag->name, old('tags', $product->exists ? $product->tags->pluck('name')->toArray() : []))) ? 'selected' : '' }}>
+                                                    {{ __($tag->name) }}
+                                                </option>
+                                            @endforeach
+                                        @elseif($product->exists && $product->tags->count()) {{-- Tags already associated with product --}}
+                                             @foreach($product->tags as $tag)
+                                                <option value="{{ $tag->name }}" selected>{{ __($tag->name) }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <small class="text-muted">@lang('Type and press enter/comma to add new tags, or select existing ones.')</small>
+                                </div>
+
 
                             </div>
 
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="image">@lang('Product Image')</label>
-                                    <div class="image-upload">
+                                    <label for="image">@lang('Featured Product Image')</label>
+                                    <div class="image-upload" id="mainImageUpload">
                                         <div class="thumb">
                                             <div class="avatar-preview">
                                                 <div class="profilePicPreview" style="background-image: url({{ $product->image_url ?? getImage(getFilePath('product') .'/placeholder.png') }})">
@@ -98,6 +123,35 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                {{-- Gallery Images Upload --}}
+                                <div class="form-group">
+                                    <label for="gallery_images">@lang('Gallery Images')</label>
+                                    <input type="file" name="gallery_images[]" id="gallery_images" class="form-control" multiple accept=".png, .jpg, .jpeg, .gif">
+                                    <small class="mt-2">@lang('Supported files'): <b>jpeg, jpg, png, gif</b>. @lang('You can select multiple images.')</small>
+                                </div>
+
+                                {{-- Display Existing Gallery Images --}}
+                                @if($product->exists && $product->images->count() > 0)
+                                <div class="mt-3">
+                                    <h6>@lang('Current Gallery Images'):</h6>
+                                    <div class="row gx-2 gy-2" id="existingGalleryImages">
+                                        @foreach($product->images->sortBy('sort_order') as $galleryImage)
+                                        <div class="col-4 position-relative existing-gallery-image-item" data-image-id="{{ $galleryImage->id }}">
+                                            <img src="{{ $galleryImage->image_url }}" alt="@lang('Gallery image')" class="img-thumbnail">
+                                            <button type="button" class="btn btn-sm btn--danger position-absolute top-0 end-0 remove-gallery-image-btn" title="@lang('Delete Image')"><i class="fa fa-times"></i></button>
+                                            <div class="form-check position-absolute top-0 start-0 m-1 bg-white p-1 rounded">
+                                                <input type="radio" name="featured_image_id" value="{{$galleryImage->id}}" title="@lang('Set as Featured')" @if($galleryImage->is_featured) checked @endif class="form-check-input set-featured-btn">
+                                                <small>@lang('F')</small> {{-- Featured marker --}}
+                                            </div>
+                                            {{-- Hidden input for sort order if you implement drag-and-drop sorting --}}
+                                            <input type="hidden" name="image_sort_order[{{ $galleryImage->id }}]" value="{{ $galleryImage->sort_order }}" class="image-sort-order-input">
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                     <small class="text-muted">@lang('The image marked with (F) is the featured image for the gallery. The "Featured Product Image" above takes precedence if set.')</small>
+                                </div>
+                                @endif
 
                                 <div class="form-group">
                                     <label for="status">@lang('Status')</label>
