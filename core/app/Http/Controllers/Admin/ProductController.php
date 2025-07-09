@@ -237,4 +237,40 @@ class ProductController extends Controller
         $notify[] = ['success', trans("Product ':name' deleted successfully.", ['name' => $productName])];
         return back()->withNotify($notify);
     }
+
+    public function destroyImage(Request $request, $productId, $imageId)
+    {
+        $product = Product::findOrFail($productId);
+        $image = $product->images()->findOrFail($imageId);
+
+        try {
+            // Delete the physical file
+            fileManager()->remove(getFilePath('product') . '/' . $image->image_path);
+            // Delete the database record
+            $image->delete();
+
+            // If the deleted image was featured, and there's no main product image,
+            // try to set another gallery image as featured.
+            if ($image->is_featured && !$product->image && $product->images()->count() > 0) {
+                $newFeatured = $product->images()->orderBy('sort_order')->first(); // or find a new one based on some logic
+                if ($newFeatured) {
+                    $newFeatured->update(['is_featured' => true]);
+                }
+            }
+            //This method is likely called via AJAX, so return JSON
+            if ($request->ajax()) {
+                return response()->json(['success' => trans('Gallery image deleted successfully.')]);
+            }
+            $notify[] = ['success', trans('Gallery image deleted successfully.')];
+            return back()->withNotify($notify);
+
+        } catch (\Exception $e) {
+            logger()->error("Failed to delete gallery image ID {$imageId} for product ID {$productId}: " . $e->getMessage());
+            if ($request->ajax()) {
+                return response()->json(['error' => trans('Could not delete gallery image.')], 500);
+            }
+            $notify[] = ['error', trans('Could not delete gallery image.')];
+            return back()->withNotify($notify);
+        }
+    }
 }

@@ -380,6 +380,7 @@ Route::middleware('admin')->group(function () {
         Route::post('update/{id}', 'update')->name('update');
         Route::post('toggle-status/{id}', 'toggleStatus')->name('toggle.status');
         Route::post('delete/{id}', 'destroy')->name('delete');
+        Route::post('image/delete/{productId}/{imageId}', 'destroyImage')->name('image.delete');
     });
 
 });
