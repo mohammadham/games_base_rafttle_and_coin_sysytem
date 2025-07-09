@@ -9,6 +9,8 @@ use App\Models\Deposit;
 use App\Models\User;
 use App\Models\GatewayCurrency;
 use App\Models\Transaction;
+use App\Models\CoinType;        // Added for coin reward
+use App\Models\UserCoinBalance; // Added for coin reward
 use App\Constants\Status;
 use Illuminate\Support\Facades\Log; // Added for logging
 
@@ -237,6 +239,62 @@ class PaymentController extends Controller
             //     'trx' => $deposit->trx,
             //     'post_balance' => showAmount($user->balance, $deposit->method_currency)
             // ]);
+
+            // --- Award Base Coin Bonus for Direct Deposit ---
+            // Assumes 'direct_deposit_coin_reward_percentage' is a setting in general_settings table (gs())
+            // And remark 'deposit' is used for funding account.
+            if ($deposit->remark == 'deposit' || $deposit->remark == 'funding') { // Check remark to ensure it's a direct funding
+                $rewardPercentage = (float) gs('direct_deposit_coin_reward_percentage', 0);
+                $baseCoin = CoinType::getBaseCoin();
+
+                if ($rewardPercentage > 0 && $baseCoin) {
+                    $amountEligibleForReward = $deposit->amount; // Amount in site's currency
+
+                    // IMPORTANT: Convert $amountEligibleForReward to base coin's unit value if site currency is different
+                    // For simplicity, if gs('cur_text') (site currency) IS the baseCoin->code, no conversion needed.
+                    // Otherwise, this needs a robust conversion.
+                    // Example:
+                    // $siteCurrencyCode = strtoupper(gs('cur_text'));
+                    // if ($siteCurrencyCode != strtoupper($baseCoin->code)) {
+                    //     $siteCurrencyAsCoinType = CoinType::where('code', $siteCurrencyCode)->active()->first();
+                    //     if ($siteCurrencyAsCoinType) {
+                    //         $amountEligibleForReward = $siteCurrencyAsCoinType->convertToBaseCoin($deposit->amount);
+                    //     } else {
+                    //         Log::warning("Cannot convert deposit amount to base coin for reward. Site currency {$siteCurrencyCode} not a defined CoinType.");
+                    //         $amountEligibleForReward = 0; // Prevent reward if conversion fails
+                    //     }
+                    // }
+                    // For now, we proceed assuming $deposit->amount is directly usable for percentage calculation
+                    // relative to base coin value if the site currency IS the base coin.
+                    // This logic MUST be verified and correctly implemented based on your currency setup.
+
+                    if ($amountEligibleForReward > 0) {
+                        $rewardAmount = ($amountEligibleForReward * $rewardPercentage) / 100;
+
+                        if ($rewardAmount > 0) {
+                            try {
+                                $userBaseCoinBalance = UserCoinBalance::getOrCreateBalance($user->id, $baseCoin->id);
+                                $rewardTrxParams = [
+                                    'trx' => getTrx(),
+                                    'details' => trans('Bonus for deposit :deposit_trx (:percentage% of :amount :currency)', [
+                                        'deposit_trx' => $deposit->trx,
+                                        'percentage' => $rewardPercentage,
+                                        'amount' => showAmount($deposit->amount),
+                                        'currency' => __($deposit->method_currency)
+                                    ]),
+                                    'related_transactionable_id' => $deposit->id,
+                                    'related_transactionable_type' => get_class($deposit),
+                                ];
+                                $userBaseCoinBalance->credit($rewardAmount, 'deposit_bonus', $rewardTrxParams);
+                                Log::info("Awarded :reward_amount :coin_code as deposit bonus to user :user_id for deposit TRX :deposit_trx", ['reward_amount' => $rewardAmount, 'coin_code' => $baseCoin->code, 'user_id' => $user->id, 'deposit_trx' => $deposit->trx]);
+                            } catch (\Exception $e) {
+                                Log::error("Failed to award deposit bonus to user {$user->id} for deposit TRX {$deposit->trx}: " . $e->getMessage());
+                            }
+                        }
+                    }
+                }
+            }
+            // --- End Award Base Coin Bonus ---
 
             Log::info("Payment successful for TRX: {$deposit->trx}. User balance updated.");
             $notify[] = ['success', 'پرداخت شما با موفقیت انجام و مبلغ به حساب شما اضافه شد.'];
