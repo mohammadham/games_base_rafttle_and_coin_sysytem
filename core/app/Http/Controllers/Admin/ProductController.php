@@ -78,10 +78,18 @@ class ProductController extends Controller
     public function edit($id)
     {
         $pageTitle = trans('Edit Product');
-        $product = Product::with(['categories', 'tags', 'images'])->findOrFail($id); // Eager load relationships
+        $product = Product::with(['categories', 'tags', 'images', 'lotteries' => function($query){
+            $query->withCount('winners')->orderBy('created_at', 'desc');
+        }])->findOrFail($id);
+
         $categories = ProductCategory::where('status', Status::ENABLE)->orderBy('name')->get();
         $allTags = Tag::orderBy('name')->get();
-        return view('admin.product.form', compact('pageTitle', 'product', 'categories', 'allTags'));
+        // Paginate linked lotteries separately if you expect many.
+        // The eager loaded 'lotteries' on $product can be used if not too many, or for a summary.
+        $linkedLotteries = $product->lotteries()->orderBy('draw_date', 'desc')->paginate(getPaginate(5), ['*'], 'lotteries_page');
+
+
+        return view('admin.product.form', compact('pageTitle', 'product', 'categories', 'allTags', 'linkedLotteries'));
     }
 
     public function update(Request $request, $id)

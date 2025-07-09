@@ -182,6 +182,63 @@
                             </button>
                         </div>
                     </form>
+
+                    {{-- Linked Lotteries Section --}}
+                    @if($product->exists)
+                    <div class="mt-5">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                             <h5 class="mb-0">@lang('Lotteries Linked to This Product')</h5>
+                            <a href="{{ route('admin.lottery.add', ['product_id' => $product->id, 'product_name' => rawurlencode($product->name)]) }}" class="btn btn-sm btn--primary">
+                                <i class="las la-plus"></i> @lang('Create New Lottery for This Product')
+                            </a>
+                        </div>
+
+                        @if(isset($linkedLotteries) && $linkedLotteries->count() > 0)
+                            <div class="table-responsive--md table-responsive">
+                                <table class="table table--light style--two">
+                                    <thead>
+                                        <tr>
+                                            <th>@lang('Lottery Name')</th>
+                                            <th>@lang('Draw Date')</th>
+                                            <th>@lang('Status')</th>
+                                            <th>@lang('Drawn?')</th>
+                                            <th>@lang('Tickets Sold')</th>
+                                            <th>@lang('Winners')</th>
+                                            <th>@lang('Action')</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($linkedLotteries as $lottery)
+                                            <tr>
+                                                <td>
+                                                    <a href="{{ route('admin.lottery.add', $lottery->id) }}">{{ __($lottery->name) }}</a>
+                                                </td>
+                                                <td>{{ showDateTime($lottery->draw_date, 'Y-m-d H:i') }}</td>
+                                                <td>@php echo $lottery->statusBadge; @endphp</td>
+                                                <td>@php echo $lottery->drawnBadge; @endphp</td>
+                                                <td>{{ $lottery->num_of_tickets - $lottery->num_of_available_tickets }} / {{ $lottery->num_of_tickets }}</td>
+                                                <td>{{ $lottery->winners_count }}</td>
+                                                <td>
+                                                    <a href="{{ route('admin.lottery.add', $lottery->id) }}" class="btn btn-sm btn-outline--primary" title="@lang('Edit Lottery')">
+                                                        <i class="las la-edit"></i>
+                                                    </a>
+                                                     <a href="{{ route('admin.winners.index', ['lottery_id' => $lottery->id]) }}" class="btn btn-sm btn-outline--info" title="@lang('View Winners')">
+                                                        <i class="las la-trophy"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                {{ $linkedLotteries->appends(request()->except('lotteries_page'))->links('admin.partials.paginate') }}
+                            </div>
+                        @else
+                            <div class="alert alert-info" role="alert">
+                                @lang('No lotteries are currently linked to this product.')
+                            </div>
+                        @endif
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -199,51 +256,62 @@
     (function($){
         "use strict";
 
+        // Initialize Select2 for categories and tags
+        $('.select2-multi-select').select2({
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: false
+        });
+        $('.select2-tags').select2({
+            placeholder: $(this).data('placeholder'),
+            tags: true,
+            tokenSeparators: [',']
+        });
+
+
         // Toggle digital good delivery info based on checkbox
         $('#is_digital').on('change', function() {
             if ($(this).is(':checked')) {
                 $('#digital_good_delivery_info_wrapper').slideDown();
-                // $('textarea[name=digital_good_delivery_info]').prop('required', true); // Make required if digital
+                $('textarea[name=digital_good_delivery_info]').prop('required', true);
             } else {
                 $('#digital_good_delivery_info_wrapper').slideUp();
-                // $('textarea[name=digital_good_delivery_info]').prop('required', false);
+                $('textarea[name=digital_good_delivery_info]').prop('required', false);
             }
-        }).trigger('change'); // Trigger on page load to set initial state
+        }).trigger('change');
 
-        // Auto-generate slug from name if slug field is empty (client-side helper, server-side generation is primary)
-        $('#name').on('keyup', function() {
-            if ($('#slug').val() === '') {
-                // A simple slugify, Laravel's Str::slug on server is more robust
-                // $('#slug').val($(this).val().toString().toLowerCase()
-                //     .replace(/\s+/g, '-')           // Replace spaces with -
-                //     .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-                //     .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-                //     .replace(/^-+/, '')             // Trim - from start of text
-                //     .replace(/-+$/, ''));            // Trim - from end of text
-            }
-        });
 
-        // Image preview logic (assuming ViserGo has a global function or you include one)
-        function proPicURL(input) {
+        // Image preview logic
+        function proPicURL(input, previewClass) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function(e) {
-                    var preview = $(input).closest('.image-upload').find('.profilePicPreview');
+                    var preview = $(input).closest('.image-upload').find('.' + previewClass);
                     preview.css('background-image', 'url(' + e.target.result + ')');
                     preview.addClass('has-image');
-                    preview.fadeIn(650);
+                    // preview.fadeIn(650); // Not needed if we just change background
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         }
-        $(".profilePicUpload").on('change', function() {
-            proPicURL(this);
+        $("#mainImageUpload .profilePicUpload").on('change', function() {
+            proPicURL(this, 'profilePicPreview');
         });
 
-        $(".remove-image").on('click', function(){
+        $("#mainImageUpload .remove-image").on('click', function(){
             $(this).closest('.profilePicPreview').css('background-image', 'none');
             $(this).closest('.profilePicPreview').removeClass('has-image');
             $(this).closest('.image-upload').find('input[type="file"]').val('');
+        });
+
+        // Logic for gallery image removal (client-side removal, server-side on update)
+        // This is a basic example. A more robust solution would use AJAX to delete immediately.
+        $(document).on('click', '.remove-gallery-image-btn', function(){
+            let confirmation = confirm("@lang('Are you sure you want to remove this gallery image? This will be permanent upon saving the product.')");
+            if(confirmation){
+                $(this).closest('.existing-gallery-image-item').remove();
+                // You might want to add the image ID to a hidden input field for deletion on server side
+                // e.g., $('<input>').attr({type: 'hidden', name: 'removed_gallery_images[]', value: $(this).data('image-id')}).appendTo('form');
+            }
         });
 
     })(jQuery);
@@ -254,6 +322,22 @@
 <style>
     .profilePicPreview.has-image .remove-image {
         display: block !important;
+    }
+    .existing-gallery-image-item .btn-sm {
+        padding: 0.1rem 0.3rem;
+        font-size: 0.7rem;
+    }
+    .existing-gallery-image-item .form-check-input {
+        width: 1em;
+        height: 1em;
+    }
+    .existing-gallery-image-item .form-check {
+        min-height: auto;
+        padding-left: 0.5em; /* Adjust as needed */
+    }
+    .existing-gallery-image-item .form-check small{
+        font-size: 0.75em;
+        margin-left: 0.2em;
     }
 </style>
 @endpush
