@@ -102,9 +102,11 @@ class ProductPurchaseController extends Controller
             $orderItem->order_id = $order->id;
             $orderItem->product_id = $product->id;
             $orderItem->quantity = $quantity;
-            $orderItem->price_per_unit = $pricePerUnitInBaseCoin; // Price in base coin
-            $orderItem->total_price = $totalCostInBaseCoin;
-            // Add other product details to order item if needed (name, sku, etc.)
+            $orderItem->price_per_unit_base_coin = $pricePerUnitInBaseCoin; // Ensure field name matches model
+            $orderItem->total_price_base_coin = $totalCostInBaseCoin;    // Ensure field name matches model
+            $orderItem->product_name_snapshot = $product->name;
+            $orderItem->product_image_snapshot = $product->image; // Store main image filename (path is constructed by accessor)
+            // $orderItem->attributes_snapshot = $request->input('attributes', []); // If product has selectable attributes
             $orderItem->save();
 
             // Update CoinTransaction with related order ID
