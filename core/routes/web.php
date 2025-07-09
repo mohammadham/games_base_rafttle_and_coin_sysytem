@@ -52,4 +52,8 @@ Route::controller('SiteController')->group(function () {
     Route::get('/cart/details', 'cartView')->name('cart');
     Route::get('/cart/items/count', 'getCartCount')->name('cart.count');
     Route::get('/cart/item/delete', 'cartItemDelete')->name('cart.item.delete');
+
+    // Product Listing Page
+    Route::get('products', 'productList')->name('products.index');
+    Route::get('products/{slug}', 'productDetail')->name('products.detail'); // Product Detail Page
 });

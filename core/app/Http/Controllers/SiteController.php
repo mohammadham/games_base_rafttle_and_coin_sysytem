@@ -12,6 +12,9 @@ use App\Models\Frontend;
 use App\Models\Language;
 use App\Models\Lottery;
 use App\Models\Page;
+use App\Models\Product;         // Added for Product Listing
+use App\Models\ProductCategory; // Added for Product Categories
+use App\Models\Tag;             // Added for Product Tags
 use App\Models\PickedTicket;
 use App\Models\SupportMessage;
 use App\Models\SupportTicket;
@@ -417,5 +420,105 @@ class SiteController extends Controller {
         $seoImage    = @$seoContents->image ? getImage(getFilePath('seo') . '/' . @$seoContents->image, getFileSize('seo')) : null;
         return view('Template::winners', compact('pageTitle', 'winners', 'sections', 'seoContents', 'seoImage'));
 
+    }
+
+    public function productList(Request $request)
+    {
+        $pageTitle = trans('Products');
+        $query = Product::active()->inStock()->with(['categories', 'tags']); // Eager load categories and tags
+
+        // Search
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', "%{$searchTerm}%")
+                  ->orWhere('description', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        // Filter by Category
+        if ($request->filled('category')) {
+            $categorySlug = $request->category;
+            $query->whereHas('categories', function ($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            });
+        }
+
+        // Filter by Tag
+        if ($request->filled('tag')) {
+            $tagSlug = $request->tag;
+            $query->whereHas('tags', function ($q) use ($tagSlug) {
+                $q->where('slug', $tagSlug);
+            });
+        }
+
+        $products = $query->orderBy('created_at', 'desc')->paginate(getPaginate(12)); // 12 products per page, or your preference
+
+        // Get categories and tags that are actually associated with active, in-stock products for filter options
+        $activeProductIds = Product::active()->inStock()->pluck('id');
+
+        $categories = ProductCategory::active()
+            ->whereHas('products', function ($q) use ($activeProductIds) {
+                $q->whereIn('products.id', $activeProductIds);
+            })
+            ->withCount(['products' => function($q) use ($activeProductIds) {
+                $q->whereIn('products.id', $activeProductIds);
+            }])
+            ->orderBy('name')->get();
+
+        $tags = Tag::whereHas('products', function ($q) use ($activeProductIds) {
+                $q->whereIn('products.id', $activeProductIds);
+            })
+            ->withCount(['products' => function($q) use ($activeProductIds) {
+                $q->whereIn('products.id', $activeProductIds);
+            }])
+            ->orderBy('name')->get();
+
+        $baseCoin = CoinType::getBaseCoin();
+
+        return view('Template::products.index', compact('pageTitle', 'products', 'categories', 'tags', 'baseCoin'));
+        // View templates.basic.products.index needs to be created
+    }
+
+    public function productDetail(Request $request, $slug)
+    {
+        $product = Product::where('slug', $slug)
+                            ->active()
+                            // ->inStock() // Decide if out-of-stock products should be viewable
+                            ->with([
+                                'images' => function($q) {$q->orderBy('is_featured', 'desc')->orderBy('sort_order', 'asc');},
+                                'categories' => function($q) {$q->active();},
+                                'tags',
+                                'lotteries' => function($q) {$q->active()->live()->withCount('winners')->orderBy('draw_date', 'asc');}
+                            ])
+                            ->firstOrFail();
+
+        $pageTitle = $product->name;
+        // SEO can be handled similarly to other pages, or use product-specific SEO fields if you add them to Product model
+        // $seoContents = $product->seo_content ?? Page::where('tempname', activeTemplate())->where('slug', 'products')->first()->seo_content;
+        // $seoImage = $product->featured_image_url ?? (@$seoContents->image ? getImage(getFilePath('seo') . '/' . @$seoContents->image, getFileSize('seo')) : null);
+
+
+        $baseCoin = CoinType::getBaseCoin();
+        $user = auth()->user();
+        $userBaseCoinBalance = 0;
+        if($user && $baseCoin){
+            $balanceRecord = $user->coinBalances()->where('coin_type_id', $baseCoin->id)->first();
+            if($balanceRecord){
+                $userBaseCoinBalance = $balanceRecord->balance;
+            }
+        }
+
+        // You might also want to fetch related or recommended products here
+        // $relatedProducts = Product::active()->inStock()->where('id', '!=', $product->id);
+        // if($product->categories->count()){
+        //    $relatedProducts->whereHas('categories', function($q) use ($product){
+        //        $q->whereIn('product_categories.id', $product->categories->pluck('id'));
+        //    });
+        // }
+        // $relatedProducts = $relatedProducts->limit(4)->get();
+
+        return view('Template::products.detail', compact('pageTitle', 'product', 'baseCoin', 'userBaseCoinBalance' /*, 'seoContents', 'seoImage', 'relatedProducts'*/));
+        // View templates.basic.products.detail needs to be created
     }
 }

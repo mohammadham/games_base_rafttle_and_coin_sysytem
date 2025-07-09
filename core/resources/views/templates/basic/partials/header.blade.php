@@ -45,6 +45,9 @@
                             @endforeach
                         </ul>
                     </li>
+                    <li class="nav-item {{ menuActive('products.index') }}">
+                        <a class="nav-link" href="{{ route('products.index') }}">@lang('Shop')</a> {{-- Or @lang('Products') --}}
+                    </li>
                     <li class="nav-item {{ menuActive('winners') }}"><a class="nav-link" href="{{ route('winners') }}">@lang('Winners')</a></li>
                     <li class="nav-item {{ menuActive('blog') }}"><a class="nav-link" href="{{ route('blog') }}">@lang('Blog')</a></li>
                     <li class="nav-item {{ menuActive('contact') }}"><a class="nav-link" href="{{ route('contact') }}">@lang('Contact')</a></li>
