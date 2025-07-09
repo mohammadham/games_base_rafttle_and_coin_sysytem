@@ -86,4 +86,12 @@ class Lottery extends Model {
     public function scopeDrawn($query) {
         return $query->where('is_drawn', Status::LOTTERY_DRAWN);
     }
+
+    /**
+     * Get the product associated with this lottery (if any).
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }

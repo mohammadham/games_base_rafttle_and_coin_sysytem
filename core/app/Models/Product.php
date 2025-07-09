@@ -137,4 +137,67 @@ class Product extends Model
     // {
     //     return $this->hasMany(OrderItem::class); // Assuming OrderItem model
     // }
+
+    /**
+     * Get all images for the product.
+     */
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class, 'product_id')->orderBy('is_featured', 'desc')->orderBy('sort_order', 'asc');
+    }
+
+    /**
+     * Get the categories for the product.
+     */
+    public function categories()
+    {
+        return $this->belongsToMany(ProductCategory::class, 'category_product', 'product_id', 'category_id');
+    }
+
+    /**
+     * Get the tags for the product.
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'product_tag', 'product_id', 'tag_id');
+    }
+
+    /**
+     * Get the lotteries associated with this product (where this product is the prize).
+     * This assumes a 'product_id' foreign key will be added to the 'lotteries' table.
+     */
+    public function lotteries()
+    {
+        return $this->hasMany(Lottery::class, 'product_id');
+    }
+
+    /**
+     * Get the featured image for the product.
+     */
+    public function featuredImage()
+    {
+        return $this->hasOne(ProductImage::class)->where('is_featured', true);
+    }
+
+    /**
+     * Accessor for the featured image URL.
+     * Uses the 'image' field as the primary featured image if set,
+     * otherwise falls back to the first 'is_featured' ProductImage.
+     */
+    public function getFeaturedImageUrlAttribute()
+    {
+        if ($this->image) { // Prioritize the 'image' field on the products table itself
+            return getImage(getFilePath('product') . '/' . $this->image, getFileSize('product'));
+        }
+        $featured = $this->featuredImage()->first(); // Check ProductImage table
+        if ($featured) {
+            return $featured->image_url; // Uses accessor from ProductImage model
+        }
+        // Fallback to the first image in the gallery if no specific featured image
+        $firstImage = $this->images()->first();
+        if ($firstImage) {
+            return $firstImage->image_url;
+        }
+        return getImage(getFilePath('default') . '/placeholder.png');
+    }
 }
