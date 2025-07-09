@@ -369,4 +369,17 @@ Route::middleware('admin')->group(function () {
         Route::post('regenerate-secret/{id}', 'regenerateSecret')->name('regenerate.secret');
     });
 
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // MODULE: Product Management - ADDED
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Route::name('product.')->prefix('products')->controller(App\Http\Controllers\Admin\ProductController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('create', 'create')->name('create');
+        Route::post('store', 'store')->name('store');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::post('update/{id}', 'update')->name('update');
+        Route::post('toggle-status/{id}', 'toggleStatus')->name('toggle.status');
+        Route::post('delete/{id}', 'destroy')->name('delete');
+    });
+
 });

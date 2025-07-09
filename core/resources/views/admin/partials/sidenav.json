@@ -78,6 +78,19 @@
             }
         ]
     },
+    "product_management": {
+        "title": "Product Management",
+        "icon": "las la-box-open",
+        "menu_active": "admin.product.*",
+        "submenu": [
+            {
+                "keyword": ["Products", "Manage Products", "Store Items", "Inventory"],
+                "title": "All Products",
+                "route_name": "admin.product.index",
+                "menu_active": "admin.product.*"
+            }
+        ]
+    },
     "picked_tickets": {
         "keyword": [
             "Sold Tickets",

@@ -6,6 +6,8 @@ use App\Constants\Status;
 use App\Models\AdminNotification;
 use App\Models\Cart;
 use App\Models\Competition;
+use App\Models\CoinType; // Added for Base Coin
+use App\Models\UserCoinBalance; // Added for User Coin Balance
 use App\Models\Frontend;
 use App\Models\Language;
 use App\Models\Lottery;
@@ -331,7 +333,47 @@ class SiteController extends Controller {
             return $item->calculateSingleCartPrice();
         });
 
-        return view('Template::cart_view', compact('pageTitle', 'cartItems', 'totalPrice'));
+        // --- Added for Coin Payment Option ---
+        $baseCoin = CoinType::getBaseCoin();
+        $userBaseCoinBalance = 0;
+        $totalPriceInBaseCoin = $totalPrice; // Default, assuming site currency might be the base or direct comparison is intended for now.
+
+        if (auth()->check() && $baseCoin) {
+            $user = auth()->user();
+            $balanceRecord = UserCoinBalance::where('user_id', $user->id)
+                                            ->where('coin_type_id', $baseCoin->id)
+                                            ->first();
+            if ($balanceRecord) {
+                $userBaseCoinBalance = (float) $balanceRecord->balance;
+            }
+
+            // IMPORTANT: Conversion logic for $totalPriceInBaseCoin if site currency != baseCoin->code
+            // This is a placeholder and needs accurate implementation based on your currency setup.
+            // Example: if site currency is USD and baseCoin is 'MAIN_COIN' with a value_multiplier.
+            // For now, we assume $totalPrice is comparable or is already in base coin equivalent for the view logic.
+            // If gs('cur_text') (site currency) is NOT $baseCoin->code, you MUST convert $totalPrice here.
+            // $siteCurrency = gs('cur_text');
+            // if (strtoupper($siteCurrency) != strtoupper($baseCoin->code)) {
+            //    // Option 1: If site currency is also a defined CoinType
+            //    $siteCoinType = CoinType::where('code', strtoupper($siteCurrency))->first();
+            //    if ($siteCoinType) {
+            //        $totalPriceInSiteCoinType = $totalPrice;
+            //        $valueInBaseCoinForTotalPrice = $siteCoinType->convertToBaseCoin($totalPriceInSiteCoinType);
+            //        $totalPriceInBaseCoin = $valueInBaseCoinForTotalPrice; // This is now in base coin units
+            //    } else {
+            //        // Option 2: Fixed rate or other logic if site currency is not a CoinType
+            //        // This is highly dependent on your system's currency management.
+            //        // Log an error or warning if conversion cannot be determined.
+            //        logger()->warning("SiteController@cartView: Cannot determine conversion from site currency {$siteCurrency} to base coin {$baseCoin->code} for cart total.");
+            //    }
+            // }
+            // For the purpose of this step, we are passing the raw $totalPrice as $totalPriceInBaseCoin.
+            // The view logic will handle enabling/disabling the button based on this.
+            // THIS MUST BE REVISITED AND CORRECTLY IMPLEMENTED.
+        }
+        // --- End Added for Coin Payment Option ---
+
+        return view('Template::cart_view', compact('pageTitle', 'cartItems', 'totalPrice', 'baseCoin', 'userBaseCoinBalance', 'totalPriceInBaseCoin'));
     }
 
     public function getCartCount() {
