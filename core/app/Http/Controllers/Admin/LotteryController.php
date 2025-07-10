@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Lottery;
 use App\Models\PickedTicket;
+use App\Models\Product; // Added for product association
 use App\Models\User;
 use App\Models\Winner;
 use App\Rules\FileTypeValidate;
 use App\Rules\InstantChooseVariation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB; // Required if not already used, for DB::transaction if complex logic arises
 
 class LotteryController extends Controller {
     public function index() {
@@ -38,8 +40,10 @@ class LotteryController extends Controller {
         return $lotteries->searchable(['name'])->with('competitions:id,name')->orderBy('id', 'desc')->paginate(getPaginate());
     }
 
-    public function add($id = 0) {
+    public function add(Request $request, $id = 0) { // Added Request
         $images = [];
+        $selectedProductId = $request->query('product_id'); // Get product_id from query string
+        $selectedProductName = $request->query('product_name'); // Get product_name from query string
 
         if ($id) {
             $lottery   = Lottery::findOrFail($id);
@@ -51,11 +55,20 @@ class LotteryController extends Controller {
                     $images[]   = $img;
                 }
             }
+            // If editing, selectedProductId might already be set on the lottery
+            $selectedProductId = $lottery->product_id ?? $selectedProductId;
+            // If product_id is set on lottery, fetch its name for display if not passed in query
+            if($lottery->product_id && !$selectedProductName && $lottery->product){
+                $selectedProductName = $lottery->product->name;
+            }
+
         } else {
             $lottery   = null;
             $pageTitle = 'Add New Raffle';
         }
-        return view('admin.lottery.add', compact('pageTitle', 'lottery', 'images'));
+        $products = Product::active()->orderBy('name')->get(['id', 'name']); // Get active products for dropdown
+
+        return view('admin.lottery.add', compact('pageTitle', 'lottery', 'images', 'products', 'selectedProductId', 'selectedProductName'));
     }
 
     public function store(Request $request, $id = null) {
@@ -76,6 +89,8 @@ class LotteryController extends Controller {
             'num_of_winning_tickets'   => 'required|integer|lte:num_of_tickets',
             'images'                   => $imgValidation,
             'images.*'                 => [$imgValidation, 'image', new FileTypeValidate(['jpg', 'jpeg', 'png'])],
+            'product_id'               => 'nullable|integer|exists:products,id',
+            'direct_purchase_coin_reward' => 'nullable|numeric|gte:0',
         ]);
 
         if ($id) {
@@ -147,6 +162,9 @@ class LotteryController extends Controller {
         $lottery->draw_date                = Carbon::parse($request->draw_date)->format('Y-m-d H:i:s');
         $lottery->num_of_winning_tickets   = $request->num_of_winning_tickets;
         $lottery->slider_images            = $sliderImage;
+        // Save additional fields
+        $lottery->product_id = $request->product_id;
+        $lottery->direct_purchase_coin_reward = $request->direct_purchase_coin_reward ?? 0;
         $lottery->save();
 
         $notify[] = ['success', $notification];

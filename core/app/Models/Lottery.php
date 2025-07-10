@@ -13,6 +13,7 @@ class Lottery extends Model {
     protected $casts = [
         'slider_images'   => 'array',
         'winning_tickets' => 'array',
+        'direct_purchase_coin_reward' => 'decimal:8', // Match precision with migration
     ];
 
     public function competitions() {

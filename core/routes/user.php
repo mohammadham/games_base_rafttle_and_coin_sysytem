@@ -84,6 +84,7 @@ Route::middleware('auth')->name('user.')->group(function () {
                 Route::get('purchased', 'purchasedLottery')->name('.purchased');
                 Route::get('purchased/detail/{slug}', 'purchasedLotteryDetail')->name('.purchased.detail');
                 Route::post('cart/purchase-with-coins', 'purchaseCartWithCoins')->name('.cart.purchase_with_coins');
+                Route::get('finalize-gateway-purchase/{deposit_trx}', 'finalizeLotteryPurchaseFromGateway')->name('.finalize_gateway_purchase');
             });
 
             // Product Purchase Routes

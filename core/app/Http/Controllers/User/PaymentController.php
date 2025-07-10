@@ -240,37 +240,40 @@ class PaymentController extends Controller
             //     'post_balance' => showAmount($user->balance, $deposit->method_currency)
             // ]);
 
-            // --- Award Base Coin Bonus for Direct Deposit ---
-            // Assumes 'direct_deposit_coin_reward_percentage' is a setting in general_settings table (gs())
-            // And remark 'deposit' is used for funding account.
-            if ($deposit->remark == 'deposit' || $deposit->remark == 'funding') { // Check remark to ensure it's a direct funding
+            // Check if this deposit was for a lottery ticket purchase via gateway
+            // This relies on 'lotteryCartDetails' being in session AND a specific remark on deposit.
+            // A more robust method would be to store cart/purchase intent directly in the Deposit's 'detail' field.
+            $isLotteryPurchaseViaGateway = false;
+            if (session()->has('lotteryCartDetails')) {
+                // It's crucial that the deposit record itself indicates its purpose.
+                // For example, Gateway\PaymentController@depositInsert should set a specific remark
+                // or store lottery cart details in $deposit->detail when initiating for lottery.
+                // Let's assume a remark like 'lottery_purchase_gateway_payment' is set on such deposits.
+                if (isset($deposit->remark) && ($deposit->remark === 'lottery_purchase_gateway_payment' || $deposit->remark === 'lottery_payment_via_gateway')) {
+                    $isLotteryPurchaseViaGateway = true;
+                }
+            }
+
+            if ($isLotteryPurchaseViaGateway) {
+                Log::info("Payment successful for Lottery via Gateway (TRX: {$deposit->trx}). Redirecting to finalize lottery ticket purchase and award coins.");
+                $notify[] = ['success', trans('Payment successful! Finalizing your lottery ticket purchase...')];
+                // We pass the deposit trx. LotteryController will fetch cart details from session.
+                return redirect()->route('user.lottery.finalize_gateway_purchase', ['deposit_trx' => $deposit->trx])->withNotify($notify);
+            } else {
+                // --- Standard Direct Deposit Coin Bonus (Percentage Based) ---
+                // This will apply if it's a general deposit to user's main balance, not a specific purchase like lottery.
                 $rewardPercentage = (float) gs('direct_deposit_coin_reward_percentage', 0);
                 $baseCoin = CoinType::getBaseCoin();
 
-                if ($rewardPercentage > 0 && $baseCoin) {
-                    $amountEligibleForReward = $deposit->amount; // Amount in site's currency
+                if ($rewardPercentage > 0 && $baseCoin && ($deposit->remark == 'deposit' || $deposit->remark == 'funding' || empty($deposit->remark))) {
+                    $amountEligibleForReward = $deposit->amount;
 
-                    // IMPORTANT: Convert $amountEligibleForReward to base coin's unit value if site currency is different
-                    // For simplicity, if gs('cur_text') (site currency) IS the baseCoin->code, no conversion needed.
-                    // Otherwise, this needs a robust conversion.
-                    // Example:
-                    // $siteCurrencyCode = strtoupper(gs('cur_text'));
-                    // if ($siteCurrencyCode != strtoupper($baseCoin->code)) {
-                    //     $siteCurrencyAsCoinType = CoinType::where('code', $siteCurrencyCode)->active()->first();
-                    //     if ($siteCurrencyAsCoinType) {
-                    //         $amountEligibleForReward = $siteCurrencyAsCoinType->convertToBaseCoin($deposit->amount);
-                    //     } else {
-                    //         Log::warning("Cannot convert deposit amount to base coin for reward. Site currency {$siteCurrencyCode} not a defined CoinType.");
-                    //         $amountEligibleForReward = 0; // Prevent reward if conversion fails
-                    //     }
-                    // }
-                    // For now, we proceed assuming $deposit->amount is directly usable for percentage calculation
-                    // relative to base coin value if the site currency IS the base coin.
-                    // This logic MUST be verified and correctly implemented based on your currency setup.
+                    // IMPORTANT: Robust currency conversion for $amountEligibleForReward to base coin value is needed here
+                    // if $deposit->method_currency is different from $baseCoin->code.
+                    // This simplified version assumes they are comparable or site currency is base coin.
 
                     if ($amountEligibleForReward > 0) {
                         $rewardAmount = ($amountEligibleForReward * $rewardPercentage) / 100;
-
                         if ($rewardAmount > 0) {
                             try {
                                 $userBaseCoinBalance = UserCoinBalance::getOrCreateBalance($user->id, $baseCoin->id);
@@ -293,12 +296,12 @@ class PaymentController extends Controller
                         }
                     }
                 }
-            }
-            // --- End Award Base Coin Bonus ---
+                // --- End Standard Direct Deposit Coin Bonus ---
 
-            Log::info("Payment successful for TRX: {$deposit->trx}. User balance updated.");
-            $notify[] = ['success', 'پرداخت شما با موفقیت انجام و مبلغ به حساب شما اضافه شد.'];
-            return redirect()->route(strtolower($user->access_route) . '.deposit.history')->withNotify($notify);
+                Log::info("Payment successful for general deposit (TRX: {$deposit->trx}). User balance updated.");
+                $notify[] = ['success', 'پرداخت شما با موفقیت انجام و مبلغ به حساب شما اضافه شد.'];
+                return redirect()->route(strtolower($user->access_route) . '.deposit.history')->withNotify($notify);
+            }
 
         } else {
             $deposit->status = Status::PAYMENT_REJECT;

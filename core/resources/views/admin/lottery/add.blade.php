@@ -34,7 +34,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group ">
                                             <label>@lang('Price')</label>
-                                            <div class="input-group">
+                                            <div class="input-group bootstrap-touchspin">
                                                 <input class="form-control" name="price" required type="number" step="any" value="{{ old('price', getAmount(@$lottery->price)) }}">
                                                 <span class="input-group-text">{{ __(gs('cur_text')) }}</span>
                                             </div>
@@ -46,6 +46,39 @@
                                                 <i class="las la-info-circle text--primary" title="@lang('Changes cannot be made once submitted.')"></i>
                                             </label>
                                             <input class="form-control" name="num_of_tickets" required type="number" value="{{ old('num_of_tickets', @$lottery->num_of_tickets) }}">
+                                        </div>
+                                    </div>
+                                    {{-- New Fields for Product Prize and Coin Reward --}}
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>@lang('Prize Product (Optional)')</label>
+                                            <select class="form-control select2-basic" name="product_id" data-placeholder="@lang('Select a Product if this lottery prize is a product')">
+                                                <option value="">@lang('None / Other Prize (Specify in Description)')</option>
+                                                @if(isset($products))
+                                                    @foreach ($products as $product)
+                                                        <option value="{{ $product->id }}"
+                                                                @selected(old('product_id', @$lottery->product_id ?? $selectedProductId) == $product->id)
+                                                                data-product-name="{{ __($product->name) }}">
+                                                            {{ __($product->name) }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            @if(isset($selectedProductName) && (!isset($lottery) || !$lottery->product_id))
+                                                <small class="form-text text-muted">@lang('Initially selected product for this lottery:') {{ __($selectedProductName) }}</small>
+                                            @elseif(isset($lottery) && $lottery->product)
+                                                 <small class="form-text text-muted">@lang('Currently linked product:') {{ __($lottery->product->name) }}</small>
+                                            @endif
+                                        </div>
+                                    </div>
+                                     <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <label>@lang('Direct Purchase Coin Reward (Per Ticket)')</label>
+                                            <div class="input-group bootstrap-touchspin">
+                                                <input class="form-control" name="direct_purchase_coin_reward" type="number" step="any" value="{{ old('direct_purchase_coin_reward', getAmount(@$lottery->direct_purchase_coin_reward ?? 0)) }}" placeholder="0.00">
+                                                <span class="input-group-text">@lang('Base Coin(s)')</span>
+                                            </div>
+                                            <small class="form-text text-muted">@lang('Amount of base coin awarded when a ticket is bought via gateway.')</small>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
