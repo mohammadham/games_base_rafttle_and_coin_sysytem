@@ -144,8 +144,9 @@ Route::middleware('admin')->group(function () {
         // UserCoinBalance routes will be added here later
         // Route::get('balances', ['Admin\UserCoinBalanceController', 'index'])->name('balances.index');
 
-        // CoinTransaction routes will be added here later
-        // Route::get('transactions', ['Admin\CoinTransactionController', 'index'])->name('transactions.index');
+        // CoinTransaction routes
+        Route::get('coin-transactions', [App\Http\Controllers\Admin\CoinTransactionController::class, 'index'])->name('transaction.index');
+        // Route::get('coin-transactions/{id}', [App\Http\Controllers\Admin\CoinTransactionController::class, 'detail'])->name('transaction.detail'); // Optional
     });
 
     // Game API Settings
@@ -339,4 +340,47 @@ Route::middleware('admin')->group(function () {
         Route::get('/', 'winners')->name('index');
         Route::get('user/{id}', 'winnerDetail')->name('user.detail');
     });
+
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // MODULE: Coin Management - ADDED
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Route::name('coin.type.')->prefix('coin-types')->controller(App\Http\Controllers\Admin\CoinTypeController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('create', 'create')->name('create');
+        Route::post('store', 'store')->name('store');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::post('update/{id}', 'update')->name('update');
+        Route::post('toggle-status/{id}', 'toggleStatus')->name('toggle.status');
+        Route::post('delete/{id}', 'destroy')->name('delete');
+    });
+
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // MODULE: Game API Key Management - ADDED
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Route::name('api.key.')->prefix('api-keys')->controller(App\Http\Controllers\Admin\ApiKeyController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('create', 'create')->name('create');
+        Route::post('store', 'store')->name('store');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::post('update/{id}', 'update')->name('update');
+        Route::post('toggle-status/{id}', 'toggleStatus')->name('toggle.status');
+        Route::post('revoke/{id}', 'revoke')->name('revoke');
+        Route::post('delete/{id}', 'destroy')->name('delete');
+        Route::post('regenerate-secret/{id}', 'regenerateSecret')->name('regenerate.secret');
+    });
+
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // MODULE: Product Management - ADDED
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Route::name('product.')->prefix('products')->controller(App\Http\Controllers\Admin\ProductController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('create', 'create')->name('create');
+        Route::post('store', 'store')->name('store');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::post('update/{id}', 'update')->name('update');
+        Route::post('toggle-status/{id}', 'toggleStatus')->name('toggle.status');
+        Route::post('delete/{id}', 'destroy')->name('delete');
+        Route::post('image/delete/{productId}/{imageId}', 'destroyImage')->name('image.delete');
+    });
+
 });

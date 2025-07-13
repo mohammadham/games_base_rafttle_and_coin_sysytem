@@ -55,6 +55,13 @@
                 </div>
             </li>
 
+            <li class="sidebar-menu-list__item">
+                <a href="{{ route('user.coin.purchase.form') }}" class="sidebar-menu-list__link {{ menuActive('user.coin.purchase.form') }}">
+                    <span class="icon"><i class="las la-coins"></i></span> {{-- Or las la-cart-plus --}}
+                    <span class="text">@lang('Buy Coins / Add Credit')</span>
+                </a>
+            </li>
+
             <li class="sidebar-menu-list__item has-dropdown {{ menuActive(['ticket.*']) }}">
                 <a href="javascript:void(0)" class="sidebar-menu-list__link {{ menuActive(['ticket.*']) }}">
                     <span class="icon"><i class="las la-ticket-alt"></i></span>

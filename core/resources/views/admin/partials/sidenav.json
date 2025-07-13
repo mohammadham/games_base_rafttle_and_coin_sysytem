@@ -78,6 +78,19 @@
             }
         ]
     },
+    "product_management": {
+        "title": "Product Management",
+        "icon": "las la-box-open",
+        "menu_active": "admin.product.*",
+        "submenu": [
+            {
+                "keyword": ["Products", "Manage Products", "Store Items", "Inventory"],
+                "title": "All Products",
+                "route_name": "admin.product.index",
+                "menu_active": "admin.product.*"
+            }
+        ]
+    },
     "picked_tickets": {
         "keyword": [
             "Sold Tickets",
@@ -423,47 +436,38 @@
             }
         ]
     },
-
     "coin_management": {
         "title": "Coin Management",
         "icon": "las la-coins",
-        "menu_active": "admin.coin.*",
+        "menu_active": ["admin.coin.type.*", "admin.coin.transaction.*"],
         "submenu": [
             {
-                "keyword": ["Coin Types", "Manage Coin Types", "Cryptocurrency settings"],
+                "keyword": ["Coin Types", "Manage Coin Types", "Define coin properties", "Cryptocurrency settings"],
                 "title": "Coin Types",
-                "route_name": "admin.coin.types.index",
-                "menu_active": "admin.coin.types.*"
+                "route_name": "admin.coin.type.index",
+                "menu_active": "admin.coin.type.*"
             },
             {
-                "keyword": ["User Coin Balances", "View User Balances"],
-                "title": "User Balances",
-                "route_name": "admin.coin.balances.index",
-                "menu_active": "admin.coin.balances.*"
-            },
-            {
-                "keyword": ["Coin Transactions", "Coin Transaction History"],
+                "keyword": ["Coin Transactions", "Coin Transaction History", "Coin audit trail", "User coin activity"],
                 "title": "Coin Transactions",
-                "route_name": "admin.coin.transactions.index",
-                "menu_active": "admin.coin.transactions.*"
+                "route_name": "admin.coin.transaction.index",
+                "menu_active": "admin.coin.transaction.*"
             }
         ]
     },
-
     "game_api_settings": {
         "title": "Game API Settings",
         "icon": "las la-gamepad",
-        "menu_active": "admin.game.api.*",
+        "menu_active": "admin.api.key.*",
         "submenu": [
             {
-                "keyword": ["API Keys", "Manage API Keys", "Developer API"],
+                "keyword": ["API Keys", "Manage API Keys", "Developer API access"],
                 "title": "API Keys",
-                "route_name": "admin.game.api.keys.index",
-                "menu_active": "admin.game.api.keys.*"
+                "route_name": "admin.api.key.index",
+                "menu_active": "admin.api.key.*"
             }
         ]
     },
-
     "system_setting": {
         "keyword": [
             "System Setting",

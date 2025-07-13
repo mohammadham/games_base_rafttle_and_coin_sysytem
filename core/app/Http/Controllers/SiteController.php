@@ -6,10 +6,15 @@ use App\Constants\Status;
 use App\Models\AdminNotification;
 use App\Models\Cart;
 use App\Models\Competition;
+use App\Models\CoinType; // Added for Base Coin
+use App\Models\UserCoinBalance; // Added for User Coin Balance
 use App\Models\Frontend;
 use App\Models\Language;
 use App\Models\Lottery;
 use App\Models\Page;
+use App\Models\Product;         // Added for Product Listing
+use App\Models\ProductCategory; // Added for Product Categories
+use App\Models\Tag;             // Added for Product Tags
 use App\Models\PickedTicket;
 use App\Models\SupportMessage;
 use App\Models\SupportTicket;
@@ -331,7 +336,47 @@ class SiteController extends Controller {
             return $item->calculateSingleCartPrice();
         });
 
-        return view('Template::cart_view', compact('pageTitle', 'cartItems', 'totalPrice'));
+        // --- Added for Coin Payment Option ---
+        $baseCoin = CoinType::getBaseCoin();
+        $userBaseCoinBalance = 0;
+        $totalPriceInBaseCoin = $totalPrice; // Default, assuming site currency might be the base or direct comparison is intended for now.
+
+        if (auth()->check() && $baseCoin) {
+            $user = auth()->user();
+            $balanceRecord = UserCoinBalance::where('user_id', $user->id)
+                                            ->where('coin_type_id', $baseCoin->id)
+                                            ->first();
+            if ($balanceRecord) {
+                $userBaseCoinBalance = (float) $balanceRecord->balance;
+            }
+
+            // IMPORTANT: Conversion logic for $totalPriceInBaseCoin if site currency != baseCoin->code
+            // This is a placeholder and needs accurate implementation based on your currency setup.
+            // Example: if site currency is USD and baseCoin is 'MAIN_COIN' with a value_multiplier.
+            // For now, we assume $totalPrice is comparable or is already in base coin equivalent for the view logic.
+            // If gs('cur_text') (site currency) is NOT $baseCoin->code, you MUST convert $totalPrice here.
+            // $siteCurrency = gs('cur_text');
+            // if (strtoupper($siteCurrency) != strtoupper($baseCoin->code)) {
+            //    // Option 1: If site currency is also a defined CoinType
+            //    $siteCoinType = CoinType::where('code', strtoupper($siteCurrency))->first();
+            //    if ($siteCoinType) {
+            //        $totalPriceInSiteCoinType = $totalPrice;
+            //        $valueInBaseCoinForTotalPrice = $siteCoinType->convertToBaseCoin($totalPriceInSiteCoinType);
+            //        $totalPriceInBaseCoin = $valueInBaseCoinForTotalPrice; // This is now in base coin units
+            //    } else {
+            //        // Option 2: Fixed rate or other logic if site currency is not a CoinType
+            //        // This is highly dependent on your system's currency management.
+            //        // Log an error or warning if conversion cannot be determined.
+            //        logger()->warning("SiteController@cartView: Cannot determine conversion from site currency {$siteCurrency} to base coin {$baseCoin->code} for cart total.");
+            //    }
+            // }
+            // For the purpose of this step, we are passing the raw $totalPrice as $totalPriceInBaseCoin.
+            // The view logic will handle enabling/disabling the button based on this.
+            // THIS MUST BE REVISITED AND CORRECTLY IMPLEMENTED.
+        }
+        // --- End Added for Coin Payment Option ---
+
+        return view('Template::cart_view', compact('pageTitle', 'cartItems', 'totalPrice', 'baseCoin', 'userBaseCoinBalance', 'totalPriceInBaseCoin'));
     }
 
     public function getCartCount() {
@@ -375,5 +420,105 @@ class SiteController extends Controller {
         $seoImage    = @$seoContents->image ? getImage(getFilePath('seo') . '/' . @$seoContents->image, getFileSize('seo')) : null;
         return view('Template::winners', compact('pageTitle', 'winners', 'sections', 'seoContents', 'seoImage'));
 
+    }
+
+    public function productList(Request $request)
+    {
+        $pageTitle = trans('Products');
+        $query = Product::active()->inStock()->with(['categories', 'tags']); // Eager load categories and tags
+
+        // Search
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', "%{$searchTerm}%")
+                  ->orWhere('description', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        // Filter by Category
+        if ($request->filled('category')) {
+            $categorySlug = $request->category;
+            $query->whereHas('categories', function ($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            });
+        }
+
+        // Filter by Tag
+        if ($request->filled('tag')) {
+            $tagSlug = $request->tag;
+            $query->whereHas('tags', function ($q) use ($tagSlug) {
+                $q->where('slug', $tagSlug);
+            });
+        }
+
+        $products = $query->orderBy('created_at', 'desc')->paginate(getPaginate(12)); // 12 products per page, or your preference
+
+        // Get categories and tags that are actually associated with active, in-stock products for filter options
+        $activeProductIds = Product::active()->inStock()->pluck('id');
+
+        $categories = ProductCategory::active()
+            ->whereHas('products', function ($q) use ($activeProductIds) {
+                $q->whereIn('products.id', $activeProductIds);
+            })
+            ->withCount(['products' => function($q) use ($activeProductIds) {
+                $q->whereIn('products.id', $activeProductIds);
+            }])
+            ->orderBy('name')->get();
+
+        $tags = Tag::whereHas('products', function ($q) use ($activeProductIds) {
+                $q->whereIn('products.id', $activeProductIds);
+            })
+            ->withCount(['products' => function($q) use ($activeProductIds) {
+                $q->whereIn('products.id', $activeProductIds);
+            }])
+            ->orderBy('name')->get();
+
+        $baseCoin = CoinType::getBaseCoin();
+
+        return view('Template::products.index', compact('pageTitle', 'products', 'categories', 'tags', 'baseCoin'));
+        // View templates.basic.products.index needs to be created
+    }
+
+    public function productDetail(Request $request, $slug)
+    {
+        $product = Product::where('slug', $slug)
+                            ->active()
+                            // ->inStock() // Decide if out-of-stock products should be viewable
+                            ->with([
+                                'images' => function($q) {$q->orderBy('is_featured', 'desc')->orderBy('sort_order', 'asc');},
+                                'categories' => function($q) {$q->active();},
+                                'tags',
+                                'lotteries' => function($q) {$q->active()->live()->withCount('winners')->orderBy('draw_date', 'asc');}
+                            ])
+                            ->firstOrFail();
+
+        $pageTitle = $product->name;
+        // SEO can be handled similarly to other pages, or use product-specific SEO fields if you add them to Product model
+        // $seoContents = $product->seo_content ?? Page::where('tempname', activeTemplate())->where('slug', 'products')->first()->seo_content;
+        // $seoImage = $product->featured_image_url ?? (@$seoContents->image ? getImage(getFilePath('seo') . '/' . @$seoContents->image, getFileSize('seo')) : null);
+
+
+        $baseCoin = CoinType::getBaseCoin();
+        $user = auth()->user();
+        $userBaseCoinBalance = 0;
+        if($user && $baseCoin){
+            $balanceRecord = $user->coinBalances()->where('coin_type_id', $baseCoin->id)->first();
+            if($balanceRecord){
+                $userBaseCoinBalance = $balanceRecord->balance;
+            }
+        }
+
+        // You might also want to fetch related or recommended products here
+        // $relatedProducts = Product::active()->inStock()->where('id', '!=', $product->id);
+        // if($product->categories->count()){
+        //    $relatedProducts->whereHas('categories', function($q) use ($product){
+        //        $q->whereIn('product_categories.id', $product->categories->pluck('id'));
+        //    });
+        // }
+        // $relatedProducts = $relatedProducts->limit(4)->get();
+
+        return view('Template::products.detail', compact('pageTitle', 'product', 'baseCoin', 'userBaseCoinBalance' /*, 'seoContents', 'seoImage', 'relatedProducts'*/));
+        // View templates.basic.products.detail needs to be created
     }
 }

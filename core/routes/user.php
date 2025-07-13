@@ -76,12 +76,24 @@ Route::middleware('auth')->name('user.')->group(function () {
             ->group(function () {
                 Route::get('balances', 'balances')->name('balances');
                 Route::get('history', 'history')->name('history');
+                Route::get('purchase', 'showPurchaseForm')->name('purchase.form'); // New route for coin purchase form
         });
 
             Route::prefix('lottery')->name('lottery')->controller('LotteryController')->group(function () {
                 Route::get('cart/items', 'cartItems')->name('.cart.items');
                 Route::get('purchased', 'purchasedLottery')->name('.purchased');
                 Route::get('purchased/detail/{slug}', 'purchasedLotteryDetail')->name('.purchased.detail');
+                Route::post('cart/purchase-with-coins', 'purchaseCartWithCoins')->name('.cart.purchase_with_coins');
+                Route::get('finalize-gateway-purchase/{deposit_trx}', 'finalizeLotteryPurchaseFromGateway')->name('.finalize_gateway_purchase');
+            });
+
+            // Product Purchase Routes
+            Route::controller(App\Http\Controllers\User\ProductPurchaseController::class)
+                ->prefix('product-purchase')->name('product.purchase.')
+                ->group(function(){
+                    Route::post('with-coins/{slug}', 'purchaseWithCoins')->name('with_coins');
+                    // Add route for purchasing with gateway if needed later
+                    // Route::post('with-gateway/{slug}', 'purchaseWithGateway')->name('with_gateway');
             });
         });
 

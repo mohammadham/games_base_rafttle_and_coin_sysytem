@@ -9,6 +9,8 @@ use App\Models\DeviceToken;
 use App\Models\Lottery;
 use App\Models\PickedTicket;
 use App\Models\Transaction;
+use App\Models\UserCoinBalance; // Added for coin balances
+use App\Models\CoinType; // Added to filter active coin types
 use App\Models\Winner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +30,15 @@ class UserController extends Controller {
 
         $lotteries = Lottery::pickedAndWonByUser(auth()->id())->searchable(['name'])->orderBy('id', 'desc')->limit(8)->get();
 
-        return view('Template::user.dashboard', compact('pageTitle', 'totalDeposit', 'totalTransaction', 'totalWins', 'totalPurchased', 'lotteries'));
+        // Fetch active coin balances for the user
+        $userCoinBalances = UserCoinBalance::where('user_id', $user->id)
+            ->whereHas('coinType', function ($query) {
+                $query->where('status', Status::ENABLE); // Only active coin types
+            })
+            ->with('coinType') // Eager load coin type details
+            ->get();
+
+        return view('Template::user.dashboard', compact('pageTitle', 'totalDeposit', 'totalTransaction', 'totalWins', 'totalPurchased', 'lotteries', 'userCoinBalances'));
     }
 
     public function depositHistory(Request $request) {

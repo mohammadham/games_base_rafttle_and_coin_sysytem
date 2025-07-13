@@ -47,11 +47,71 @@
 
                             <div class="order-summery__one d-flex justify-content-between">
                                 <h6 class="order-summery__title-two">@lang('Grand Total :')</h6>
-                                <span class="order-summery__number-two">{{ showAmount($totalPrice) }}</span>
+                                <span class="order-summery__number-two">{{ showAmount($totalPrice) }} {{ __(gs('cur_text')) }}</span>
                             </div>
-                            <div class="checkout">
-                                <a href="{{ route('user.lottery.cart.items') }}" class="cmn--btn w-100">@lang('Proceed to Checkout')
+
+                            {{-- Payment Options --}}
+                            <div class="checkout mt-3">
+                                <h6 class="mb-3 text-center">@lang('Choose Payment Method'):</h6>
+
+                                {{-- Option 1: Pay with Payment Gateway (Current Flow) --}}
+                                <a href="{{ route('user.lottery.cart.items') }}" class="btn btn--primary--outline d-block w-100 mb-3">
+                                    <i class="las la-credit-card"></i> @lang('Pay with Payment Gateway')
                                 </a>
+
+                                {{-- Option 2: Pay with Coins --}}
+                                @php
+                                    $baseCoin = \App\Models\CoinType::getBaseCoin();
+                                    $userBaseCoinBalance = 0;
+                                    $totalPriceInBaseCoinForDisplay = $totalPrice; // Default if no conversion needed or baseCoin not found
+
+                                    if ($baseCoin) {
+                                        $balanceRecord = auth()->user() ? auth()->user()->coinBalances()->where('coin_type_id', $baseCoin->id)->first() : null;
+                                        if ($balanceRecord) {
+                                            $userBaseCoinBalance = $balanceRecord->balance;
+                                        }
+                                        // Assume $totalPrice is in the site's main currency.
+                                        // If site's main currency IS the base coin, no conversion needed for display.
+                                        // If not, we need to convert $totalPrice to base coin for comparison and display.
+                                        // This conversion logic might be complex if site currency itself is a CoinType or needs a rate.
+                                        // For simplicity, if gs('cur_text') is different from $baseCoin->code, we'd need a conversion rate.
+                                        // Let's assume for now $totalPriceInBaseCoin is passed from controller or calculated here if possible.
+                                        // This is a placeholder, actual calculation needs to be robust.
+                                        // If $totalPrice is already in base_coin equivalent, then $totalPriceInBaseCoinForDisplay = $totalPrice
+                                        // If $baseCoin->code == gs('cur_text'), then $totalPriceInBaseCoinForDisplay = $totalPrice
+                                        // Otherwise, it needs conversion: $totalPriceInBaseCoinForDisplay = $baseCoin->convertFromBaseCoin($totalPrice * some_rate_if_totalPrice_is_not_already_base_equivalent)
+                                        // This variable $totalPriceInBaseCoin should be passed from the controller after proper calculation.
+                                        // For the disabled check, it's critical.
+                                    }
+                                @endphp
+
+                                @if($baseCoin && isset($totalPriceInBaseCoin)) {{-- $totalPriceInBaseCoin must be passed from controller --}}
+                                <form action="{{ route('user.lottery.cart.purchase_with_coins') }}" method="POST" class="w-100" onsubmit="return confirm('@lang('Are you sure you want to pay using your coin balance?')');">
+                                    @csrf
+                                    <input type="hidden" name="total_cart_price_in_site_currency" value="{{ $totalPrice }}">
+                                    <button type="submit" class="btn btn--success d-block w-100"
+                                            @if($userBaseCoinBalance < $totalPriceInBaseCoin) disabled title="@lang('Insufficient coin balance.')" @endif>
+                                        <i class="las la-coins"></i>
+                                        @lang('Pay with') {{ __($baseCoin->name) }}
+                                        (@lang('Available:') {{ showAmount($userBaseCoinBalance, $baseCoin->meta['precision'] ?? 8) }} {{ $baseCoin->symbol }})
+                                    </button>
+                                    @if($userBaseCoinBalance < $totalPriceInBaseCoin)
+                                        <small class="text-danger d-block mt-1 text-center">
+                                            @lang('Insufficient balance.') @lang('Required:') {{ showAmount($totalPriceInBaseCoin, $baseCoin->meta['precision'] ?? 8) }} {{ $baseCoin->symbol }}
+                                        </small>
+                                    @endif
+                                </form>
+                                @else
+                                    <button type="button" class="btn btn--success d-block w-100" disabled title="@lang('Coin payment option is currently unavailable or base coin not set.')">
+                                        <i class="las la-coins"></i> @lang('Pay with Coins')
+                                    </button>
+                                    @if(!$baseCoin)
+                                     <small class="text-warning d-block mt-1 text-center">@lang('Base coin not configured.')</small>
+                                    @endif
+                                     @if($baseCoin && !isset($totalPriceInBaseCoin))
+                                     <small class="text-warning d-block mt-1 text-center">@lang('Price in base coin not available.')</small>
+                                    @endif
+                                @endif
                             </div>
                         </div>
                     </div>

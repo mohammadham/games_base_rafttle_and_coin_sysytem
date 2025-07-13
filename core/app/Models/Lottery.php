@@ -13,6 +13,7 @@ class Lottery extends Model {
     protected $casts = [
         'slider_images'   => 'array',
         'winning_tickets' => 'array',
+        'direct_purchase_coin_reward' => 'decimal:8', // Match precision with migration
     ];
 
     public function competitions() {
@@ -85,5 +86,13 @@ class Lottery extends Model {
     }
     public function scopeDrawn($query) {
         return $query->where('is_drawn', Status::LOTTERY_DRAWN);
+    }
+
+    /**
+     * Get the product associated with this lottery (if any).
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

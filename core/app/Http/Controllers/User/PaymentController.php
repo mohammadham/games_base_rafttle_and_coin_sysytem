@@ -9,6 +9,8 @@ use App\Models\Deposit;
 use App\Models\User;
 use App\Models\GatewayCurrency;
 use App\Models\Transaction;
+use App\Models\CoinType;        // Added for coin reward
+use App\Models\UserCoinBalance; // Added for coin reward
 use App\Constants\Status;
 use Illuminate\Support\Facades\Log; // Added for logging
 
@@ -238,9 +240,68 @@ class PaymentController extends Controller
             //     'post_balance' => showAmount($user->balance, $deposit->method_currency)
             // ]);
 
-            Log::info("Payment successful for TRX: {$deposit->trx}. User balance updated.");
-            $notify[] = ['success', 'پرداخت شما با موفقیت انجام و مبلغ به حساب شما اضافه شد.'];
-            return redirect()->route(strtolower($user->access_route) . '.deposit.history')->withNotify($notify);
+            // Check if this deposit was for a lottery ticket purchase via gateway
+            // This relies on 'lotteryCartDetails' being in session AND a specific remark on deposit.
+            // A more robust method would be to store cart/purchase intent directly in the Deposit's 'detail' field.
+            $isLotteryPurchaseViaGateway = false;
+            if (session()->has('lotteryCartDetails')) {
+                // It's crucial that the deposit record itself indicates its purpose.
+                // For example, Gateway\PaymentController@depositInsert should set a specific remark
+                // or store lottery cart details in $deposit->detail when initiating for lottery.
+                // Let's assume a remark like 'lottery_purchase_gateway_payment' is set on such deposits.
+                if (isset($deposit->remark) && ($deposit->remark === 'lottery_purchase_gateway_payment' || $deposit->remark === 'lottery_payment_via_gateway')) {
+                    $isLotteryPurchaseViaGateway = true;
+                }
+            }
+
+            if ($isLotteryPurchaseViaGateway) {
+                Log::info("Payment successful for Lottery via Gateway (TRX: {$deposit->trx}). Redirecting to finalize lottery ticket purchase and award coins.");
+                $notify[] = ['success', trans('Payment successful! Finalizing your lottery ticket purchase...')];
+                // We pass the deposit trx. LotteryController will fetch cart details from session.
+                return redirect()->route('user.lottery.finalize_gateway_purchase', ['deposit_trx' => $deposit->trx])->withNotify($notify);
+            } else {
+                // --- Standard Direct Deposit Coin Bonus (Percentage Based) ---
+                // This will apply if it's a general deposit to user's main balance, not a specific purchase like lottery.
+                $rewardPercentage = (float) gs('direct_deposit_coin_reward_percentage', 0);
+                $baseCoin = CoinType::getBaseCoin();
+
+                if ($rewardPercentage > 0 && $baseCoin && ($deposit->remark == 'deposit' || $deposit->remark == 'funding' || empty($deposit->remark))) {
+                    $amountEligibleForReward = $deposit->amount;
+
+                    // IMPORTANT: Robust currency conversion for $amountEligibleForReward to base coin value is needed here
+                    // if $deposit->method_currency is different from $baseCoin->code.
+                    // This simplified version assumes they are comparable or site currency is base coin.
+
+                    if ($amountEligibleForReward > 0) {
+                        $rewardAmount = ($amountEligibleForReward * $rewardPercentage) / 100;
+                        if ($rewardAmount > 0) {
+                            try {
+                                $userBaseCoinBalance = UserCoinBalance::getOrCreateBalance($user->id, $baseCoin->id);
+                                $rewardTrxParams = [
+                                    'trx' => getTrx(),
+                                    'details' => trans('Bonus for deposit :deposit_trx (:percentage% of :amount :currency)', [
+                                        'deposit_trx' => $deposit->trx,
+                                        'percentage' => $rewardPercentage,
+                                        'amount' => showAmount($deposit->amount),
+                                        'currency' => __($deposit->method_currency)
+                                    ]),
+                                    'related_transactionable_id' => $deposit->id,
+                                    'related_transactionable_type' => get_class($deposit),
+                                ];
+                                $userBaseCoinBalance->credit($rewardAmount, 'deposit_bonus', $rewardTrxParams);
+                                Log::info("Awarded :reward_amount :coin_code as deposit bonus to user :user_id for deposit TRX :deposit_trx", ['reward_amount' => $rewardAmount, 'coin_code' => $baseCoin->code, 'user_id' => $user->id, 'deposit_trx' => $deposit->trx]);
+                            } catch (\Exception $e) {
+                                Log::error("Failed to award deposit bonus to user {$user->id} for deposit TRX {$deposit->trx}: " . $e->getMessage());
+                            }
+                        }
+                    }
+                }
+                // --- End Standard Direct Deposit Coin Bonus ---
+
+                Log::info("Payment successful for general deposit (TRX: {$deposit->trx}). User balance updated.");
+                $notify[] = ['success', 'پرداخت شما با موفقیت انجام و مبلغ به حساب شما اضافه شد.'];
+                return redirect()->route(strtolower($user->access_route) . '.deposit.history')->withNotify($notify);
+            }
 
         } else {
             $deposit->status = Status::PAYMENT_REJECT;
