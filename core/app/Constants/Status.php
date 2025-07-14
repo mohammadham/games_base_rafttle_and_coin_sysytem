@@ -38,4 +38,11 @@ class Status {
 
     const LOTTERY_LIVE  = 0;
     const LOTTERY_DRAWN = 1;
+
+    const ORDER_PENDING = 0;
+    const ORDER_PAID = 1;
+    const ORDER_PROCESSING = 2;
+    const ORDER_COMPLETED = 3;
+    const ORDER_CANCELLED = 4;
+    const ORDER_REFUNDED = 5;
 }

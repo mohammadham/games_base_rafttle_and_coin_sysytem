@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::post('paypal', 'Paypal\ProcessController@ipn')->name('Paypal');
-Route::get('ipn/zarinpal', ['as' => 'ipn.zarinpal', 'uses' => 'Gateway\Zarinpal\ProcessController@ipn']);
 Route::get('paypal-sdk', 'PaypalSdk\ProcessController@ipn')->name('PaypalSdk');
 Route::post('perfect-money', 'PerfectMoney\ProcessController@ipn')->name('PerfectMoney');
 Route::post('stripe', 'Stripe\ProcessController@ipn')->name('Stripe');
