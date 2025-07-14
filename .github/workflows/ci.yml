@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: Install Dependencies
+        run: |
+          cd core
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Build Application
+        run: |
+          cd core
+          php artisan key:generate
+          php artisan config:cache
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: Install Dependencies
+        run: |
+          cd core
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Run Tests
+        run: |
+          cd core
+          php artisan test
