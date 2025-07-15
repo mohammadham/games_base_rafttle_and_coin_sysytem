@@ -1,6 +1,6 @@
 <!-- meta tags and other links -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" @if(app()->getLocale() == 'fa') dir="rtl" @endif>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,7 +26,7 @@
 
     @stack('style')
 </head>
-<body>
+<body @if(app()->getLocale() == 'fa') class="rtl" @endif>
 @yield('content')
 
 

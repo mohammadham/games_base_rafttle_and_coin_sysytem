@@ -23,6 +23,12 @@ Route::namespace('Auth')->group(function () {
             Route::post('password/reset/change', 'reset')->name('password.change');
         });
     });
+    Route::get('gateway/zarinpal', 'Gateway\ZarinpalController@edit')->name('gateway.zarinpal.edit');
+    Route::post('gateway/zarinpal', 'Gateway\ZarinpalController@update')->name('gateway.zarinpal.update');
+
+    Route::resource('coin/type', 'CoinTypeController');
+    Route::resource('api/key', 'ApiKeyController');
+    Route::get('api/transaction', 'ApiTransactionLogController@index')->name('api.transaction.index');
 });
 
 Route::middleware('admin')->group(function () {

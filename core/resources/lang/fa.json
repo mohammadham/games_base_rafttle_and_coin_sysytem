@@ -923,5 +923,19 @@
     "Access Your Account to Manage Tickets, Check Results, and Participate in Exciting Raffles!": "برای مدیریت بلیت‌ها، بررسی نتایج و شرکت در قرعه‌کشی‌های هیجان‌انگیز به حساب خود دسترسی پیدا کنید!",
     "Join the Fun!": "به سرگرمی بپیوندید!",
     "Create Your Account to Start Participating in Our Exciting Raffles and Win Amazing Prizes!": "برای شروع شرکت در قرعه‌کشی‌های هیجان‌انگیز ما و برنده شدن جوایز شگفت‌انگیز، حساب خود را ایجاد کنید!",
-    "You Are Banned": "شما مسدود شده‌اید"
+    "You Are Banned": "شما مسدود شده‌اید",
+    "Merchant ID": "مرچنت آی دی",
+    "Sandbox Mode": "حالت سندباکس",
+    "Base Coin": "سکه پایه",
+    "Multiplier": "ضریب",
+    "Is Base Coin": "سکه پایه است",
+    "Base Coin Value Multiplier": "ضریب ارزش سکه پایه",
+    "API Key": "کلید API",
+    "Allowed IPs": "IP های مجاز",
+    "Permissions": "مجوزها",
+    "Expires At": "منقضی می شود در",
+    "Endpoint": "اندپوینت",
+    "IP Address": "آدرس IP",
+    "Request Payload": "پیلود درخواست",
+    "Response Payload": "پیلود پاسخ"
 }

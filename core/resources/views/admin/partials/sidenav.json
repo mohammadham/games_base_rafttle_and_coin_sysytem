@@ -314,6 +314,16 @@
                 "params": {
                     "user_id": ""
                 }
+            },
+            {
+                "keyword": [
+                    "Zarinpal Settings",
+                    "Zarinpal",
+                    "Payment management"
+                ],
+                "title": "Zarinpal Settings",
+                "route_name": "admin.gateway.zarinpal.edit",
+                "menu_active": "admin.gateway.zarinpal.edit"
             }
         ]
     },
@@ -465,6 +475,12 @@
                 "title": "API Keys",
                 "route_name": "admin.api.key.index",
                 "menu_active": "admin.api.key.*"
+            },
+            {
+                "keyword": ["API Transaction Logs", "API Logs", "Developer API Logs"],
+                "title": "API Logs",
+                "route_name": "admin.api.transaction.index",
+                "menu_active": "admin.api.transaction.index"
             }
         ]
     },
