@@ -237,13 +237,21 @@ if ($action == 'result') {
 
 	if (@$response['error'] == 'ok') {
 		try {
-			$query = file_get_contents("database.sql");
-			$stmt = $db->prepare($query);
-			$stmt->execute();
-			$stmt->closeCursor();
+			// Run migrations
+			$artisanPath = realpath(__DIR__ . '/../core/artisan');
+			if ($artisanPath) {
+				putenv('APP_ENV=local');
+				$command = 'php ' . $artisanPath . ' migrate --seed';
+				$output = shell_exec($command . ' 2>&1');
+				if (strpos($output, 'Migration table created successfully') === false && strpos($output, 'Seeding database') === false) {
+					//throw new Exception("Error running migrations and seeders: <pre>$output</pre>");
+				}
+			} else {
+				throw new Exception("Artisan file not found.");
+			}
 		} catch (Exception $e) {
 			$response['error'] = 'error';
-			$response['message'] = 'Problem Occurred When Importing Database!<br>Please Make Sure The Database is Empty.';
+			$response['message'] = 'Problem Occurred When Running Migrations and Seeders!<br>' . $e->getMessage();
 		}
 	}
 

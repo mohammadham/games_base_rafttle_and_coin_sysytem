@@ -8,25 +8,21 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('lotteries', function (Blueprint $table) {
+        Schema::create('migrations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('competition_id');
-            $table->timestamps();
+            $table->string('migration');
+            $table->integer('batch');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('lotteries');
+        Schema::dropIfExists('migrations');
     }
 };

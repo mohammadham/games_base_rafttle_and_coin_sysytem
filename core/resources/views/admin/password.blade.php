@@ -48,6 +48,15 @@
                         <div class="form-group">
                             <label>@lang('New Password')</label>
                             <input class="form-control" type="password" name="password" required>
+                            @if(gs('secure_password'))
+                                <div class="input-popup">
+                                    <p class="error lower">@lang('1 small letter minimum')</p>
+                                    <p class="error capital">@lang('1 capital letter minimum')</p>
+                                    <p class="error number">@lang('1 number minimum')</p>
+                                    <p class="error special">@lang('1 special character minimum')</p>
+                                    <p class="error minimum">@lang('6 character password')</p>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="form-group">
