@@ -105,7 +105,8 @@ if ($action == 'result') {
 	$result = curl_exec($ch);
 	curl_close($ch);
 	//$response = json_decode($result, true);
-	$response = array('error' => 'ok', 'message' => 'Valid license!');
+	$response = array('error' => 'ok', 'message' => 'Valid license!'); 
+	
 	if (@$response['error'] == 'ok' && $_POST['db_type'] == 'create-new-database') {
 		try {
 
@@ -249,7 +250,7 @@ if ($action == 'result') {
 
 	if (@$response['error'] == 'ok') {
 		try {
-			$db_name = $_POST['db_name'];
+				$db_name = $_POST['db_name'];
 			$db_host = $_POST['db_host'];
 			$db_user = $_POST['db_user'];
 			$db_pass = $_POST['db_pass'];
