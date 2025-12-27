@@ -512,11 +512,21 @@ CREATE TABLE `languages` (
 --
 
 INSERT INTO `languages` (`id`, `name`, `code`, `is_default`, `image`, `created_at`, `updated_at`) VALUES
-(1, 'English', 'en', 1, '66d2d74aae3ff1725093706.png', '2020-07-06 03:47:55', '2024-08-31 02:41:47'),
+(1, 'English', 'en', 0, '66d2d74aae3ff1725093706.png', '2020-07-06 03:47:55', '2024-08-31 02:41:47'),
+(2, 'فارسی', 'fa', 1, 'iran_flag.png', NOW(), NOW()),
+
 (12, 'Hindi', 'hi', 0, '66d2d7551e3741725093717.png', '2024-08-31 02:41:57', '2024-08-31 02:41:57'),
 (13, 'Bangla', 'bn', 0, '66d2d75e1ee4b1725093726.png', '2024-08-31 02:42:06', '2024-08-31 02:42:06'),
 (14, 'Spanish', 'es', 0, '66d2d7689db241725093736.png', '2024-08-31 02:42:16', '2024-08-31 02:42:16');
-
+-- (3, 'العربية', 'ar', 0, 'saudi_arabia_flag.png', NOW(), NOW()),
+-- (4, 'Deutsch', 'de', 0, 'germany_flag.png', NOW(), NOW()),
+-- (5, 'French', 'fr', 0, 'france_flag.png', NOW(), NOW()),
+-- (6, 'Italian', 'it', 0, 'italy_flag.png', NOW(), NOW()),
+-- (7, 'Portuguese', 'pt', 0, 'portugal_flag.png', NOW(), NOW()),
+-- (8, 'Russian', 'ru', 0, 'russia_flag.png', NOW(), NOW()),
+-- (9, 'Turkish', 'tr', 0, 'turkey_flag.png', NOW(), NOW()),
+-- (10, 'Chinese', 'zh', 0, 'china_flag.png', NOW(), NOW()),
+-- (11, 'Japanese', 'ja', 0, 'japan_flag.png', NOW(), NOW()),
 -- --------------------------------------------------------
 
 --
@@ -1261,24 +1271,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
--- SQL Script to add Persian (Farsi) language to the Laravel Raffle system
--- This script adds Persian language and sets it as default
-
--- First, check if the column 'is_rtl' exists, if not add it
--- ALTER TABLE `languages` ADD COLUMN IF NOT EXISTS `is_rtl` TINYINT(1) DEFAULT 0 AFTER `is_default`;
-
--- Update all existing languages to not be default
-UPDATE `languages` SET `is_default` = 0 WHERE `is_default` = 1;
-
--- Insert Persian language as default
-INSERT INTO `languages` (`name`, `code`, `is_default`, `image`, `created_at`, `updated_at`) 
-VALUES ('فارسی', 'fa', 1, 'iran_flag.png', NOW(), NOW())
-ON DUPLICATE KEY UPDATE 
-    `name` = 'فارسی',
-    `is_default` = 1,
-    `updated_at` = NOW();
-
--- Verify the insertion
--- SELECT * FROM `languages` WHERE `code` = 'fa';
-
--- Note: Make sure the iran_flag.png file is uploaded to assets/images/language/ directory
