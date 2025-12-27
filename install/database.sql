@@ -1260,3 +1260,25 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- SQL Script to add Persian (Farsi) language to the Laravel Raffle system
+-- This script adds Persian language and sets it as default
+
+-- First, check if the column 'is_rtl' exists, if not add it
+-- ALTER TABLE `languages` ADD COLUMN IF NOT EXISTS `is_rtl` TINYINT(1) DEFAULT 0 AFTER `is_default`;
+
+-- Update all existing languages to not be default
+UPDATE `languages` SET `is_default` = 0 WHERE `is_default` = 1;
+
+-- Insert Persian language as default
+INSERT INTO `languages` (`name`, `code`, `is_default`, `image`, `created_at`, `updated_at`) 
+VALUES ('فارسی', 'fa', 1, 'iran_flag.png', NOW(), NOW())
+ON DUPLICATE KEY UPDATE 
+    `name` = 'فارسی',
+    `is_default` = 1,
+    `updated_at` = NOW();
+
+-- Verify the insertion
+-- SELECT * FROM `languages` WHERE `code` = 'fa';
+
+-- Note: Make sure the iran_flag.png file is uploaded to assets/images/language/ directory

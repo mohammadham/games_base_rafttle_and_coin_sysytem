@@ -1,0 +1,647 @@
+/* RTL (Right-to-Left) Support for Persian/Arabic Languages */
+
+html[dir="rtl"] body,
+html[lang="fa"] body {
+  direction: rtl;
+  text-align: right;
+}
+
+/* General RTL Adjustments */
+html[dir="rtl"],
+html[lang="fa"] {
+  direction: rtl;
+}
+
+html[dir="rtl"] *,
+html[lang="fa"] * {
+  text-align: right;
+}
+
+/* Forms and Inputs */
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select,
+html[lang="fa"] input,
+html[lang="fa"] textarea,
+html[lang="fa"] select {
+  text-align: right;
+  direction: rtl;
+}
+
+html[dir="rtl"] input[type="email"],
+html[dir="rtl"] input[type="url"],
+html[dir="rtl"] input[type="number"],
+html[lang="fa"] input[type="email"],
+html[lang="fa"] input[type="url"],
+html[lang="fa"] input[type="number"] {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Margin and Padding Swap */
+html[dir="rtl"] .me-1,
+html[lang="fa"] .me-1 {
+  margin-right: 0 !important;
+  margin-left: 0.25rem !important;
+}
+
+html[dir="rtl"] .me-2,
+html[lang="fa"] .me-2 {
+  margin-right: 0 !important;
+  margin-left: 0.5rem !important;
+}
+
+html[dir="rtl"] .me-3,
+html[lang="fa"] .me-3 {
+  margin-right: 0 !important;
+  margin-left: 1rem !important;
+}
+
+html[dir="rtl"] .me-4,
+html[lang="fa"] .me-4 {
+  margin-right: 0 !important;
+  margin-left: 1.5rem !important;
+}
+
+html[dir="rtl"] .me-5,
+html[lang="fa"] .me-5 {
+  margin-right: 0 !important;
+  margin-left: 3rem !important;
+}
+
+html[dir="rtl"] .ms-1,
+html[lang="fa"] .ms-1 {
+  margin-left: 0 !important;
+  margin-right: 0.25rem !important;
+}
+
+html[dir="rtl"] .ms-2,
+html[lang="fa"] .ms-2 {
+  margin-left: 0 !important;
+  margin-right: 0.5rem !important;
+}
+
+html[dir="rtl"] .ms-3,
+html[lang="fa"] .ms-3 {
+  margin-left: 0 !important;
+  margin-right: 1rem !important;
+}
+
+html[dir="rtl"] .ms-4,
+html[lang="fa"] .ms-4 {
+  margin-left: 0 !important;
+  margin-right: 1.5rem !important;
+}
+
+html[dir="rtl"] .ms-5,
+html[lang="fa"] .ms-5 {
+  margin-left: 0 !important;
+  margin-right: 3rem !important;
+}
+
+html[dir="rtl"] .ms-auto,
+html[lang="fa"] .ms-auto {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+html[dir="rtl"] .me-auto,
+html[lang="fa"] .me-auto {
+  margin-right: 0 !important;
+  margin-left: auto !important;
+}
+
+/* Padding Swap */
+html[dir="rtl"] .pe-1,
+html[lang="fa"] .pe-1 {
+  padding-right: 0 !important;
+  padding-left: 0.25rem !important;
+}
+
+html[dir="rtl"] .pe-2,
+html[lang="fa"] .pe-2 {
+  padding-right: 0 !important;
+  padding-left: 0.5rem !important;
+}
+
+html[dir="rtl"] .pe-3,
+html[lang="fa"] .pe-3 {
+  padding-right: 0 !important;
+  padding-left: 1rem !important;
+}
+
+html[dir="rtl"] .pe-4,
+html[lang="fa"] .pe-4 {
+  padding-right: 0 !important;
+  padding-left: 1.5rem !important;
+}
+
+html[dir="rtl"] .pe-5,
+html[lang="fa"] .pe-5 {
+  padding-right: 0 !important;
+  padding-left: 3rem !important;
+}
+
+html[dir="rtl"] .ps-1,
+html[lang="fa"] .ps-1 {
+  padding-left: 0 !important;
+  padding-right: 0.25rem !important;
+}
+
+html[dir="rtl"] .ps-2,
+html[lang="fa"] .ps-2 {
+  padding-left: 0 !important;
+  padding-right: 0.5rem !important;
+}
+
+html[dir="rtl"] .ps-3,
+html[lang="fa"] .ps-3 {
+  padding-left: 0 !important;
+  padding-right: 1rem !important;
+}
+
+html[dir="rtl"] .ps-4,
+html[lang="fa"] .ps-4 {
+  padding-left: 0 !important;
+  padding-right: 1.5rem !important;
+}
+
+html[dir="rtl"] .ps-5,
+html[lang="fa"] .ps-5 {
+  padding-left: 0 !important;
+  padding-right: 3rem !important;
+}
+
+/* Text Alignment */
+html[dir="rtl"] .text-start,
+html[lang="fa"] .text-start {
+  text-align: right !important;
+}
+
+html[dir="rtl"] .text-end,
+html[lang="fa"] .text-end {
+  text-align: left !important;
+}
+
+/* Floats */
+html[dir="rtl"] .float-start,
+html[lang="fa"] .float-start {
+  float: right !important;
+}
+
+html[dir="rtl"] .float-end,
+html[lang="fa"] .float-end {
+  float: left !important;
+}
+
+/* Border Radius */
+html[dir="rtl"] .rounded-start,
+html[lang="fa"] .rounded-start {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-top-right-radius: var(--bs-border-radius) !important;
+  border-bottom-right-radius: var(--bs-border-radius) !important;
+}
+
+html[dir="rtl"] .rounded-end,
+html[lang="fa"] .rounded-end {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-top-left-radius: var(--bs-border-radius) !important;
+  border-bottom-left-radius: var(--bs-border-radius) !important;
+}
+
+/* Border */
+html[dir="rtl"] .border-start,
+html[lang="fa"] .border-start {
+  border-left: 0 !important;
+  border-right: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+}
+
+html[dir="rtl"] .border-end,
+html[lang="fa"] .border-end {
+  border-right: 0 !important;
+  border-left: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+}
+
+/* Flexbox */
+html[dir="rtl"] .flex-row,
+html[lang="fa"] .flex-row {
+  flex-direction: row-reverse !important;
+}
+
+html[dir="rtl"] .flex-row-reverse,
+html[lang="fa"] .flex-row-reverse {
+  flex-direction: row !important;
+}
+
+/* Position */
+html[dir="rtl"] .start-0,
+html[lang="fa"] .start-0 {
+  left: auto !important;
+  right: 0 !important;
+}
+
+html[dir="rtl"] .end-0,
+html[lang="fa"] .end-0 {
+  right: auto !important;
+  left: 0 !important;
+}
+
+html[dir="rtl"] .start-50,
+html[lang="fa"] .start-50 {
+  left: auto !important;
+  right: 50% !important;
+}
+
+html[dir="rtl"] .end-50,
+html[lang="fa"] .end-50 {
+  right: auto !important;
+  left: 50% !important;
+}
+
+html[dir="rtl"] .start-100,
+html[lang="fa"] .start-100 {
+  left: auto !important;
+  right: 100% !important;
+}
+
+html[dir="rtl"] .end-100,
+html[lang="fa"] .end-100 {
+  right: auto !important;
+  left: 100% !important;
+}
+
+html[dir="rtl"] .translate-middle-x,
+html[lang="fa"] .translate-middle-x {
+  transform: translateX(50%) !important;
+}
+
+/* Navbar and Navigation */
+html[dir="rtl"] .navbar-nav,
+html[lang="fa"] .navbar-nav {
+  padding-right: 0;
+}
+
+html[dir="rtl"] .dropdown-menu,
+html[lang="fa"] .dropdown-menu {
+  text-align: right;
+}
+
+html[dir="rtl"] .dropdown-menu-end,
+html[lang="fa"] .dropdown-menu-end {
+  right: auto !important;
+  left: 0 !important;
+}
+
+html[dir="rtl"] .dropdown-item,
+html[lang="fa"] .dropdown-item {
+  text-align: right;
+}
+
+/* Lists */
+html[dir="rtl"] ul,
+html[dir="rtl"] ol,
+html[lang="fa"] ul,
+html[lang="fa"] ol {
+  padding-right: 2rem;
+  padding-left: 0;
+}
+
+html[dir="rtl"] .list-unstyled,
+html[lang="fa"] .list-unstyled {
+  padding-right: 0;
+}
+
+/* Breadcrumb */
+html[dir="rtl"] .breadcrumb-item + .breadcrumb-item::before,
+html[lang="fa"] .breadcrumb-item + .breadcrumb-item::before {
+  content: "\\";
+  float: right;
+  padding-left: 0.5rem;
+  padding-right: 0;
+}
+
+/* Carousel */
+html[dir="rtl"] .carousel-control-prev,
+html[lang="fa"] .carousel-control-prev {
+  left: auto;
+  right: 0;
+}
+
+html[dir="rtl"] .carousel-control-next,
+html[lang="fa"] .carousel-control-next {
+  right: auto;
+  left: 0;
+}
+
+/* Icons */
+html[dir="rtl"] .fa-chevron-left::before,
+html[lang="fa"] .fa-chevron-left::before {
+  content: "\f054";
+}
+
+html[dir="rtl"] .fa-chevron-right::before,
+html[lang="fa"] .fa-chevron-right::before {
+  content: "\f053";
+}
+
+html[dir="rtl"] .fa-arrow-left::before,
+html[lang="fa"] .fa-arrow-left::before {
+  content: "\f061";
+}
+
+html[dir="rtl"] .fa-arrow-right::before,
+html[lang="fa"] .fa-arrow-right::before {
+  content: "\f060";
+}
+
+html[dir="rtl"] .fa-angle-left::before,
+html[lang="fa"] .fa-angle-left::before {
+  content: "\f105";
+}
+
+html[dir="rtl"] .fa-angle-right::before,
+html[lang="fa"] .fa-angle-right::before {
+  content: "\f104";
+}
+
+html[dir="rtl"] .fa-long-arrow-left::before,
+html[lang="fa"] .fa-long-arrow-left::before {
+  content: "\f178";
+}
+
+html[dir="rtl"] .fa-long-arrow-right::before,
+html[lang="fa"] .fa-long-arrow-right::before {
+  content: "\f177";
+}
+
+/* Scroll to top */
+html[dir="rtl"] .scroll-top,
+html[lang="fa"] .scroll-top {
+  right: auto !important;
+  left: 20px;
+}
+
+/* Input Groups */
+html[dir="rtl"] .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback),
+html[lang="fa"] .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+  margin-right: -1px;
+  margin-left: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: var(--bs-border-radius);
+  border-bottom-left-radius: var(--bs-border-radius);
+}
+
+html[dir="rtl"] .input-group > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating),
+html[lang="fa"] .input-group > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: var(--bs-border-radius);
+  border-bottom-right-radius: var(--bs-border-radius);
+}
+
+/* Buttons and Button Groups */
+html[dir="rtl"] .btn-group > .btn:not(:last-child):not(.dropdown-toggle),
+html[dir="rtl"] .btn-group > .btn-group:not(:last-child) > .btn,
+html[lang="fa"] .btn-group > .btn:not(:last-child):not(.dropdown-toggle),
+html[lang="fa"] .btn-group > .btn-group:not(:last-child) > .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: var(--bs-border-radius);
+  border-bottom-right-radius: var(--bs-border-radius);
+}
+
+html[dir="rtl"] .btn-group > .btn:nth-child(n+3),
+html[dir="rtl"] .btn-group > :not(.btn-check) + .btn,
+html[dir="rtl"] .btn-group > .btn-group:not(:first-child) > .btn,
+html[lang="fa"] .btn-group > .btn:nth-child(n+3),
+html[lang="fa"] .btn-group > :not(.btn-check) + .btn,
+html[lang="fa"] .btn-group > .btn-group:not(:first-child) > .btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: var(--bs-border-radius);
+  border-bottom-left-radius: var(--bs-border-radius);
+}
+
+/* Pagination */
+html[dir="rtl"] .pagination,
+html[lang="fa"] .pagination {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .page-item:first-child .page-link,
+html[lang="fa"] .page-item:first-child .page-link {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: var(--bs-border-radius);
+  border-bottom-right-radius: var(--bs-border-radius);
+}
+
+html[dir="rtl"] .page-item:last-child .page-link,
+html[lang="fa"] .page-item:last-child .page-link {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: var(--bs-border-radius);
+  border-bottom-left-radius: var(--bs-border-radius);
+}
+
+/* Modal */
+html[dir="rtl"] .modal-header .btn-close,
+html[lang="fa"] .modal-header .btn-close {
+  margin: calc(-0.5 * var(--bs-modal-header-padding-y)) auto calc(-0.5 * var(--bs-modal-header-padding-y)) calc(-0.5 * var(--bs-modal-header-padding-x));
+}
+
+/* Alerts */
+html[dir="rtl"] .alert-dismissible,
+html[lang="fa"] .alert-dismissible {
+  padding-left: 3rem;
+  padding-right: 1rem;
+}
+
+html[dir="rtl"] .alert-dismissible .btn-close,
+html[lang="fa"] .alert-dismissible .btn-close {
+  right: auto;
+  left: 0;
+}
+
+/* Progress Bar */
+html[dir="rtl"] .progress-bar,
+html[lang="fa"] .progress-bar {
+  direction: ltr;
+}
+
+/* Toast */
+html[dir="rtl"] .toast-header .btn-close,
+html[lang="fa"] .toast-header .btn-close {
+  margin-left: calc(-0.5 * var(--bs-toast-padding-x));
+  margin-right: var(--bs-toast-padding-x);
+}
+
+/* Offcanvas */
+html[dir="rtl"] .offcanvas-start,
+html[lang="fa"] .offcanvas-start {
+  left: auto;
+  right: 0;
+  transform: translateX(100%);
+}
+
+html[dir="rtl"] .offcanvas-end,
+html[lang="fa"] .offcanvas-end {
+  right: auto;
+  left: 0;
+  transform: translateX(-100%);
+}
+
+/* Sidebar specific adjustments */
+html[dir="rtl"] .sidebar,
+html[lang="fa"] .sidebar {
+  right: 0;
+  left: auto;
+}
+
+html[dir="rtl"] .sidebar__close,
+html[lang="fa"] .sidebar__close {
+  right: auto;
+  left: 10px;
+}
+
+/* Dashboard specific adjustments */
+html[dir="rtl"] .dashboard__left,
+html[lang="fa"] .dashboard__left {
+  border-right: none;
+  border-left: 1px solid hsl(var(--white) / 0.1);
+}
+
+/* Table */
+html[dir="rtl"] table th,
+html[dir="rtl"] table td,
+html[lang="fa"] table th,
+html[lang="fa"] table td {
+  text-align: right;
+}
+
+/* Select2 RTL */
+html[dir="rtl"] .select2-container--default .select2-selection--single .select2-selection__arrow,
+html[lang="fa"] .select2-container--default .select2-selection--single .select2-selection__arrow {
+  left: 1px;
+  right: auto;
+}
+
+html[dir="rtl"] .select2-container--default .select2-selection--single .select2-selection__rendered,
+html[lang="fa"] .select2-container--default .select2-selection--single .select2-selection__rendered {
+  padding-left: 20px;
+  padding-right: 8px;
+}
+
+/* Copy Input */
+html[dir="rtl"] .copyInput,
+html[lang="fa"] .copyInput {
+  right: auto;
+  left: 0;
+}
+
+html[dir="rtl"] .copied::after,
+html[lang="fa"] .copied::after {
+  right: auto;
+  left: 12%;
+}
+
+/* Payment Item */
+html[dir="rtl"] .payment-item__name,
+html[lang="fa"] .payment-item__name {
+  padding-left: 0;
+  padding-right: 10px;
+}
+
+html[dir="rtl"] .payment-item__thumb,
+html[lang="fa"] .payment-item__thumb {
+  text-align: left;
+  padding-right: 10px;
+  padding-left: 0;
+}
+
+/* Form Labels */
+html[dir="rtl"] label.required:after,
+html[lang="fa"] label.required:after {
+  margin-left: 0;
+  margin-right: 2px;
+}
+
+/* Specific Template Adjustments */
+html[dir="rtl"] .header-menu li .sub-menu,
+html[lang="fa"] .header-menu li .sub-menu {
+  left: auto;
+  right: 0;
+}
+
+html[dir="rtl"] .card-header,
+html[lang="fa"] .card-header {
+  text-align: right;
+}
+
+/* Form Check */
+html[dir="rtl"] .form-check,
+html[lang="fa"] .form-check {
+  padding-left: 0;
+  padding-right: 1.5em;
+}
+
+html[dir="rtl"] .form-check .form-check-input,
+html[lang="fa"] .form-check .form-check-input {
+  float: right;
+  margin-left: 0;
+  margin-right: -1.5em;
+}
+
+/* Social Icons */
+html[dir="rtl"] .social-icons,
+html[lang="fa"] .social-icons {
+  direction: ltr;
+}
+
+/* Footer */
+html[dir="rtl"] .footer-widget__title,
+html[lang="fa"] .footer-widget__title {
+  text-align: right;
+}
+
+/* Cookies Card */
+html[dir="rtl"] .cookies-card,
+html[lang="fa"] .cookies-card {
+  left: auto;
+  right: 15px;
+}
+
+@media (max-width: 767px) {
+  html[dir="rtl"] .cookies-card,
+  html[lang="fa"] .cookies-card {
+    right: 0;
+  }
+}
+
+/* Gap adjustments */
+html[dir="rtl"] .gap-2,
+html[lang="fa"] .gap-2 {
+  gap: 0.5rem !important;
+}
+
+/* Persian Font */
+html[lang="fa"] body,
+html[dir="rtl"] body {
+  font-family: 'Vazirmatn', 'Tahoma', 'Arial', sans-serif;
+}
+
+/* Numbers in Persian - keep LTR */
+html[dir="rtl"] .amount,
+html[dir="rtl"] .price,
+html[dir="rtl"] .number,
+html[dir="rtl"] .phone,
+html[lang="fa"] .amount,
+html[lang="fa"] .price,
+html[lang="fa"] .number,
+html[lang="fa"] .phone {
+  direction: ltr;
+  display: inline-block;
+}

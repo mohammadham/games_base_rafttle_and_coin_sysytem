@@ -1,0 +1,613 @@
+/*
+ * RTL (Right-to-Left) Support for Persian/Farsi Language
+ * This file contains all necessary RTL styles for proper display
+ */
+
+/* Base RTL Direction */
+html[dir="rtl"],
+html[lang="fa"],
+body.rtl,
+[dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Typography adjustments for RTL */
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] h5,
+[dir="rtl"] h6,
+[dir="rtl"] p,
+[dir="rtl"] span,
+[dir="rtl"] a,
+[dir="rtl"] li,
+[dir="rtl"] label,
+[dir="rtl"] .text-start {
+    text-align: right;
+}
+
+[dir="rtl"] .text-end {
+    text-align: left !important;
+}
+
+[dir="rtl"] .text-start {
+    text-align: right !important;
+}
+
+/* Flexbox direction swap */
+[dir="rtl"] .d-flex,
+[dir="rtl"] .flex-row {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .flex-row-reverse {
+    flex-direction: row;
+}
+
+/* Margin and Padding RTL adjustments */
+[dir="rtl"] .ms-1 { margin-right: 0.25rem !important; margin-left: 0 !important; }
+[dir="rtl"] .ms-2 { margin-right: 0.5rem !important; margin-left: 0 !important; }
+[dir="rtl"] .ms-3 { margin-right: 1rem !important; margin-left: 0 !important; }
+[dir="rtl"] .ms-4 { margin-right: 1.5rem !important; margin-left: 0 !important; }
+[dir="rtl"] .ms-5 { margin-right: 3rem !important; margin-left: 0 !important; }
+[dir="rtl"] .ms-auto { margin-right: auto !important; margin-left: 0 !important; }
+
+[dir="rtl"] .me-1 { margin-left: 0.25rem !important; margin-right: 0 !important; }
+[dir="rtl"] .me-2 { margin-left: 0.5rem !important; margin-right: 0 !important; }
+[dir="rtl"] .me-3 { margin-left: 1rem !important; margin-right: 0 !important; }
+[dir="rtl"] .me-4 { margin-left: 1.5rem !important; margin-right: 0 !important; }
+[dir="rtl"] .me-5 { margin-left: 3rem !important; margin-right: 0 !important; }
+[dir="rtl"] .me-auto { margin-left: auto !important; margin-right: 0 !important; }
+
+[dir="rtl"] .ps-1 { padding-right: 0.25rem !important; padding-left: 0 !important; }
+[dir="rtl"] .ps-2 { padding-right: 0.5rem !important; padding-left: 0 !important; }
+[dir="rtl"] .ps-3 { padding-right: 1rem !important; padding-left: 0 !important; }
+[dir="rtl"] .ps-4 { padding-right: 1.5rem !important; padding-left: 0 !important; }
+[dir="rtl"] .ps-5 { padding-right: 3rem !important; padding-left: 0 !important; }
+
+[dir="rtl"] .pe-1 { padding-left: 0.25rem !important; padding-right: 0 !important; }
+[dir="rtl"] .pe-2 { padding-left: 0.5rem !important; padding-right: 0 !important; }
+[dir="rtl"] .pe-3 { padding-left: 1rem !important; padding-right: 0 !important; }
+[dir="rtl"] .pe-4 { padding-left: 1.5rem !important; padding-right: 0 !important; }
+[dir="rtl"] .pe-5 { padding-left: 3rem !important; padding-right: 0 !important; }
+
+/* Float adjustments */
+[dir="rtl"] .float-start { float: right !important; }
+[dir="rtl"] .float-end { float: left !important; }
+
+/* Border radius adjustments */
+[dir="rtl"] .rounded-start {
+    border-top-right-radius: var(--bs-border-radius) !important;
+    border-bottom-right-radius: var(--bs-border-radius) !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+[dir="rtl"] .rounded-end {
+    border-top-left-radius: var(--bs-border-radius) !important;
+    border-bottom-left-radius: var(--bs-border-radius) !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+/* Border adjustments */
+[dir="rtl"] .border-start {
+    border-right: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+    border-left: 0 !important;
+}
+
+[dir="rtl"] .border-end {
+    border-left: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+    border-right: 0 !important;
+}
+
+/* Form controls RTL */
+[dir="rtl"] .form--control,
+[dir="rtl"] .form-control,
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+    text-align: right;
+    direction: rtl;
+}
+
+[dir="rtl"] .input-group {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .input-group > .form-control,
+[dir="rtl"] .input-group > .form-select {
+    border-radius: 0;
+}
+
+[dir="rtl"] .input-group > .form-control:first-child,
+[dir="rtl"] .input-group > .form-select:first-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: var(--bs-border-radius);
+    border-bottom-right-radius: var(--bs-border-radius);
+}
+
+[dir="rtl"] .input-group > .form-control:last-child,
+[dir="rtl"] .input-group > .form-select:last-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: var(--bs-border-radius);
+    border-bottom-left-radius: var(--bs-border-radius);
+}
+
+[dir="rtl"] .input-group .input-group-text {
+    border-right: 1px solid hsl(var(--white) / 0.2);
+    border-left: 0;
+}
+
+/* Navigation RTL */
+[dir="rtl"] .navbar-nav {
+    padding-right: 0;
+}
+
+[dir="rtl"] .nav-item {
+    text-align: right;
+}
+
+[dir="rtl"] .dropdown-menu {
+    text-align: right;
+    left: auto;
+    right: 0;
+}
+
+[dir="rtl"] .dropdown-item {
+    text-align: right;
+}
+
+/* Header RTL adjustments */
+[dir="rtl"] .header .nav-menu .nav-item {
+    margin-right: 0;
+    margin-left: 30px;
+}
+
+[dir="rtl"] .header .nav-menu .nav-item:last-child {
+    margin-left: 0;
+}
+
+[dir="rtl"] .navbar-brand {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Sidebar RTL */
+[dir="rtl"] .sidebar {
+    right: 0;
+    left: auto;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 0;
+}
+
+[dir="rtl"] .sidebar .sidebar-menu li a {
+    padding-right: 20px;
+    padding-left: 10px;
+}
+
+[dir="rtl"] .sidebar .sidebar-menu li a i {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+/* Button icons RTL */
+[dir="rtl"] .btn i,
+[dir="rtl"] .cmn--btn i {
+    margin-right: 0;
+    margin-left: 5px;
+}
+
+/* List items RTL */
+[dir="rtl"] ul,
+[dir="rtl"] ol {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+[dir="rtl"] li {
+    text-align: right;
+}
+
+/* Table RTL */
+[dir="rtl"] .table {
+    text-align: right;
+}
+
+[dir="rtl"] .table th,
+[dir="rtl"] .table td {
+    text-align: right;
+}
+
+/* Cards RTL */
+[dir="rtl"] .card,
+[dir="rtl"] .custom--card {
+    text-align: right;
+}
+
+/* Modal RTL */
+[dir="rtl"] .modal-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .modal-header .btn-close {
+    margin: -0.5rem auto -0.5rem -0.5rem;
+}
+
+[dir="rtl"] .modal-body,
+[dir="rtl"] .modal-footer {
+    text-align: right;
+}
+
+/* Alerts RTL */
+[dir="rtl"] .alert {
+    text-align: right;
+}
+
+[dir="rtl"] .alert-dismissible {
+    padding-left: 3rem;
+    padding-right: 1rem;
+}
+
+[dir="rtl"] .alert-dismissible .btn-close {
+    right: auto;
+    left: 0;
+}
+
+/* Breadcrumb RTL */
+[dir="rtl"] .breadcrumb {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .breadcrumb-item + .breadcrumb-item::before {
+    float: right;
+    padding-left: var(--bs-breadcrumb-item-padding-x);
+    padding-right: 0;
+}
+
+/* Pagination RTL */
+[dir="rtl"] .pagination {
+    flex-direction: row-reverse;
+}
+
+/* Checkbox and Radio RTL */
+[dir="rtl"] .form-check {
+    padding-right: 1.5em;
+    padding-left: 0;
+}
+
+[dir="rtl"] .form-check .form-check-input {
+    float: right;
+    margin-right: -1.5em;
+    margin-left: 0;
+}
+
+[dir="rtl"] .form-check-label {
+    padding-right: 5px;
+    padding-left: 0;
+}
+
+[dir="rtl"] .form--check {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .form--check label {
+    padding-right: 5px;
+    padding-left: 0;
+}
+
+/* Password toggle RTL */
+[dir="rtl"] .password-show-hide {
+    right: auto;
+    left: 20px;
+}
+
+[dir="rtl"] input#your-password,
+[dir="rtl"] input#confirm-password {
+    padding-right: 24px;
+    padding-left: 50px;
+}
+
+/* Select2 RTL */
+[dir="rtl"] .select2-container--default .select2-selection--single .select2-selection__arrow {
+    right: auto;
+    left: 1px;
+}
+
+[dir="rtl"] .select2-container--default .select2-selection--single .select2-selection__arrow:after {
+    right: auto;
+    left: 10px;
+}
+
+/* Competition item RTL */
+[dir="rtl"] .competition-item__status {
+    left: auto;
+    right: 0;
+}
+
+/* Work item RTL */
+[dir="rtl"] .work-item .work-item__header {
+    border-radius: 25px 0 0 25px;
+}
+
+[dir="rtl"] .work-item .work-item__header::before {
+    left: auto;
+    right: -30px;
+    border-radius: 0 35px 0 0;
+}
+
+[dir="rtl"] .work-item .work-item__header::after {
+    left: auto;
+    right: -30px;
+}
+
+[dir="rtl"] .work-item__body {
+    border-radius: 35px 0 25px 25px;
+}
+
+[dir="rtl"] .work-item:nth-child(even) .work-item__header::before {
+    right: auto;
+    left: -30px;
+    border-radius: 35px 0 0 0;
+}
+
+[dir="rtl"] .work-item:nth-child(even) .work-item__header::after {
+    right: auto;
+    left: -30px;
+}
+
+[dir="rtl"] .work-item:nth-child(even) .work-item__body {
+    border-radius: 0 35px 25px 25px;
+}
+
+[dir="rtl"] .work-item:nth-child(even) .work-item__header {
+    border-radius: 0 25px 25px 0;
+}
+
+[dir="rtl"] .work-item__icon {
+    left: auto;
+    right: calc(100% + 100px);
+}
+
+[dir="rtl"] .work-item__icon::before {
+    right: auto;
+    left: calc(100% + 5px);
+}
+
+[dir="rtl"] .work-item:nth-child(even) .work-item__icon {
+    right: auto;
+    left: calc(100% + 100px);
+}
+
+[dir="rtl"] .work-item:nth-child(even) .work-item__icon::before {
+    left: auto;
+    right: calc(100% + 5px);
+}
+
+/* FAQ RTL */
+[dir="rtl"] .faq-item__title::before {
+    right: auto;
+    left: 0;
+}
+
+/* Counter up RTL */
+[dir="rtl"] .counterup-item__content::after {
+    right: auto;
+    left: -50%;
+}
+
+/* Cart RTL */
+[dir="rtl"] .header-cart {
+    margin-right: 0;
+    margin-left: 20px;
+}
+
+[dir="rtl"] .cart-number {
+    right: auto;
+    left: -10px;
+}
+
+/* Scroll to top RTL */
+[dir="rtl"] .scroll-top {
+    right: auto;
+    left: 30px;
+}
+
+/* Banner RTL */
+[dir="rtl"] .banner-thumb {
+    right: auto;
+    left: -120px;
+}
+
+/* Footer RTL */
+[dir="rtl"] .footer {
+    text-align: right;
+}
+
+/* Admin panel RTL adjustments */
+[dir="rtl"] .sidebar--menu {
+    padding-right: 0;
+}
+
+[dir="rtl"] .sidebar--menu .menu-item a {
+    padding-left: 15px;
+    padding-right: 20px;
+}
+
+[dir="rtl"] .sidebar--menu .menu-item a .icon {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .sidebar--menu .has-dropdown > a::after {
+    left: 15px;
+    right: auto;
+}
+
+/* Icon positioning RTL */
+[dir="rtl"] i.fa-chevron-right::before {
+    content: "\f053"; /* fa-chevron-left */
+}
+
+[dir="rtl"] i.fa-chevron-left::before {
+    content: "\f054"; /* fa-chevron-right */
+}
+
+[dir="rtl"] i.fa-arrow-right::before {
+    content: "\f060"; /* fa-arrow-left */
+}
+
+[dir="rtl"] i.fa-arrow-left::before {
+    content: "\f061"; /* fa-arrow-right */
+}
+
+[dir="rtl"] i.la-angle-right::before {
+    content: "\f104"; /* la-angle-left */
+}
+
+[dir="rtl"] i.la-angle-left::before {
+    content: "\f105"; /* la-angle-right */
+}
+
+/* Slick slider RTL */
+[dir="rtl"] .slick-slider {
+    direction: ltr;
+}
+
+[dir="rtl"] .slick-slider .slick-slide {
+    direction: rtl;
+}
+
+[dir="rtl"] .slick-arrow.arrow-left {
+    left: auto;
+    right: 15px;
+}
+
+[dir="rtl"] .slick-arrow.arrow-right {
+    right: auto;
+    left: 15px;
+}
+
+/* Payment system RTL */
+[dir="rtl"] .payment-item {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .payment-item__info {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .payment-item__name {
+    padding-left: 0;
+    padding-right: 10px;
+}
+
+[dir="rtl"] .payment-item__thumb {
+    padding-left: 0;
+    padding-right: 10px;
+    text-align: left;
+}
+
+/* Ticket box RTL */
+[dir="rtl"] .ticket-box {
+    text-align: right;
+}
+
+/* Remaining time RTL */
+[dir="rtl"] .remaining-time__content {
+    flex-direction: row-reverse;
+}
+
+/* Copy input RTL */
+[dir="rtl"] .copyInput {
+    right: auto;
+    left: 0;
+}
+
+/* Cookies card RTL */
+[dir="rtl"] .cookies-card {
+    left: auto;
+    right: 15px;
+}
+
+/* User panel specific RTL */
+[dir="rtl"] .dashboard-menu li a i {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+/* Deposit info RTL */
+[dir="rtl"] .deposit-info {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .deposit-info__title {
+    text-align: right;
+}
+
+[dir="rtl"] .deposit-info__input {
+    text-align: left;
+}
+
+/* Helper classes */
+[dir="rtl"] .rtl-flip {
+    transform: scaleX(-1);
+}
+
+/* Persian/Farsi font support */
+html[lang="fa"] body,
+html[dir="rtl"][lang="fa"] body {
+    font-family: 'Vazirmatn', 'IRANSans', 'Tahoma', 'Arial', sans-serif;
+}
+
+/* Override line-awesome icons for RTL where needed */
+[dir="rtl"] .la-long-arrow-right::before {
+    content: "\f30a"; /* la-long-arrow-left */
+}
+
+[dir="rtl"] .la-long-arrow-left::before {
+    content: "\f30b"; /* la-long-arrow-right */
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 1199px) {
+    [dir="rtl"] .header .nav-item .nav-link {
+        padding: 10px 0 10px 10px !important;
+    }
+    
+    [dir="rtl"] .header .dropdown-menu li .dropdown-item {
+        margin-left: 0;
+        margin-right: 20px;
+    }
+}
+
+@media (max-width: 991px) {
+    [dir="rtl"] .work-item__icon {
+        right: calc(100% + 45px);
+    }
+    
+    [dir="rtl"] .work-item:nth-child(even) .work-item__icon {
+        left: calc(100% + 45px);
+    }
+}
+
+@media (max-width: 767px) {
+    [dir="rtl"] .cookies-card {
+        right: 0;
+        left: 0;
+    }
+    
+    [dir="rtl"] .counterup-item__content::after {
+        display: none;
+    }
+}
+
+@media (max-width: 575px) {
+    [dir="rtl"] .work-item__icon {
+        display: none;
+    }
+}

@@ -1,6 +1,10 @@
 <!-- meta tags and other links -->
 <!DOCTYPE html>
-<html lang="en">
+@php
+    $currentLang = session('lang', config('app.locale'));
+    $isRtl = in_array($currentLang, ['fa', 'ar', 'he', 'ur', 'ps', 'ku']);
+@endphp
+<html lang="{{ $currentLang }}" @if($isRtl) dir="rtl" @endif>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +22,10 @@
 
     <link rel="stylesheet" href="{{asset('assets/global/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/admin/css/app.css')}}">
+    @if(in_array(session('lang', config('app.locale')), ['fa', 'ar', 'he', 'ur', 'ps', 'ku']))
+    <link rel="stylesheet" href="{{asset('assets/admin/css/rtl.css')}}">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    @endif
 
 
     @stack('style')

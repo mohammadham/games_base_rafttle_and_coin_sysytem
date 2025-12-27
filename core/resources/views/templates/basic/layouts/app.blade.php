@@ -1,5 +1,9 @@
 <!doctype html>
-<html lang="{{ config('app.locale') }}" itemscope itemtype="http://schema.org/WebPage">
+@php
+    $currentLang = session('lang', config('app.locale'));
+    $isRtl = in_array($currentLang, ['fa', 'ar', 'he', 'ur', 'ps', 'ku']);
+@endphp
+<html lang="{{ $currentLang }}" @if($isRtl) dir="rtl" @endif itemscope itemtype="http://schema.org/WebPage">
 
 <head>
     <!-- Required meta tags -->
@@ -15,6 +19,10 @@
     <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/slick.css') }}" />
     <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/main.css') }}" />
     <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/custom.css') }}">
+    @if(in_array(session('lang', config('app.locale')), ['fa', 'ar', 'he', 'ur', 'ps', 'ku']))
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/rtl.css') }}">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    @endif
 
     @stack('style-lib')
 
