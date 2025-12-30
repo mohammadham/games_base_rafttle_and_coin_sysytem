@@ -140,7 +140,8 @@
             "stripe",
             "twocheckout",
             "two checkout",
-            "2checkout"
+            "2checkout",
+            "zarinpal"
         ],
         "title": "Payment Gateways",
         "subtitle": "Configure automatic or manual payment gateways to accept payment from users.",
