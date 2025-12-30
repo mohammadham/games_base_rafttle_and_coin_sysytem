@@ -1,5 +1,8 @@
 "user strict";
 
+// Check for RTL
+var rtl = $('html').attr('dir') === 'rtl';
+
 // Preloader
 $(window).on("load", function () {
   $(".preloader").fadeOut(1000);
@@ -51,6 +54,7 @@ $(".testimonial-slider").slick({
   centerMode: false,
   dots: true,
   arrows: false,
+  rtl: rtl, // Dynamic RTL support
   nextArrow: '<i class="las la-arrow-right arrow-right"></i>',
   prevArrow: '<i class="las la-arrow-left arrow-left"></i> ',
   responsive: [
@@ -98,6 +102,9 @@ $(".top-investor-slider").slick({
   centerMode: false,
   dots: false,
   arrows: false,
+  rtl: rtl, // Dynamic RTL support
+  nextArrow: '<i class="las la-arrow-right arrow-right"></i>',
+  prevArrow: '<i class="las la-arrow-left arrow-left"></i> ',
   responsive: [
     {
       breakpoint: 1199,
@@ -218,6 +225,10 @@ productQty.each(function () {
 $(".competition-details__wrapper").slick({
   slidesToShow: 1,
   slidesToScroll: 1,
+  infinite: true,
+  autoplay: true,
+  pauseOnHover: true,
+  centerMode: false,
   arrows: false,
   dots: false,
   fade: true,
@@ -233,7 +244,7 @@ $(".competition-details__gallery").slick({
   asNavFor: ".competition-details__wrapper",
   dots: false,
   arrows: false,
-
+  rtl:rtl, // Dynamic RTL support
   focusOnSelect: true,
   prevArrow:
     '<button type="button" class="slick-prev gig-details-arrow"><i class="las la-long-arrow-alt-left"></i></button>',
@@ -352,6 +363,7 @@ $(".competition-details__ticket-range").slick({
   centerMode: false,
   dots: false,
   arrows: true,
+  rtl: rtl, // Dynamic RTL support
   nextArrow: '<i class="las la-angle-right arrow-right"></i>',
   prevArrow: '<i class="las la-angle-left arrow-left"></i> ',
   responsive: [
