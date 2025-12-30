@@ -74,7 +74,37 @@ function siteFavicon() {
 function loadReCaptcha() {
     return Captcha::reCaptcha();
 }
+// function loadReCaptcha()
+// {
+//     $reCaptcha = Extension::where('act', 'google-recaptcha2')->where('status', Status::ENABLE)->first();
+//     return $reCaptcha ? $reCaptcha->generateScript() : '';
+// }
+// function loadCustomCaptcha($height = 46, $width = '100%', $bgcolor = '#003', $textcolor = '#abc')
+// {
+//     $captcha = Extension::where('act', 'custom-captcha')->where('status', Status::ENABLE)->first();
+//     if (!$captcha) return 0;
+//     $code = verificationCode(6);
+//     $char = str_split($code);
+//     $ret = '<link href="https://fonts.googleapis.com/css?family=Henny+Penny&display=swap" rel="stylesheet">';
+//     $ret .= '<div style="height: ' . $height . 'px; line-height: ' . $height . 'px; width:' . $width . '; text-align: center; background-color: ' . $bgcolor . '; color: ' . $textcolor . '; font-size: ' . ($height - 20) . 'px; font-weight: bold; letter-spacing: 20px; font-family: \'Henny Penny\', cursive;  -webkit-user-select: none; -moz-user-select: none;-ms-user-select: none;user-select: none;  display: flex; justify-content: center;">';
+//     foreach ($char as $value) {
+//         $ret .= '<span style="float:left;     -webkit-transform: rotate(' . rand(-60, 60) . 'deg);">' . $value . '</span>';
+//     }
+//     $ret .= '</div>';
+//     $captchaSecret = hash_hmac('sha256', $code, $captcha->shortcode->random_key->value);
+//     $ret .= '<input type="hidden" name="captcha_secret" value="' . $captchaSecret . '">';
+//     return $ret;
+// }
 
+function captchaVerify($code, $secret)
+{
+    $captcha = Extension::where('act', 'custom-captcha')->where('status', Status::ENABLE)->first();
+    $captchaSecret = hash_hmac('sha256', $code, $captcha->shortcode->random_key->value);
+    if ($captchaSecret == $secret) {
+        return true;
+    }
+    return false;
+}
 function loadCustomCaptcha($width = '100%', $height = 46, $bgColor = '#003') {
     return Captcha::customCaptcha($width, $height, $bgColor);
 }
@@ -108,8 +138,20 @@ function showAmount($amount, $decimal = 2, $separate = true, $exceptZeros = fals
     if ($separate) {
         $separator = ',';
     }
+
+    // Check language for Toman conversion
+    $lang = session('lang');
+    if ($lang == 'fa') {
+        // Exchange Rate: 1 Base Currency (e.g., USD) = 60000 Toman
+        // You can change this rate or fetch it from database if implemented
+        $rate = 60000; 
+        $amount = $amount * $rate;
+        $decimal = 0; // Toman usually doesn't have decimals
+    }
+
     $printAmount = number_format($amount, $decimal, '.', $separator);
-    if ($exceptZeros) {
+    
+    if ($exceptZeros && $lang != 'fa') { // Keep simple for Toman
         $exp = explode('.', $printAmount);
         if ($exp[1] * 1 == 0) {
             $printAmount = $exp[0];
@@ -117,7 +159,12 @@ function showAmount($amount, $decimal = 2, $separate = true, $exceptZeros = fals
             $printAmount = rtrim($printAmount, '0');
         }
     }
+
     if ($currencyFormat) {
+        if ($lang == 'fa') {
+            return $printAmount . ' تومان';
+        }
+        
         if (gs('currency_format') == Status::CUR_BOTH) {
             return gs('cur_sym') . $printAmount . ' ' . __(gs('cur_text'));
         } else if (gs('currency_format') == Status::CUR_TEXT) {
@@ -413,16 +460,12 @@ function dateSorting($arr) {
     return $arr;
 }
 
-function gs($key = null) {
-    $general = Cache::get('GeneralSetting');
-    if (!$general) {
-        $general = GeneralSetting::first();
-        Cache::put('GeneralSetting', $general);
-    }
-    if ($key) {
-        return @$general->$key;
-    }
-
+function gs($key = null)
+{
+    $general = Cache::remember('GeneralSetting', 60 * 60, function () {
+        return GeneralSetting::first();
+    });
+    if ($key) return @$general->$key;
     return $general;
 }
 function isImage($string) {
