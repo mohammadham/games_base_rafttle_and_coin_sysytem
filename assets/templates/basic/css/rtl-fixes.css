@@ -1,1 +1,6 @@
 /* Reset RTL Fixes */
+/* banner section */
+.banner-thumb {
+            right: auto !important;
+            left: -120px !important;
+        }
