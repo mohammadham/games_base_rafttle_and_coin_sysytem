@@ -1,1185 +1,400 @@
-/* 
- * RTL (Right-to-Left) Support for Persian/Arabic Languages
- * Complete and comprehensive RTL stylesheet
- * Version: 2.0
- */
+/* RTL Styles for Persian Language */
 
-/* ==================== Base RTL Configuration ==================== */
-html[dir="rtl"],
-html[lang="fa"],
-html[lang="ar"],
-html[lang="he"],
-html[lang="ur"] {
-  direction: rtl;
+/* ================= Typography ================= */
+body, h1, h2, h3, h4, h5, h6, p, a, span, li, button, input, textarea, select, .btn {
+    font-family: 'Vazirmatn', 'Sora', sans-serif !important;
 }
 
-html[dir="rtl"] body,
-html[lang="fa"] body {
-  direction: rtl;
-  text-align: right;
-  font-family: 'Vazirmatn', 'Tahoma', 'Arial', sans-serif;
+/* ================= Global Direction ================= */
+body {
+    direction: rtl;
+    text-align: right;
 }
 
-/* ==================== Typography ==================== */
-html[dir="rtl"] h1,
-html[dir="rtl"] h2,
-html[dir="rtl"] h3,
-html[dir="rtl"] h4,
-html[dir="rtl"] h5,
-html[dir="rtl"] h6,
-html[dir="rtl"] p,
-html[dir="rtl"] span,
-html[dir="rtl"] a,
-html[dir="rtl"] li,
-html[dir="rtl"] label,
-html[lang="fa"] h1,
-html[lang="fa"] h2,
-html[lang="fa"] h3,
-html[lang="fa"] h4,
-html[lang="fa"] h5,
-html[lang="fa"] h6,
-html[lang="fa"] p,
-html[lang="fa"] span,
-html[lang="fa"] a,
-html[lang="fa"] li,
-html[lang="fa"] label {
-  text-align: right;
+/* ================= Layout & Grid ================= */
+/* Bootstrap columns usually handle themselves with dir=rtl, but we ensure no forced floats */
+[class*="col-"] {
+    float: right;
 }
 
-/* ==================== Margin Swap ==================== */
-html[dir="rtl"] .me-1,
-html[lang="fa"] .me-1 { margin-right: 0 !important; margin-left: 0.25rem !important; }
-html[dir="rtl"] .me-2,
-html[lang="fa"] .me-2 { margin-right: 0 !important; margin-left: 0.5rem !important; }
-html[dir="rtl"] .me-3,
-html[lang="fa"] .me-3 { margin-right: 0 !important; margin-left: 1rem !important; }
-html[dir="rtl"] .me-4,
-html[lang="fa"] .me-4 { margin-right: 0 !important; margin-left: 1.5rem !important; }
-html[dir="rtl"] .me-5,
-html[lang="fa"] .me-5 { margin-right: 0 !important; margin-left: 3rem !important; }
-
-html[dir="rtl"] .ms-1,
-html[lang="fa"] .ms-1 { margin-left: 0 !important; margin-right: 0.25rem !important; }
-html[dir="rtl"] .ms-2,
-html[lang="fa"] .ms-2 { margin-left: 0 !important; margin-right: 0.5rem !important; }
-html[dir="rtl"] .ms-3,
-html[lang="fa"] .ms-3 { margin-left: 0 !important; margin-right: 1rem !important; }
-html[dir="rtl"] .ms-4,
-html[lang="fa"] .ms-4 { margin-left: 0 !important; margin-right: 1.5rem !important; }
-html[dir="rtl"] .ms-5,
-html[lang="fa"] .ms-5 { margin-left: 0 !important; margin-right: 3rem !important; }
-
-html[dir="rtl"] .ms-auto,
-html[lang="fa"] .ms-auto { margin-left: 0 !important; margin-right: auto !important; }
-html[dir="rtl"] .me-auto,
-html[lang="fa"] .me-auto { margin-right: 0 !important; margin-left: auto !important; }
-
-/* ==================== Padding Swap ==================== */
-html[dir="rtl"] .pe-1,
-html[lang="fa"] .pe-1 { padding-right: 0 !important; padding-left: 0.25rem !important; }
-html[dir="rtl"] .pe-2,
-html[lang="fa"] .pe-2 { padding-right: 0 !important; padding-left: 0.5rem !important; }
-html[dir="rtl"] .pe-3,
-html[lang="fa"] .pe-3 { padding-right: 0 !important; padding-left: 1rem !important; }
-html[dir="rtl"] .pe-4,
-html[lang="fa"] .pe-4 { padding-right: 0 !important; padding-left: 1.5rem !important; }
-html[dir="rtl"] .pe-5,
-html[lang="fa"] .pe-5 { padding-right: 0 !important; padding-left: 3rem !important; }
-
-html[dir="rtl"] .ps-1,
-html[lang="fa"] .ps-1 { padding-left: 0 !important; padding-right: 0.25rem !important; }
-html[dir="rtl"] .ps-2,
-html[lang="fa"] .ps-2 { padding-left: 0 !important; padding-right: 0.5rem !important; }
-html[dir="rtl"] .ps-3,
-html[lang="fa"] .ps-3 { padding-left: 0 !important; padding-right: 1rem !important; }
-html[dir="rtl"] .ps-4,
-html[lang="fa"] .ps-4 { padding-left: 0 !important; padding-right: 1.5rem !important; }
-html[dir="rtl"] .ps-5,
-html[lang="fa"] .ps-5 { padding-left: 0 !important; padding-right: 3rem !important; }
-
-/* ==================== Text Alignment ==================== */
-html[dir="rtl"] .text-start,
-html[lang="fa"] .text-start { text-align: right !important; }
-html[dir="rtl"] .text-end,
-html[lang="fa"] .text-end { text-align: left !important; }
-
-/* ==================== Floats ==================== */
-html[dir="rtl"] .float-start,
-html[lang="fa"] .float-start { float: right !important; }
-html[dir="rtl"] .float-end,
-html[lang="fa"] .float-end { float: left !important; }
-
-/* ==================== Position ==================== */
-html[dir="rtl"] .start-0,
-html[lang="fa"] .start-0 { left: auto !important; right: 0 !important; }
-html[dir="rtl"] .end-0,
-html[lang="fa"] .end-0 { right: auto !important; left: 0 !important; }
-html[dir="rtl"] .start-50,
-html[lang="fa"] .start-50 { left: auto !important; right: 50% !important; }
-html[dir="rtl"] .end-50,
-html[lang="fa"] .end-50 { right: auto !important; left: 50% !important; }
-html[dir="rtl"] .start-100,
-html[lang="fa"] .start-100 { left: auto !important; right: 100% !important; }
-html[dir="rtl"] .end-100,
-html[lang="fa"] .end-100 { right: auto !important; left: 100% !important; }
-
-/* ==================== Border Radius ==================== */
-html[dir="rtl"] .rounded-start,
-html[lang="fa"] .rounded-start {
-  border-top-left-radius: 0 !important;
-  border-bottom-left-radius: 0 !important;
-  border-top-right-radius: var(--bs-border-radius) !important;
-  border-bottom-right-radius: var(--bs-border-radius) !important;
-}
-
-html[dir="rtl"] .rounded-end,
-html[lang="fa"] .rounded-end {
-  border-top-right-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
-  border-top-left-radius: var(--bs-border-radius) !important;
-  border-bottom-left-radius: var(--bs-border-radius) !important;
-}
-
-/* ==================== Borders ==================== */
-html[dir="rtl"] .border-start,
-html[lang="fa"] .border-start {
-  border-left: 0 !important;
-  border-right: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
-}
-
-html[dir="rtl"] .border-end,
-html[lang="fa"] .border-end {
-  border-right: 0 !important;
-  border-left: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
-}
-
-/* ==================== Flexbox ==================== */
-/* Keep flex normal by default, only reverse specific elements */
-
-html[dir="rtl"] .flex-row-reverse,
-html[lang="fa"] .flex-row-reverse { 
-  flex-direction: row !important; 
-}
-
-/* Reverse Bootstrap row for proper RTL layout */
-html[dir="rtl"] .row,
-html[lang="fa"] .row {
-  direction: rtl;
-}
-
-html[dir="rtl"] .row > *,
-html[lang="fa"] .row > * {
-  direction: rtl;
-}
-
-/* Fix column float for RTL */
-html[dir="rtl"] [class*="col-"],
-html[lang="fa"] [class*="col-"] {
-  float: right;
-}
-
-/* ==================== Forms and Inputs ==================== */
-html[dir="rtl"] input,
-html[dir="rtl"] textarea,
-html[dir="rtl"] select,
-html[dir="rtl"] .form-control,
-html[dir="rtl"] .form-select,
-html[lang="fa"] input,
-html[lang="fa"] textarea,
-html[lang="fa"] select,
-html[lang="fa"] .form-control,
-html[lang="fa"] .form-select {
-  text-align: right;
-  direction: rtl;
-}
-
-/* Keep numbers and emails LTR */
-html[dir="rtl"] input[type="email"],
-html[dir="rtl"] input[type="url"],
-html[dir="rtl"] input[type="number"],
-html[dir="rtl"] input[type="tel"],
-html[lang="fa"] input[type="email"],
-html[lang="fa"] input[type="url"],
-html[lang="fa"] input[type="number"],
-html[lang="fa"] input[type="tel"] {
-  direction: ltr;
-  text-align: left;
-}
-
-/* Form Check */
-html[dir="rtl"] .form-check,
-html[lang="fa"] .form-check {
-  padding-left: 0;
-  padding-right: 1.5em;
-}
-
-html[dir="rtl"] .form-check .form-check-input,
-html[lang="fa"] .form-check .form-check-input {
-  float: right;
-  margin-left: 0;
-  margin-right: -1.5em;
-}
-
-html[dir="rtl"] .form-check-label,
-html[lang="fa"] .form-check-label {
-  padding-right: 5px;
-  padding-left: 0;
-}
-
-/* Input Group */
-html[dir="rtl"] .input-group,
-html[lang="fa"] .input-group {
-  flex-direction: row-reverse;
-}
-
-html[dir="rtl"] .input-group > :not(:first-child):not(.dropdown-menu),
-html[lang="fa"] .input-group > :not(:first-child):not(.dropdown-menu) {
-  margin-right: -1px;
-  margin-left: 0;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-top-left-radius: 0.375rem;
-  border-bottom-left-radius: 0.375rem;
-}
-
-html[dir="rtl"] .input-group > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu),
-html[lang="fa"] .input-group > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 0.375rem;
-  border-bottom-right-radius: 0.375rem;
-}
-
-html[dir="rtl"] .input-group .input-group-text,
-html[lang="fa"] .input-group .input-group-text {
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
-  border-left: 0;
-}
-
-/* Form Labels */
-html[dir="rtl"] .form-label,
-html[dir="rtl"] label,
-html[lang="fa"] .form-label,
-html[lang="fa"] label {
-  text-align: right;
-}
-
-html[dir="rtl"] label.required:after,
-html[lang="fa"] label.required:after {
-  margin-left: 0;
-  margin-right: 2px;
-}
-
-/* ==================== Navigation ==================== */
-html[dir="rtl"] .navbar-nav,
-html[lang="fa"] .navbar-nav {
-  padding-right: 0;
-}
-
-html[dir="rtl"] .nav-item,
-html[lang="fa"] .nav-item {
-  text-align: right;
-}
-
-/* ==================== Dropdown ==================== */
-html[dir="rtl"] .dropdown-menu,
-html[lang="fa"] .dropdown-menu {
-  text-align: right;
-  left: auto;
-  right: 0;
-}
-
-html[dir="rtl"] .dropdown-menu-end,
-html[lang="fa"] .dropdown-menu-end {
-  right: auto !important;
-  left: 0 !important;
-}
-
-html[dir="rtl"] .dropdown-item,
-html[lang="fa"] .dropdown-item {
-  text-align: right;
-}
-
-/* ==================== Header & Navigation ==================== */
-html[dir="rtl"] .header,
-html[lang="fa"] .header {
-  text-align: right;
-}
-
-html[dir="rtl"] .header .nav-menu,
-html[lang="fa"] .header .nav-menu {
-  flex-direction: row-reverse;
-}
-
-html[dir="rtl"] .header .nav-menu .nav-item,
-html[lang="fa"] .header .nav-menu .nav-item {
-  margin-right: 0;
-  margin-left: 30px;
-}
-
-html[dir="rtl"] .header .nav-menu .nav-item:last-child,
-html[lang="fa"] .header .nav-menu .nav-item:last-child {
-  margin-left: 0;
-}
-
-html[dir="rtl"] .header .nav-menu .nav-item:first-child,
-html[lang="fa"] .header .nav-menu .nav-item:first-child {
-  margin-right: 0;
-}
-
-html[dir="rtl"] .header .nav-menu .nav-item .nav-link .nav-item__icon,
-html[lang="fa"] .header .nav-menu .nav-item .nav-link .nav-item__icon {
-  margin-right: 0;
-  margin-left: 8px;
-}
-
-html[dir="rtl"] .header .dropdown-menu,
-html[lang="fa"] .header .dropdown-menu {
-  left: auto;
-  right: 0;
-}
-
-html[dir="rtl"] .header .dropdown-menu li .dropdown-item,
-html[lang="fa"] .header .dropdown-menu li .dropdown-item {
-  text-align: right;
-  padding-right: 20px;
-  padding-left: 20px;
-}
-
-html[dir="rtl"] .navbar-brand,
-html[lang="fa"] .navbar-brand {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-html[dir="rtl"] .navbar-toggler,
-html[lang="fa"] .navbar-toggler {
-  margin-left: 0;
-  margin-right: auto;
-}
-
-/* Header Cart */
-html[dir="rtl"] .header-cart,
-html[lang="fa"] .header-cart {
-  margin-right: 0;
-  margin-left: 20px;
-}
-
-html[dir="rtl"] .cart-number,
-html[lang="fa"] .cart-number {
-  right: auto;
-  left: -10px;
-}
-
-html[dir="rtl"] .header-cart-btn .header-cart,
-html[lang="fa"] .header-cart-btn .header-cart {
-  margin-left: 15px;
-  margin-right: 0;
-}
-
-/* ==================== Banner Section ==================== */
-html[dir="rtl"] .banner-content,
-html[lang="fa"] .banner-content {
-  text-align: right;
-}
-
-html[dir="rtl"] .banner-content__title,
-html[lang="fa"] .banner-content__title {
-  text-align: right;
-}
-
-html[dir="rtl"] .banner-content__subtitle,
-html[lang="fa"] .banner-content__subtitle {
-  text-align: right;
-}
-
-html[dir="rtl"] .banner-thumb,
-html[lang="fa"] .banner-thumb {
-  right: auto;
-  left: -120px;
-}
-
-html[dir="rtl"] .banner-content .button-wrapper,
-html[lang="fa"] .banner-content .button-wrapper {
-  justify-content: flex-start;
-}
-
-html[dir="rtl"] .banner-content .button-wrapper .cmn--btn i,
-html[lang="fa"] .banner-content .button-wrapper .cmn--btn i {
-  margin-right: 0;
-  margin-left: 10px;
-}
-
-/* ==================== Buttons ==================== */
-html[dir="rtl"] .btn i,
-html[dir="rtl"] .cmn--btn i,
-html[lang="fa"] .btn i,
-html[lang="fa"] .cmn--btn i {
-  margin-right: 0;
-  margin-left: 8px;
-}
-
-html[dir="rtl"] .btn-group,
-html[lang="fa"] .btn-group {
-  flex-direction: row-reverse;
-}
-
-/* ==================== Lists ==================== */
-html[dir="rtl"] ul,
-html[dir="rtl"] ol,
-html[lang="fa"] ul,
-html[lang="fa"] ol {
-  padding-right: 2rem;
-  padding-left: 0;
-}
-
-html[dir="rtl"] .list-unstyled,
-html[lang="fa"] .list-unstyled {
-  padding-right: 0;
-}
-
-html[dir="rtl"] li,
-html[lang="fa"] li {
-  text-align: right;
-}
-
-/* ==================== Breadcrumb ==================== */
-html[dir="rtl"] .breadcrumb,
-html[lang="fa"] .breadcrumb {
-  flex-direction: row-reverse;
-}
-
-html[dir="rtl"] .breadcrumb-item + .breadcrumb-item::before,
-html[lang="fa"] .breadcrumb-item + .breadcrumb-item::before {
-  content: "\\";
-  float: right;
-  padding-left: 0.5rem;
-  padding-right: 0;
-}
-
-html[dir="rtl"] .breadcrumb__wrapper,
-html[lang="fa"] .breadcrumb__wrapper {
-  text-align: right;
-}
-
-/* ==================== Tables ==================== */
-html[dir="rtl"] .table,
-html[lang="fa"] .table {
-  text-align: right;
-}
-
-html[dir="rtl"] table th,
-html[dir="rtl"] table td,
-html[lang="fa"] table th,
-html[lang="fa"] table td {
-  text-align: right;
-}
-
-html[dir="rtl"] .table > :not(caption) > * > *,
-html[lang="fa"] .table > :not(caption) > * > * {
-  text-align: right;
-}
-
-/* ==================== Cards ==================== */
-html[dir="rtl"] .card,
-html[dir="rtl"] .custom--card,
-html[dir="rtl"] .card--body,
-html[lang="fa"] .card,
-html[lang="fa"] .custom--card,
-html[lang="fa"] .card--body {
-  text-align: right;
-}
-
-html[dir="rtl"] .card-header,
-html[lang="fa"] .card-header {
-  text-align: right;
-}
-
-html[dir="rtl"] .card-body,
-html[lang="fa"] .card-body {
-  text-align: right;
-}
-
-html[dir="rtl"] .card-title,
-html[lang="fa"] .card-title {
-  text-align: right;
-}
-
-/* ==================== Modals ==================== */
-html[dir="rtl"] .modal-header,
-html[lang="fa"] .modal-header {
-  flex-direction: row-reverse;
-  text-align: right;
-}
-
-html[dir="rtl"] .modal-header .btn-close,
-html[lang="fa"] .modal-header .btn-close {
-  margin: -0.5rem auto -0.5rem -0.5rem;
-}
-
-html[dir="rtl"] .modal-body,
-html[dir="rtl"] .modal-footer,
-html[lang="fa"] .modal-body,
-html[lang="fa"] .modal-footer {
-  text-align: right;
-}
-
-html[dir="rtl"] .modal-footer,
-html[lang="fa"] .modal-footer {
-  flex-direction: row-reverse;
-}
-
-/* ==================== Alerts ==================== */
-html[dir="rtl"] .alert,
-html[lang="fa"] .alert {
-  text-align: right;
-}
-
-html[dir="rtl"] .alert-dismissible,
-html[lang="fa"] .alert-dismissible {
-  padding-left: 3rem;
-  padding-right: 1rem;
-}
-
-html[dir="rtl"] .alert-dismissible .btn-close,
-html[lang="fa"] .alert-dismissible .btn-close {
-  right: auto;
-  left: 0;
-}
-
-html[dir="rtl"] .alert__content,
-html[lang="fa"] .alert__content {
-  text-align: right;
+.row {
+    direction: rtl;
 }
 
-/* ==================== Pagination ==================== */
-html[dir="rtl"] .pagination,
-html[lang="fa"] .pagination {
-  flex-direction: row-reverse;
+/* ================= Header & Navigation ================= */
+.header .nav-menu .nav-item {
+    margin-right: 0 !important;
+    margin-left: 30px;
+    text-align: right;
 }
 
-html[dir="rtl"] .page-item:first-child .page-link,
-html[lang="fa"] .page-item:first-child .page-link {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 0.375rem;
-  border-bottom-right-radius: 0.375rem;
-}
-
-html[dir="rtl"] .page-item:last-child .page-link,
-html[lang="fa"] .page-item:last-child .page-link {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-top-left-radius: 0.375rem;
-  border-bottom-left-radius: 0.375rem;
-}
-
-/* ==================== Badges ==================== */
-html[dir="rtl"] .badge,
-html[lang="fa"] .badge {
-  margin-left: 5px;
-  margin-right: 0;
-}
-
-/* ==================== Competition Items ==================== */
-html[dir="rtl"] .competition-item,
-html[lang="fa"] .competition-item {
-  text-align: right;
-}
-
-html[dir="rtl"] .competition-item__status,
-html[lang="fa"] .competition-item__status {
-  left: auto;
-  right: 20px;
-}
-
-html[dir="rtl"] .competition-item__content,
-html[lang="fa"] .competition-item__content {
-  text-align: right;
-}
-
-html[dir="rtl"] .competition-item__thumb,
-html[lang="fa"] .competition-item__thumb {
-  text-align: center;
-}
-
-html[dir="rtl"] .competition-details__wrapper,
-html[lang="fa"] .competition-details__wrapper {
-  text-align: right;
-}
-
-html[dir="rtl"] .competition-details__item,
-html[lang="fa"] .competition-details__item {
-  text-align: right;
-}
-
-html[dir="rtl"] .competition-details__right-link,
-html[lang="fa"] .competition-details__right-link {
-  text-align: right;
-}
-
-/* ==================== Work Items (How it works section) ==================== */
-html[dir="rtl"] .work-item,
-html[lang="fa"] .work-item {
-  text-align: right;
-}
-
-html[dir="rtl"] .work-item .work-item__header,
-html[lang="fa"] .work-item .work-item__header {
-  border-radius: 25px 0 0 25px;
-  padding-right: 30px;
-  padding-left: 20px;
-}
-
-html[dir="rtl"] .work-item .work-item__header::before,
-html[lang="fa"] .work-item .work-item__header::before {
-  left: auto;
-  right: -30px;
-  border-radius: 0 35px 0 0;
-}
-
-html[dir="rtl"] .work-item .work-item__header::after,
-html[lang="fa"] .work-item .work-item__header::after {
-  left: auto;
-  right: -30px;
-}
-
-html[dir="rtl"] .work-item__body,
-html[lang="fa"] .work-item__body {
-  border-radius: 35px 0 25px 25px;
-  padding-right: 30px;
-  padding-left: 20px;
-}
-
-html[dir="rtl"] .work-item:nth-child(even) .work-item__header,
-html[lang="fa"] .work-item:nth-child(even) .work-item__header {
-  border-radius: 0 25px 25px 0;
-  padding-right: 20px;
-  padding-left: 30px;
-}
-
-html[dir="rtl"] .work-item:nth-child(even) .work-item__header::before,
-html[lang="fa"] .work-item:nth-child(even) .work-item__header::before {
-  right: auto;
-  left: -30px;
-  border-radius: 35px 0 0 0;
-}
-
-html[dir="rtl"] .work-item:nth-child(even) .work-item__header::after,
-html[lang="fa"] .work-item:nth-child(even) .work-item__header::after {
-  right: auto;
-  left: -30px;
-}
-
-html[dir="rtl"] .work-item:nth-child(even) .work-item__body,
-html[lang="fa"] .work-item:nth-child(even) .work-item__body {
-  border-radius: 0 35px 25px 25px;
-  padding-right: 20px;
-  padding-left: 30px;
-}
-
-html[dir="rtl"] .work-item__icon,
-html[lang="fa"] .work-item__icon {
-  left: auto;
-  right: calc(100% + 100px);
-}
-
-html[dir="rtl"] .work-item__icon::before,
-html[lang="fa"] .work-item__icon::before {
-  right: auto;
-  left: calc(100% + 5px);
-}
-
-html[dir="rtl"] .work-item:nth-child(even) .work-item__icon,
-html[lang="fa"] .work-item:nth-child(even) .work-item__icon {
-  right: auto;
-  left: calc(100% + 100px);
-}
-
-html[dir="rtl"] .work-item:nth-child(even) .work-item__icon::before,
-html[lang="fa"] .work-item:nth-child(even) .work-item__icon::before {
-  left: auto;
-  right: calc(100% + 5px);
-}
-
-html[dir="rtl"] .work-item__title,
-html[lang="fa"] .work-item__title {
-  text-align: right;
-}
-
-/* ==================== Ticket Box ==================== */
-html[dir="rtl"] .ticket-box,
-html[lang="fa"] .ticket-box {
-  text-align: right;
-}
-
-html[dir="rtl"] .ticket-box .btn i,
-html[dir="rtl"] .ticket-box .cmn--btn i,
-html[lang="fa"] .ticket-box .btn i,
-html[lang="fa"] .ticket-box .cmn--btn i {
-  margin-right: 0;
-  margin-left: 8px;
-}
-
-/* ==================== About Items ==================== */
-html[dir="rtl"] .about-item__content,
-html[lang="fa"] .about-item__content {
-  text-align: right;
-}
-
-html[dir="rtl"] .about-item__wrapper,
-html[lang="fa"] .about-item__wrapper {
-  text-align: right;
-}
-
-/* ==================== FAQ Items ==================== */
-html[dir="rtl"] .faq-item__title::before,
-html[lang="fa"] .faq-item__title::before {
-  right: auto;
-  left: 0;
-}
-
-html[dir="rtl"] .faq-item__title,
-html[lang="fa"] .faq-item__title {
-  text-align: right;
-  padding-right: 25px;
-  padding-left: 15px;
-}
-
-/* ==================== Counter Up ==================== */
-html[dir="rtl"] .counterup-item__content,
-html[lang="fa"] .counterup-item__content {
-  text-align: right;
-}
-
-html[dir="rtl"] .counterup-item__content::after,
-html[lang="fa"] .counterup-item__content::after {
-  right: auto;
-  left: -50%;
-}
-
-html[dir="rtl"] .counterup-wrapper,
-html[lang="fa"] .counterup-wrapper {
-  flex-direction: row-reverse;
-}
-
-/* ==================== Blog Items ==================== */
-html[dir="rtl"] .blog-item__content,
-html[lang="fa"] .blog-item__content {
-  text-align: right;
-}
-
-html[dir="rtl"] .blog-details__content,
-html[lang="fa"] .blog-details__content {
-  text-align: right;
-}
-
-html[dir="rtl"] .blog-sidebar-wrapper,
-html[lang="fa"] .blog-sidebar-wrapper {
-  text-align: right;
-}
-
-/* ==================== Cart Items ==================== */
-html[dir="rtl"] .cart-item__content,
-html[lang="fa"] .cart-item__content {
-  text-align: right;
-}
-
-html[dir="rtl"] .cart-item__wrapper,
-html[lang="fa"] .cart-item__wrapper {
-  text-align: right;
-}
-
-html[dir="rtl"] .cart-wrapper__header,
-html[lang="fa"] .cart-wrapper__header {
-  text-align: right;
-}
-
-/* ==================== Payment Items ==================== */
-html[dir="rtl"] .payment-item,
-html[lang="fa"] .payment-item {
-  flex-direction: row-reverse;
-}
-
-html[dir="rtl"] .payment-item__info,
-html[lang="fa"] .payment-item__info {
-  flex-direction: row-reverse;
-}
-
-html[dir="rtl"] .payment-item__name,
-html[lang="fa"] .payment-item__name {
-  padding-left: 0;
-  padding-right: 15px;
-}
-
-html[dir="rtl"] .payment-item__thumb,
-html[lang="fa"] .payment-item__thumb {
-  padding-left: 0;
-  padding-right: 10px;
-  text-align: left;
-}
-
-/* ==================== Dashboard ==================== */
-html[dir="rtl"] .dashboard-header,
-html[lang="fa"] .dashboard-header {
-  text-align: right;
-}
-
-html[dir="rtl"] .dashboard-header-left-inner,
-html[lang="fa"] .dashboard-header-left-inner {
-  flex-direction: row-reverse;
-}
-
-html[dir="rtl"] .dashboard-menu li a i,
-html[lang="fa"] .dashboard-menu li a i {
-  margin-right: 0;
-  margin-left: 10px;
-}
-
-/* ==================== Footer ==================== */
-html[dir="rtl"] .footer,
-html[lang="fa"] .footer {
-  text-align: right;
-}
-
-html[dir="rtl"] .footer-widget__title,
-html[lang="fa"] .footer-widget__title {
-  text-align: right;
-}
-
-html[dir="rtl"] .bottom-footer__wrapper,
-html[lang="fa"] .bottom-footer__wrapper {
-  text-align: right;
-}
-
-/* ==================== Scroll to Top ==================== */
-html[dir="rtl"] .scroll-top,
-html[lang="fa"] .scroll-top {
-  right: auto !important;
-  left: 20px;
-}
-
-/* ==================== Icons ==================== */
-html[dir="rtl"] .fa-chevron-left::before,
-html[lang="fa"] .fa-chevron-left::before { content: "\f054"; }
-html[dir="rtl"] .fa-chevron-right::before,
-html[lang="fa"] .fa-chevron-right::before { content: "\f053"; }
-html[dir="rtl"] .fa-arrow-left::before,
-html[lang="fa"] .fa-arrow-left::before { content: "\f061"; }
-html[dir="rtl"] .fa-arrow-right::before,
-html[lang="fa"] .fa-arrow-right::before { content: "\f060"; }
-html[dir="rtl"] .fa-angle-left::before,
-html[lang="fa"] .fa-angle-left::before { content: "\f105"; }
-html[dir="rtl"] .fa-angle-right::before,
-html[lang="fa"] .fa-angle-right::before { content: "\f104"; }
-html[dir="rtl"] .fa-long-arrow-left::before,
-html[lang="fa"] .fa-long-arrow-left::before { content: "\f178"; }
-html[dir="rtl"] .fa-long-arrow-right::before,
-html[lang="fa"] .fa-long-arrow-right::before { content: "\f177"; }
-
-html[dir="rtl"] i.la-angle-right::before,
-html[lang="fa"] i.la-angle-right::before { content: "\f104"; }
-html[dir="rtl"] i.la-angle-left::before,
-html[lang="fa"] i.la-angle-left::before { content: "\f105"; }
-html[dir="rtl"] .la-long-arrow-right::before,
-html[lang="fa"] .la-long-arrow-right::before { content: "\f30a"; }
-html[dir="rtl"] .la-long-arrow-left::before,
-html[lang="fa"] .la-long-arrow-left::before { content: "\f30b"; }
-
-/* ==================== Select2 ==================== */
-html[dir="rtl"] .select2-container--default .select2-selection--single .select2-selection__arrow,
-html[lang="fa"] .select2-container--default .select2-selection--single .select2-selection__arrow {
-  left: 1px;
-  right: auto;
-}
-
-html[dir="rtl"] .select2-container--default .select2-selection--single .select2-selection__rendered,
-html[lang="fa"] .select2-container--default .select2-selection--single .select2-selection__rendered {
-  padding-left: 20px;
-  padding-right: 8px;
-  text-align: right;
-}
-
-html[dir="rtl"] .select2-dropdown,
-html[lang="fa"] .select2-dropdown {
-  text-align: right;
-}
-
-html[dir="rtl"] .select2-search__field,
-html[lang="fa"] .select2-search__field {
-  text-align: right;
-}
-
-/* ==================== Slick Slider ==================== */
-html[dir="rtl"] .slick-slider,
-html[lang="fa"] .slick-slider {
-  direction: ltr;
-}
-
-html[dir="rtl"] .slick-slider .slick-slide,
-html[lang="fa"] .slick-slider .slick-slide {
-  direction: rtl;
-}
-
-html[dir="rtl"] .slick-arrow.arrow-left,
-html[lang="fa"] .slick-arrow.arrow-left {
-  left: auto;
-  right: 15px;
-}
-
-html[dir="rtl"] .slick-arrow.arrow-right,
-html[lang="fa"] .slick-arrow.arrow-right {
-  right: auto;
-  left: 15px;
-}
-
-/* ==================== Carousel ==================== */
-html[dir="rtl"] .carousel-control-prev,
-html[lang="fa"] .carousel-control-prev {
-  left: auto;
-  right: 0;
-}
-
-html[dir="rtl"] .carousel-control-next,
-html[lang="fa"] .carousel-control-next {
-  right: auto;
-  left: 0;
-}
-
-/* ==================== Copy Input ==================== */
-html[dir="rtl"] .copyInput,
-html[lang="fa"] .copyInput {
-  right: auto;
-  left: 0;
-}
-
-html[dir="rtl"] .copied::after,
-html[lang="fa"] .copied::after {
-  right: auto;
-  left: 12%;
-}
-
-/* ==================== Cookies Card ==================== */
-html[dir="rtl"] .cookies-card,
-html[lang="fa"] .cookies-card {
-  left: auto;
-  right: 15px;
-}
-
-/* ==================== Tab Navigation ==================== */
-html[dir="rtl"] .custom--tab .nav-item,
-html[lang="fa"] .custom--tab .nav-item {
-  text-align: right;
-}
-
-html[dir="rtl"] .custom--tab .nav-item .nav-link,
-html[lang="fa"] .custom--tab .nav-item .nav-link {
-  text-align: right;
-}
-
-/* ==================== Social Icons ==================== */
-html[dir="rtl"] .social-icons,
-html[lang="fa"] .social-icons {
-  flex-direction: row-reverse;
-}
-
-html[dir="rtl"] .social-icons li,
-html[lang="fa"] .social-icons li {
-  margin-left: 10px;
-  margin-right: 0;
-}
-
-html[dir="rtl"] .social-icons li:first-child,
-html[lang="fa"] .social-icons li:first-child {
-  margin-left: 0;
-}
-
-/* ==================== Numbers and Amounts (Keep LTR) ==================== */
-html[dir="rtl"] .amount,
-html[dir="rtl"] .price,
-html[dir="rtl"] .number,
-html[dir="rtl"] .phone,
-html[dir="rtl"] .remaining-time,
-html[lang="fa"] .amount,
-html[lang="fa"] .price,
-html[lang="fa"] .number,
-html[lang="fa"] .phone,
-html[lang="fa"] .remaining-time {
-  direction: ltr;
-  display: inline-block;
-}
+@media (min-width: 1200px) {
+    .header .nav-menu .nav-item:last-child {
+        margin-left: 0;
+        padding-left: 0;
+    }
+    
+    /* Dropdown Menus */
+    .header .dropdown-menu {
+        text-align: right;
+        left: auto !important;
+        right: 0;
+    }
 
-html[dir="rtl"] .remaining-time__content,
-html[lang="fa"] .remaining-time__content {
-  flex-direction: row-reverse;
+    .header .dropdown-menu__link {
+        text-align: right;
+    }
+    
+    .header .nav-menu .nav-item .nav-link .nav-item__icon {
+        margin-left: 0;
+        margin-right: 2px;
+    }
 }
 
-/* ==================== Responsive Adjustments ==================== */
+/* Mobile Menu */
 @media (max-width: 1199px) {
-  html[dir="rtl"] .header .nav-item .nav-link,
-  html[lang="fa"] .header .nav-item .nav-link {
-    padding: 10px 0 10px 10px !important;
-  }
-  
-  html[dir="rtl"] .header .dropdown-menu li .dropdown-item,
-  html[lang="fa"] .header .dropdown-menu li .dropdown-item {
-    margin-left: 0;
-    margin-right: 20px;
-  }
-
-  html[dir="rtl"] .banner-thumb,
-  html[lang="fa"] .banner-thumb {
-    left: 0;
-    right: 0;
-    position: relative;
-  }
+    .header .nav-menu .nav-item {
+        text-align: right;
+        padding-right: 0 !important;
+    }
+    
+    .header .nav-item .nav-link {
+        padding: 10px 0 10px 10px !important;
+    }
+    
+    .header-cart {
+        margin-right: 0;
+        margin-left: 15px;
+    }
+    
+    .header-cart-btn {
+        margin-left: 0;
+        margin-right: auto;
+    }
+    
+    .header .dropdown-menu li .dropdown-item {
+        margin-left: 0;
+        margin-right: 20px;
+        text-align: right;
+    }
 }
 
-@media (max-width: 991px) {
-  html[dir="rtl"] .work-item__icon,
-  html[lang="fa"] .work-item__icon {
-    right: calc(100% + 45px);
-  }
-  
-  html[dir="rtl"] .work-item:nth-child(even) .work-item__icon,
-  html[lang="fa"] .work-item:nth-child(even) .work-item__icon {
-    left: calc(100% + 45px);
-  }
-
-  html[dir="rtl"] .header .nav-menu .nav-item,
-  html[lang="fa"] .header .nav-menu .nav-item {
-    margin-left: 15px;
-  }
+/* Header Cart Icon */
+.header-cart {
+    margin-right: 0;
+    margin-left: 20px;
 }
 
-@media (max-width: 767px) {
-  html[dir="rtl"] .cookies-card,
-  html[lang="fa"] .cookies-card {
-    right: 0;
-    left: 0;
-  }
-  
-  html[dir="rtl"] .counterup-item__content::after,
-  html[lang="fa"] .counterup-item__content::after {
-    display: none;
-  }
-
-  html[dir="rtl"] .work-item .work-item__header,
-  html[lang="fa"] .work-item .work-item__header {
-    border-radius: 15px;
-    padding: 20px;
-  }
-
-  html[dir="rtl"] .work-item__body,
-  html[lang="fa"] .work-item__body {
-    border-radius: 15px;
-    padding: 20px;
-  }
-
-  html[dir="rtl"] .work-item:nth-child(even) .work-item__header,
-  html[lang="fa"] .work-item:nth-child(even) .work-item__header {
-    border-radius: 15px;
-    padding: 20px;
-  }
-
-  html[dir="rtl"] .work-item:nth-child(even) .work-item__body,
-  html[lang="fa"] .work-item:nth-child(even) .work-item__body {
-    border-radius: 15px;
-    padding: 20px;
-  }
+.cart-number {
+    right: auto;
+    left: -10px;
 }
 
-@media (max-width: 575px) {
-  html[dir="rtl"] .work-item__icon,
-  html[lang="fa"] .work-item__icon {
-    display: none;
-  }
+/* ================= Banner Section ================= */
+.banner-content {
+    text-align: right;
+}
 
-  html[dir="rtl"] .header .nav-menu .nav-item,
-  html[lang="fa"] .header .nav-menu .nav-item {
+.banner-content .button-wrapper {
+    /* Flex direction handles this, but ensuring */
+    flex-direction: row; 
+}
+
+/* Position of the banner image */
+/* Original: right: -120px */
+.banner-thumb {
+    right: auto;
+    left: -120px;
+}
+
+@media (max-width: 1399px) {
+    .banner-thumb {
+        right: auto;
+        left: -100px;
+    }
+}
+@media (max-width: 1199px) {
+    .banner-thumb {
+        right: auto;
+        left: -90px;
+    }
+}
+
+/* ================= Forms ================= */
+.form-group {
+    text-align: right;
+}
+
+.form--label {
+    text-align: right;
+    display: block;
+}
+
+.form--control {
+    text-align: right;
+}
+
+/* Input Icons */
+.input-group .input-group-text {
+    border-right: 1px solid hsl(var(--white) / 0.2);
+    border-left: 0;
+}
+
+/* Password Show/Hide Icon */
+/* Original: right: 20px */
+.password-show-hide {
+    right: auto;
+    left: 20px;
+}
+
+input#your-password,
+input#confirm-password {
+    padding-right: 24px; /* Reset original padding */
+    padding-left: 50px; /* Space for icon on left */
+}
+
+/* Checkboxes & Radios */
+.form--check {
+    padding-left: 0;
+    padding-right: 0; /* Bootstrap reset */
+}
+
+.form--check .form-check-input {
+    float: right;
     margin-left: 10px;
-  }
+    margin-right: 0;
 }
 
-/* ==================== Additional Utility Classes ==================== */
-html[dir="rtl"] .rtl-flip,
-html[lang="fa"] .rtl-flip {
-  transform: scaleX(-1);
+.form--check .form-check-label {
+    padding-left: 0;
+    padding-right: 12px;
+    text-align: right;
 }
 
-html[dir="rtl"] .gap-2,
-html[lang="fa"] .gap-2 {
-  gap: 0.5rem !important;
+/* Radio buttons specific */
+.form--radio .form-check-label {
+    padding-left: 0;
+    padding-right: 12px;
 }
 
-html[dir="rtl"] .gap-3,
-html[lang="fa"] .gap-3 {
-  gap: 1rem !important;
+/* Switches */
+.form--switch .form-check-input {
+    margin-left: 0;
+    margin-right: 0;
+}
+.form--switch .form-check-input::before {
+    left: auto;
+    right: 5px;
+}
+.form--switch .form-check-input:checked::before {
+    left: auto;
+    right: calc(100% - 33px);
+}
+.form--switch .form-check-label {
+    padding-left: 0;
+    padding-right: 5px;
 }
 
-html[dir="rtl"] .gap-4,
-html[lang="fa"] .gap-4 {
-  gap: 1.5rem !important;
+/* ================= Cards & Lists ================= */
+/* Work Items (How it works) */
+/* Original: border-radius: 0 25px 25px 0 */
+.work-item .work-item__header {
+    border-radius: 25px 0 0 25px;
+    box-shadow: -2px 6px 2px 1px rgba(8, 32, 50, 0.4); /* Flipped shadow X */
 }
 
-/* ==================== Password Toggle ==================== */
-html[dir="rtl"] .password-show-hide,
-html[lang="fa"] .password-show-hide {
-  right: auto;
-  left: 20px;
+/* Pseudo elements for work item connections */
+/* Original: left: -30px */
+.work-item .work-item__header::before {
+    left: auto;
+    right: -30px;
+    border-radius: 0 35px 0 0; /* Flipped corners */
 }
 
-html[dir="rtl"] input#your-password,
-html[dir="rtl"] input#confirm-password,
-html[lang="fa"] input#your-password,
-html[lang="fa"] input#confirm-password {
-  padding-right: 24px;
-  padding-left: 50px;
+/* Original: left: -30px */
+.work-item .work-item__header::after {
+    left: auto;
+    right: -30px;
+    border-radius: 0 35px 0 0; /* Flipped */
+    box-shadow: inset -1px 6px 2px 2px rgba(8, 32, 50, 0.3);
 }
 
-/* ==================== Progress Bar ==================== */
-html[dir="rtl"] .progress-bar,
-html[lang="fa"] .progress-bar {
-  direction: ltr;
+.work-item__body {
+    border-radius: 35px 0 25px 25px; /* Flipped corners */
+    box-shadow: inset -4px -6px 2px 2px hsl(var(--base) / 0.1); /* Flipped shadow */
 }
 
-html[dir="rtl"] .competition-details__progressbar,
-html[lang="fa"] .competition-details__progressbar {
-  direction: ltr;
+/* Alternating Work Items (Even children) */
+/* These usually have flipped styles in LTR, so we need to flip them back or adjust */
+/* Original Even: .work-item:nth-child(even) .work-item__header::before { right: -30px; left: auto; } */
+/* So in RTL, we do the reverse */
+.work-item:nth-child(even) .work-item__header::before {
+    right: auto;
+    left: -30px;
+    border-radius: 35px 0 0 0;
 }
 
-/* ==================== Offcanvas ==================== */
-html[dir="rtl"] .offcanvas-start,
-html[lang="fa"] .offcanvas-start {
-  left: auto;
-  right: 0;
-  transform: translateX(100%);
+.work-item:nth-child(even) .work-item__header::after {
+    right: auto;
+    left: -30px;
 }
 
-html[dir="rtl"] .offcanvas-end,
-html[lang="fa"] .offcanvas-end {
-  right: auto;
-  left: 0;
-  transform: translateX(-100%);
+.work-item:nth-child(even) .work-item__header {
+    border-radius: 0 25px 25px 0;
 }
 
-/* ==================== Toast ==================== */
-html[dir="rtl"] .toast-header .btn-close,
-html[lang="fa"] .toast-header .btn-close {
-  margin-left: calc(-0.5 * var(--bs-toast-padding-x));
-  margin-right: var(--bs-toast-padding-x);
+.work-item:nth-child(even) .work-item__body {
+    border-radius: 0 35px 25px 25px;
 }
 
-/* ==================== Section Backgrounds ==================== */
-html[dir="rtl"] .section-bg,
-html[lang="fa"] .section-bg {
-  text-align: right;
+/* Work Item Icons */
+/* Original: left: calc(100% + 100px) */
+.work-item__icon {
+    left: auto;
+    right: calc(100% + 100px);
+}
+/* Original: right: calc(100% + 5px) */
+.work-item__icon::before {
+    right: auto;
+    left: calc(100% + 5px);
 }
 
-/* ==================== Custom Scrollbar ==================== */
-html[dir="rtl"] ::-webkit-scrollbar,
-html[lang="fa"] ::-webkit-scrollbar {
-  /* Keep scrollbar on the left for RTL */
+.work-item:nth-child(even) .work-item__icon {
+    right: auto;
+    left: calc(100% + 100px);
+}
+.work-item:nth-child(even) .work-item__icon::before {
+    left: auto;
+    right: calc(100% + 5px);
 }
 
-/* ==================== END OF RTL STYLES ==================== */
+/* Mobile adjustments for Work Items */
+@media (max-width: 991px) {
+    .work-item__icon {
+        right: calc(100% + 45px);
+        left: auto;
+    }
+    .work-item:nth-child(even) .work-item__icon {
+        left: calc(100% + 45px);
+        right: auto;
+    }
+}
+
+/* ================= FAQ Section ================= */
+/* Icons on the right in LTR, should be left in RTL */
+/* Original: right: 0px */
+.faq-item__title::before {
+    right: auto;
+    left: 0px;
+}
+
+div[class*="col"]:nth-child(even) > .faq-item {
+    padding-left: 25px; /* Check this */
+    /* If LTR has padding-left, we likely need padding-right */
+    padding-left: 10px; /* Reset */
+    padding-right: 25px;
+}
+
+/* ================= Footer & Widgets ================= */
+.footer-widget {
+    text-align: right;
+}
+
+/* Breadcrumbs */
+.breadcrumbs li a {
+    padding-right: 10px;
+    padding-left: 35px;
+}
+/* Original: right: 0 */
+.breadcrumbs li a::before {
+    right: auto;
+    left: 0;
+    transform: rotate(180deg); /* Flip the arrow icon */
+}
+
+/* ================= Slick Slider ================= */
+/* Arrows */
+/* Original Left: left: 15px */
+.slick-arrow.arrow-left {
+    left: auto;
+    right: 15px;
+    transform: translateY(-50%) rotate(180deg); /* Flip arrow direction */
+}
+/* Original Right: right: 15px */
+.slick-arrow.arrow-right {
+    right: auto;
+    left: 15px;
+    transform: translateY(-50%) rotate(180deg);
+}
+
+/* ================= Tables ================= */
+.table {
+    text-align: right;
+}
+.table thead th {
+    text-align: right;
+}
+
+/* ================= Modals ================= */
+.modal-header .close {
+    margin: -1rem auto -1rem -1rem; /* Bootstrap 4/5 alignment fix */
+    margin-right: auto;
+    margin-left: -1rem;
+}
+.modal-title {
+    text-align: right;
+}
+
+/* Custom Modal Close Btn */
+.close-btn .close-icon {
+    /* No directional change needed unless positioned absolutely */
+}
+
+.modal-title .title::after {
+    right: auto;
+    left: -26px;
+}
+
+/* ================= Pagination ================= */
+.pagination {
+    direction: ltr; /* Often pagination numbers look better LTR, or we flip them. Let's keep LTR structure for numbers but align center */
+}
+/* If we want RTL pagination: */
+/*
+.pagination {
+    direction: rtl;
+}
+.page-item:first-child .page-link {
+    border-radius: 0 50% 50% 0;
+}
+.page-item:last-child .page-link {
+    border-radius: 50% 0 0 50%;
+}
+*/
+
+/* ================= Competitions & Timer ================= */
+.competition-item__status {
+    left: auto;
+    right: 0;
+}
+
+/* ================= Scroll Top ================= */
+.scroll-top {
+    right: auto;
+    left: 30px;
+}
+
+/* ================= Helpers ================= */
+.text-right { text-align: left !important; }
+.text-left { text-align: right !important; }
+
+.float-right { float: left !important; }
+.float-left { float: right !important; }
+
+.mr-auto { margin-left: auto !important; margin-right: 0 !important; }
+.ml-auto { margin-right: auto !important; margin-left: 0 !important; }
+
+/* Padding/Margin Utils overrides if used */
+.pl-0 { padding-right: 0 !important; }
+.pr-0 { padding-left: 0 !important; }
+
