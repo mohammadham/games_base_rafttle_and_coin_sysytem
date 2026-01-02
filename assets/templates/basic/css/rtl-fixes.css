@@ -2,5 +2,13 @@
 /* banner section */
 .banner-thumb {
             right: auto !important;
-            left: -120px !important;
+            left: -80px !important;
+        }
+/* social icons problem */
+.social-list__item {
+            margin-right: 0 !important;
+            margin-left: 10px !important;
+        }
+.social-list__item:last-child {
+            margin-left: 0 !important;
         }
