@@ -84,5 +84,8 @@ Route::middleware('auth')->name('user.')->group(function () {
             Route::get('manual', 'manualDepositConfirm')->name('manual.confirm');
             Route::post('manual', 'manualDepositUpdate')->name('manual.update');
         });
+
+        // Payment Result (Iranian Gateways)
+        Route::get('payment/result/{trx}', 'Gateway\PaymentController@paymentResult')->name('payment.result');
     });
 });

@@ -249,7 +249,8 @@ class PaymentController extends Controller {
             $pickedTicket->status          = Status::PAYMENT_PENDING;
             $pickedTicket->save();
 
-            $cartItem->lottery->num_of_available_tickets -= $cartItem->quantity;
+            // $cartItem->lottery->num_of_available_tickets -= $cartItem->quantity;
+            $cartItem->lottery->num_of_exchange_tickets -= $cartItem->quantity;
             $cartItem->lottery->save();
 
             $cartItem->delete();
@@ -267,5 +268,77 @@ class PaymentController extends Controller {
 
         $notify[] = ['success', 'You have payment request has been taken'];
         return to_route('user.deposit.history')->withNotify($notify);
+    }
+
+    /**
+     * نمایش نتیجه پرداخت (مخصوص درگاه‌های ایرانی)
+     * Payment Result Page for Iranian Gateways
+     */
+    public function paymentResult($trx) {
+        $deposit = Deposit::where('trx', $trx)->with(['gateway', 'user'])->first();
+        
+        if (!$deposit) {
+            $notify[] = ['error', 'تراکنش یافت نشد'];
+            return redirect()->route('home')->withNotify($notify);
+        }
+
+        // بررسی اینکه کاربر صاحب این تراکنش است
+        if (auth()->check() && $deposit->user_id != auth()->id()) {
+            $notify[] = ['error', 'شما اجازه دسترسی به این تراکنش را ندارید'];
+            return redirect()->route('user.home')->withNotify($notify);
+        }
+
+        $status = request()->get('status', 'unknown');
+        $pageTitle = 'نتیجه پرداخت';
+
+        // تعیین وضعیت نمایشی
+        $statusInfo = $this->getPaymentStatusInfo($status, $deposit);
+
+        return view('Template::user.payment.result', compact('deposit', 'pageTitle', 'statusInfo', 'status'));
+    }
+
+    /**
+     * دریافت اطلاعات وضعیت پرداخت برای نمایش
+     */
+    private function getPaymentStatusInfo($status, $deposit) {
+        $statusMap = [
+            'success' => [
+                'icon' => 'las la-check-circle',
+                'color' => 'success',
+                'title' => 'پرداخت موفق',
+                'message' => 'پرداخت شما با موفقیت انجام شد و بلیت‌های شما ثبت گردید.',
+            ],
+            'failed' => [
+                'icon' => 'las la-times-circle',
+                'color' => 'danger',
+                'title' => 'پرداخت ناموفق',
+                'message' => 'متأسفانه پرداخت شما تأیید نشد. لطفاً دوباره تلاش کنید.',
+            ],
+            'cancelled' => [
+                'icon' => 'las la-ban',
+                'color' => 'warning',
+                'title' => 'پرداخت لغو شد',
+                'message' => 'شما از انجام پرداخت انصراف دادید.',
+            ],
+            'already_verified' => [
+                'icon' => 'las la-info-circle',
+                'color' => 'info',
+                'title' => 'پرداخت قبلاً تأیید شده',
+                'message' => 'این تراکنش قبلاً تأیید شده است.',
+            ],
+            'error' => [
+                'icon' => 'las la-exclamation-triangle',
+                'color' => 'danger',
+                'title' => 'خطا در پرداخت',
+                'message' => 'خطایی در فرآیند پرداخت رخ داد. لطفاً با پشتیبانی تماس بگیرید.',
+            ],
+        ];
+
+        return $statusMap[$status] ?? [
+            'icon' => 'las la-question-circle',
+            'color' => 'secondary',
+            'title' => 'وضعیت نامشخص',
+            'message' => 'وضعیت پرداخت قابل تشخیص نیست.',
+        ];
     }
 }
