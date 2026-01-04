@@ -33,3 +33,6 @@ Route::any('checkout', 'Checkout\ProcessController@ipn')->name('Checkout');
 Route::post('sslcommerz', 'SslCommerz\ProcessController@ipn')->name('SslCommerz');
 Route::post('aamarpay', 'Aamarpay\ProcessController@ipn')->name('Aamarpay');
 Route::get('binance', 'Binance\ProcessController@ipn')->name('Binance');
+
+// Iranian Payment Gateways - درگاه‌های پرداخت ایرانی
+Route::any('zarinpal/{trx?}', 'Zarinpal\ProcessController@ipn')->name('Zarinpal');
