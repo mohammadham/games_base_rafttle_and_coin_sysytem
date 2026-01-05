@@ -36,12 +36,14 @@ class ProcessController extends Controller
     public static function process($deposit)
     {
         $gateway = $deposit->gateway;
-        $gatewayCurrency = $deposit->gatewayCurrency();
         $params = json_decode($gateway->gateway_parameters);
 
+        // توجه: ساختار gateway_parameters به صورت آبجکت‌های {title, global, value} است
+        // مثال: $params->merchant_id->value
+
         // تنظیمات درگاه
-        $mode = $params->mode ?? 'sandbox';
-        $merchantId = $params->merchant_id ?? '';
+        $mode = strtolower($params->mode->value ?? 'sandbox');
+        $merchantId = trim($params->merchant_id->value ?? '');
 
         // در حالت Sandbox از Merchant ID تصادفی استفاده کن
         if ($mode === 'sandbox' && empty($merchantId)) {
@@ -52,42 +54,64 @@ class ProcessController extends Controller
             }
         }
 
-        // اگر merchant_id هنوز خالی است و در حالت production هستیم
-        if (empty($merchantId) && $mode === 'production') {
-            $send['error'] = true;
-            $send['message'] = 'Merchant ID تنظیم نشده است. لطفاً در تنظیمات درگاه، Merchant ID خود را وارد کنید.';
-            return json_encode($send);
+        // ارز مقصد (IRT/IRR) - اولویت: انتخاب کاربر (deposit.method_currency) سپس تنظیم ادمین
+        $targetCurrency = strtoupper($deposit->method_currency ?: ($params->preferred_currency->value ?? 'IRT'));
+        if (!in_array($targetCurrency, ['IRT', 'IRR'])) {
+            $targetCurrency = 'IRT';
         }
-        
 
-        // دریافت نرخ ارز
-        $exchangeApiUrl = $params->exchange_api_url ?? null;
-        $exchangeJsonPath = $params->exchange_json_path ?? null;
-        $fallbackRate = (float)($params->fallback_rate ?? 60000);
-        $cacheMinutes = (int)($params->cache_minutes ?? 30);
+        // اگر قبلاً نرخ ارز و مبلغ نهایی ذخیره شده، همان را استفاده کن تا از تغییر نرخ جلوگیری شود
+        $hasFrozenRate = !empty($deposit->exchange_rate_used) && !empty($deposit->final_amount) && in_array(strtoupper($deposit->method_currency), ['IRT', 'IRR']);
 
-        $exchangeData = ExchangeRateService::getRate(
-            $exchangeApiUrl,
-            $exchangeJsonPath,
-            $fallbackRate,
-            $cacheMinutes
-        );
+        if (!$hasFrozenRate) {
+            // دریافت نرخ ارز
+            $exchangeApiUrl = $params->exchange_api_url->value ?? null;
+            $exchangeJsonPath = $params->exchange_json_path->value ?? null;
+            $fallbackRate = (float)($params->fallback_rate->value ?? 60000);
+            $cacheMinutes = (int)($params->cache_minutes->value ?? 30);
 
-        $exchangeRate = $exchangeData['rate'];
+            // اگر API نرخ را به ریال می‌دهد (IRR)، تبدیل به تومان (IRT) انجام شود
+            $apiRateUnit = strtoupper($params->api_rate_unit->value ?? 'IRT');
 
-        // تبدیل مبلغ به تومان
-        $preferredCurrency = $params->preferred_currency ?? 'IRT';
-        $amountInIRT = ExchangeRateService::convertToIranianCurrency(
-            $deposit->amount + $deposit->charge,
-            $exchangeRate,
-            $preferredCurrency
-        );
+            $exchangeData = ExchangeRateService::getRate(
+                $exchangeApiUrl,
+                $exchangeJsonPath,
+                $fallbackRate,
+                $cacheMinutes
+            );
 
-        // ذخیره اطلاعات نرخ ارز در deposit
-        $deposit->original_amount = $deposit->amount;
-        $deposit->exchange_rate_used = $exchangeRate;
-        $deposit->final_amount = $amountInIRT;
-        $deposit->save();
+            $rateIrtPerUsd = (float) $exchangeData['rate'];
+
+            // فقط برای نرخ‌های داینامیک (API/Cache) واحد را نرمال‌سازی می‌کنیم.
+            // چون fallback_rate طبق عنوان «USD to Toman» در نظر گرفته شده است.
+            if (in_array($exchangeData['source'], ['api', 'cache']) && $apiRateUnit === 'IRR') {
+                $rateIrtPerUsd = $rateIrtPerUsd / 10;
+            }
+
+            // مبلغ قابل پرداخت به ارز پایه (USD)
+            $payableUsd = (float) ($deposit->amount + $deposit->charge);
+
+            // مبلغ قابل پرداخت به ارز مقصد
+            $amountInIran = ExchangeRateService::convertToIranianCurrency(
+                $payableUsd,
+                $rateIrtPerUsd,
+                $targetCurrency
+            );
+
+            // نرخ نمایشی مطابق ارز مقصد
+            $displayRate = $rateIrtPerUsd * ($targetCurrency === 'IRR' ? 10 : 1);
+
+            // ذخیره اطلاعات نرخ ارز در deposit
+            $deposit->method_currency = $targetCurrency;
+            $deposit->original_amount = $payableUsd;
+            $deposit->exchange_rate_used = $displayRate;
+            $deposit->rate = $displayRate;
+            $deposit->final_amount = $amountInIran;
+            $deposit->from_api = in_array($exchangeData['source'], ['api', 'cache']) ? 1 : 0;
+            $deposit->save();
+        }
+
+        $amountInIran = (int) $deposit->final_amount;
 
         // انتخاب URL های API
         $requestUrl = ($mode === 'sandbox') ? self::SANDBOX_REQUEST_URL : self::PRODUCTION_REQUEST_URL;
@@ -103,8 +127,8 @@ class ProcessController extends Controller
         try {
             $response = Http::timeout(30)->post($requestUrl, [
                 'merchant_id' => $merchantId,
-                'amount' => $amountInIRT,
-                'currency' => $preferredCurrency,
+                'amount' => (int) $amountInIran,
+                'currency' => $targetCurrency,
                 'callback_url' => $callbackUrl,
                 'description' => $description,
                 'metadata' => [
@@ -204,8 +228,18 @@ class ProcessController extends Controller
         // اگر کاربر لغو کرده
         if ($status !== 'OK') {
             Log::info('Zarinpal: Payment cancelled by user', [
-                'deposit_trx' => $deposit->trx
+                'deposit_trx' => $deposit->trx,
+                'status' => $status,
+                'authority' => $authority,
             ]);
+
+            // ثبت وضعیت لغو/ناموفق
+            $deposit->status = Status::PAYMENT_REJECT;
+            $deposit->gateway_response = json_encode([
+                'callback' => $request->all(),
+                'message' => 'User cancelled or payment status not OK',
+            ]);
+            $deposit->save();
 
             return redirect()->route('user.payment.result', [
                 'trx' => $deposit->trx,
@@ -225,8 +259,8 @@ class ProcessController extends Controller
         $gateway = $deposit->gateway;
         $params = json_decode($gateway->gateway_parameters);
 
-        $mode = $params->mode ?? 'sandbox';
-        $merchantId = $params->merchant_id ?? '';
+        $mode = strtolower($params->mode->value ?? 'sandbox');
+        $merchantId = trim($params->merchant_id->value ?? '');
 
         if ($mode === 'sandbox' && empty($merchantId)) {
             $merchantId = self::generateUUID();
@@ -258,6 +292,7 @@ class ProcessController extends Controller
                 // پرداخت موفق
                 $deposit->ref_id = $result['data']['ref_id'] ?? null;
                 $deposit->card_pan = $result['data']['card_pan'] ?? null;
+                $deposit->authority = $authority ?: $deposit->authority;
                 $deposit->save();
 
                 // به‌روزرسانی وضعیت کاربر و تراکنش
@@ -269,6 +304,8 @@ class ProcessController extends Controller
                 ]);
             } else {
                 // پرداخت ناموفق
+                $deposit->status = Status::PAYMENT_REJECT;
+                $deposit->authority = $authority ?: $deposit->authority;
                 $deposit->save();
 
                 Log::warning('Zarinpal Verify Failed', [
@@ -287,6 +324,13 @@ class ProcessController extends Controller
                 'deposit_trx' => $deposit->trx,
                 'error' => $e->getMessage()
             ]);
+
+            $deposit->status = Status::PAYMENT_REJECT;
+            $deposit->gateway_response = json_encode([
+                'error' => $e->getMessage(),
+                'callback' => $request->all(),
+            ]);
+            $deposit->save();
 
             return redirect()->route('user.payment.result', [
                 'trx' => $deposit->trx,
