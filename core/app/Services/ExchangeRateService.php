@@ -27,7 +27,8 @@ class ExchangeRateService
         float $fallbackRate = 60000,
         int $cacheMinutes = 30
     ): array {
-        $cacheKey = 'exchange_rate_usd_irt_' . md5($apiUrl ?? 'default');
+        // Cache key should depend on both API URL and JSON path (different providers may require different paths)
+        $cacheKey = 'exchange_rate_usd_irt_' . md5(($apiUrl ?? 'default') . '|' . ($jsonPath ?? 'default'));
 
         // 1. اول از Cache چک کن
         $cachedData = Cache::get($cacheKey);
@@ -107,7 +108,15 @@ class ExchangeRateService
 
         // استخراج با مسیر nested (مثال: data.usd.sell)
         $value = Arr::get($data, $path);
-        
+
+        // Handle numeric string with commas or spaces (e.g. "59,000" or "59 000")
+        if (is_string($value)) {
+            $normalized = preg_replace('/[^0-9.\-]/', '', $value);
+            if (is_numeric($normalized)) {
+                return (float) $normalized;
+            }
+        }
+
         if (is_numeric($value)) {
             return (float) $value;
         }
@@ -143,11 +152,13 @@ class ExchangeRateService
      * پاک کردن Cache نرخ ارز
      *
      * @param string|null $apiUrl
+     * @param string|null $jsonPath
      * @return void
      */
-    public static function clearCache(?string $apiUrl = null): void
+    public static function clearCache(?string $apiUrl = null, ?string $jsonPath = null): void
     {
-        $cacheKey = 'exchange_rate_usd_irt_' . md5($apiUrl ?? 'default');
+        // Cache key should depend on both API URL and JSON path (different providers may require different paths)
+        $cacheKey = 'exchange_rate_usd_irt_' . md5(($apiUrl ?? 'default') . '|' . ($jsonPath ?? 'default'));
         Cache::forget($cacheKey);
     }
 }

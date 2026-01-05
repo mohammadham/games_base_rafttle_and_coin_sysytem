@@ -419,7 +419,7 @@ INSERT INTO `gateways` (`id`, `form_id`, `code`, `name`, `alias`, `image`, `stat
 (56, 0, 510, 'Binance', 'Binance', '663a35db4fd621715090907.png', 1, '{\"api_key\":{\"title\":\"API Key\",\"global\":true,\"value\":\"tsu3tjiq0oqfbtmlbevoeraxhfbp3brejnm9txhjxcp4to29ujvakvfl1ibsn3ja\"},\"secret_key\":{\"title\":\"Secret Key\",\"global\":true,\"value\":\"jzngq4t04ltw8d4iqpi7admfl8tvnpehxnmi34id1zvfaenbwwvsvw7llw3zdko8\"},\"merchant_id\":{\"title\":\"Merchant ID\",\"global\":true,\"value\":\"231129033\"}}', '{\"BTC\":\"Bitcoin\",\"USD\":\"USD\",\"BNB\":\"BNB\"}', 1, '{\"cron\":{\"title\": \"Cron Job URL\",\"value\":\"ipn.Binance\"}}', NULL, NULL, '2024-05-07 08:08:27'),
 (57, 0, 124, 'SslCommerz', 'SslCommerz', '663a397a70c571715091834.png', 1, '{\"store_id\":{\"title\":\"Store ID\",\"global\":true,\"value\":\"---------\"},\"store_password\":{\"title\":\"Store Password\",\"global\":true,\"value\":\"----------\"}}', '{\"BDT\":\"BDT\",\"USD\":\"USD\",\"EUR\":\"EUR\",\"SGD\":\"SGD\",\"INR\":\"INR\",\"MYR\":\"MYR\"}', 0, NULL, NULL, NULL, '2024-05-07 08:23:54'),
 (58, 0, 125, 'Aamarpay', 'Aamarpay', '66d2ab0554d761725082373.png', 1, '{\"store_id\":{\"title\":\"Store ID\",\"global\":true,\"value\":\"---------\"},\"signature_key\":{\"title\":\"Signature Key\",\"global\":true,\"value\":\"----------\"}}', '{\"BDT\":\"BDT\"}', 0, NULL, NULL, NULL, '2024-08-30 23:32:53'),
-(59, 0, 126, 'Zarinpal', 'Zarinpal', '66d2abzarinpal1725080000.png', 1, '{\"merchant_id\":{\"title\":\"Merchant ID\",\"global\":true,\"value\":\"\"},\"mode\":{\"title\":\"Environment Mode (sandbox/production)\",\"global\":true,\"value\":\"sandbox\"},\"exchange_api_url\":{\"title\":\"Exchange Rate API URL\",\"global\":true,\"value\":\"https://api.navasan.tech/latest/?api_key=freeYJRkG5bm6OXxxx7LmhGGlgNaO46P\"},\"exchange_json_path\":{\"title\":\"JSON Path for Rate (e.g: usd_sell.value)\",\"global\":true,\"value\":\"usd_sell.value\"},\"fallback_rate\":{\"title\":\"Fallback Rate (USD to Toman)\",\"global\":true,\"value\":\"60000\"},\"cache_minutes\":{\"title\":\"Cache Duration (Minutes)\",\"global\":true,\"value\":\"30\"},\"preferred_currency\":{\"title\":\"Preferred Currency (IRT/IRR)\",\"global\":true,\"value\":\"IRT\"}}', '{\"IRR\":\"Iranian Rial\",\"IRT\":\"Iranian Toman\"}', 0, NULL , NULL, NOW(), NOW());
+(59, 0, 126, 'Zarinpal', 'Zarinpal', '66d2abzarinpal1725080000.png', 1, '{\"merchant_id\":{\"title\":\"Merchant ID\",\"global\":true,\"value\":\"\"},\"mode\":{\"title\":\"Environment Mode (sandbox/production)\",\"global\":true,\"value\":\"sandbox\"},\"exchange_api_url\":{\"title\":\"Exchange Rate API URL\",\"global\":true,\"value\":\"https://api.navasan.tech/latest/?api_key=freeYJRkG5bm6OXxxx7LmhGGlgNaO46P\"},\"exchange_json_path\":{\"title\":\"JSON Path for Rate (e.g: usd_sell.value)\",\"global\":true,\"value\":\"usd_sell.value\"},\"api_rate_unit\":{\"title\":\"API Rate Unit (IRT/IRR)\",\"global\":true,\"value\":\"IRT\"},\"fallback_rate\":{\"title\":\"Fallback Rate (USD to Toman)\",\"global\":true,\"value\":\"60000\"},\"cache_minutes\":{\"title\":\"Cache Duration (Minutes)\",\"global\":true,\"value\":\"30\"},\"preferred_currency\":{\"title\":\"Preferred Currency (IRT/IRR)\",\"global\":true,\"value\":\"IRT\"}}', '{\"IRR\":\"Iranian Rial\",\"IRT\":\"Iranian Toman\"}', 0, NULL , NULL, NOW(), NOW());
 
 
 -- --------------------------------------------------------
@@ -444,6 +444,12 @@ CREATE TABLE `gateway_currencies` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+--
+-- Dumping data for table `gateway_currencies`
+--
+
+INSERT INTO `gateway_currencies` (`id`, `name`, `currency`, `symbol`, `method_code`, `gateway_alias`, `min_amount`, `max_amount`, `percent_charge`, `fixed_charge`, `rate`, `gateway_parameter`, `created_at`, `updated_at`) VALUES
+(1, 'زرین‌پال - تومان', 'IRT', 'تومان', 126, 'Zarinpal', 1.00000000, 10000.00000000, 0.00, 0.00000000, 1.00000000, NULL, NOW(), NOW());
 
 -- --------------------------------------------------------
 
@@ -1170,7 +1176,7 @@ ALTER TABLE `gateways`
 -- AUTO_INCREMENT for table `gateway_currencies`
 --
 ALTER TABLE `gateway_currencies`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `general_settings`

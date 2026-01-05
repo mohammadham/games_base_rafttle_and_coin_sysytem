@@ -46,7 +46,19 @@ class ProcessController extends Controller
         // در حالت Sandbox از Merchant ID تصادفی استفاده کن
         if ($mode === 'sandbox' && empty($merchantId)) {
             $merchantId = self::generateUUID();
+            if(empty($merchantId)){
+            // این یک merchant ID تستی معتبر برای sandbox است
+            $merchantId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+            }
         }
+
+        // اگر merchant_id هنوز خالی است و در حالت production هستیم
+        if (empty($merchantId) && $mode === 'production') {
+            $send['error'] = true;
+            $send['message'] = 'Merchant ID تنظیم نشده است. لطفاً در تنظیمات درگاه، Merchant ID خود را وارد کنید.';
+            return json_encode($send);
+        }
+        
 
         // دریافت نرخ ارز
         $exchangeApiUrl = $params->exchange_api_url ?? null;
