@@ -36,62 +36,7 @@ div[class*="col"]:nth-child(even) > .faq-item {
     margin-left: 15px !important; /* Add space to the left of image in RTL */
 }
 
-/* How It Works Section - Flip Positioning */
-/* .work-item .work-item__header::before {
-    left: auto !important;
-    right: -30px !important;
-    border-radius: 0 35px 0 0 !important;
-}
 
-.work-item .work-item__header::after {
-    left: auto !important;
-    right: -30px !important;
-    border-radius: 0 35px 0 0 !important;
-} */
-
-/* Even Items - Flip Back (Mirroring the LTR logic but reversed) */
-/* .work-item:nth-child(even) .work-item__header::before {
-    right: auto !important;
-    left: -30px !important;
-    border-radius: 35px 0 0 0 !important;
-}
-
-.work-item:nth-child(even) .work-item__header::after {
-    right: auto !important;
-    left: -30px !important;
-}*/
-
-/* Icons Position */
-/*.work-item__icon {
-    left: auto !important;
-    right: calc(100% + 100px) !important;
-}
-
-.work-item:nth-child(even) .work-item__icon {
-    right: auto !important;
-    left: calc(100% + 100px) !important;
-} */
-
-/* Icon Connecting Lines */
-/* .work-item__icon::before {
-    right: auto !important;
-    left: calc(100% + 5px) !important;
-}
-
-.work-item:nth-child(even) .work-item__icon::before {
-    left: auto !important;
-    right: calc(100% + 5px) !important;
-} */
-
-/* Responsive Fixes for How It Works */
-/* @media (max-width: 991px) {
-    .work-item__icon {
-        right: calc(100% + 45px) !important;
-    }
-    .work-item:nth-child(even) .work-item__icon {
-        left: calc(100% + 45px) !important;
-    }
-} */
 
 /* Form Check / Radio Margins */
 .form--check .form-check-label,
