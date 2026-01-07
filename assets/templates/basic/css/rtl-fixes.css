@@ -12,3 +12,14 @@
 .social-list__item:last-child {
             margin-left: 0 !important;
         }
+.enamad-wrapper {
+    min-height: 100px; /* تنظیم ارتفاع مناسب */
+    padding: 10px 0;
+}
+
+.enamad-wrapper img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
