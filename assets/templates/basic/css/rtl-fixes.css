@@ -1,17 +1,180 @@
 /* Reset RTL Fixes */
-/* banner section */
+
+/* Banner Section */
 .banner-thumb {
             right: auto !important;
             left: -80px !important;
         }
 /* social icons problem */
 .social-list__item {
-            margin-right: 0 !important;
-            margin-left: 10px !important;
-        }
+    margin-right: 0 !important;
+    margin-left: 10px !important;
+}
 .social-list__item:last-child {
-            margin-left: 0 !important;
-        }
+    margin-left: 0 !important;
+}
+
+/* FAQ Section */
+.faq-item__title {
+    padding-left: 30px;
+    padding-right: 0;
+}
+.faq-item__title::before {
+    right: auto !important;
+    left: 0 !important;
+}
+
+/* Fix FAQ Column Padding Flip */
+div[class*="col"]:nth-child(even) > .faq-item {
+    padding-left: 10px !important; /* Reset LTR padding */
+    padding-right: 25px !important; /* Apply RTL padding */
+}
+
+/* Testimonial Section - Fix Text Sticking to Image */
+.testimonial-item__thumb {
+    margin-right: 0 !important;
+    margin-left: 15px !important; /* Add space to the left of image in RTL */
+}
+
+/* How It Works Section - Flip Positioning */
+.work-item .work-item__header::before {
+    left: auto !important;
+    right: -30px !important;
+    border-radius: 0 35px 0 0 !important;
+}
+
+.work-item .work-item__header::after {
+    left: auto !important;
+    right: -30px !important;
+    border-radius: 0 35px 0 0 !important;
+}
+
+/* Even Items - Flip Back (Mirroring the LTR logic but reversed) */
+.work-item:nth-child(even) .work-item__header::before {
+    right: auto !important;
+    left: -30px !important;
+    border-radius: 35px 0 0 0 !important;
+}
+
+.work-item:nth-child(even) .work-item__header::after {
+    right: auto !important;
+    left: -30px !important;
+}
+
+/* Icons Position */
+.work-item__icon {
+    left: auto !important;
+    right: calc(100% + 100px) !important;
+}
+
+.work-item:nth-child(even) .work-item__icon {
+    right: auto !important;
+    left: calc(100% + 100px) !important;
+}
+
+/* Icon Connecting Lines */
+.work-item__icon::before {
+    right: auto !important;
+    left: calc(100% + 5px) !important;
+}
+
+.work-item:nth-child(even) .work-item__icon::before {
+    left: auto !important;
+    right: calc(100% + 5px) !important;
+}
+
+/* Responsive Fixes for How It Works */
+@media (max-width: 991px) {
+    .work-item__icon {
+        right: calc(100% + 45px) !important;
+    }
+    .work-item:nth-child(even) .work-item__icon {
+        left: calc(100% + 45px) !important;
+    }
+}
+
+/* Form Check / Radio Margins */
+.form--check .form-check-label,
+.form--radio .form-check-label {
+    padding-left: 0 !important;
+    padding-right: 12px !important;
+}
+
+.form--switch .form-check-input {
+    margin-left: 0 !important;
+    margin-right: 0 !important; /* Switch usually doesn't have margin issues but good to reset */
+}
+.form--switch .form-check-label {
+    padding-left: 0 !important;
+    padding-right: 5px !important;
+}
+
+/* Input Group Text */
+.input-group .input-group-text {
+    border-right: 1px solid hsl(var(--white) / 0.2) !important;
+    border-left: 0 !important;
+}
+
+/* Slick Arrows */
+.slick-arrow.arrow-left {
+    left: auto !important;
+    right: 15px !important;
+}
+.slick-arrow.arrow-right {
+    right: auto !important;
+    left: 15px !important;
+}
+
+/* Breadcrumbs */
+.breadcrumbs li a {
+    padding-right: 0 !important;
+    padding-left: 35px !important;
+}
+.breadcrumbs li a::before {
+    right: auto !important;
+    left: 0 !important;
+    transform: rotate(180deg); /* Flip the arrow icon */
+}
+
+/* Navbar Dropdown */
+@media (min-width: 992px) {
+    .header .dropdown-menu {
+        left: auto !important;
+        right: 0 !important;
+        transform-origin: top right !important;
+    }
+    .header .nav-menu .nav-item {
+        margin-right: 0 !important;
+        margin-left: 30px !important;
+    }
+    .header .nav-menu .nav-item:last-child {
+        margin-left: 0 !important;
+    }
+}
+
+/* Header Cart & Buttons */
+.header-cart {
+    margin-right: 0 !important;
+    margin-left: 20px !important;
+}
+.header-cart-btn {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+/* Mobile Menu Items */
+@media (max-width: 1199px) {
+    .header .nav-menu .nav-item {
+        text-align: right !important;
+    }
+    .header .nav-item .nav-link {
+        padding: 10px 0 10px 10px !important;
+    }
+    .header .dropdown-menu li .dropdown-item {
+        margin-left: 0 !important;
+        margin-right: 20px !important;
+    }
+}
 .enamad-wrapper {
     min-height: 100px; /* تنظیم ارتفاع مناسب */
     padding: 10px 0;
