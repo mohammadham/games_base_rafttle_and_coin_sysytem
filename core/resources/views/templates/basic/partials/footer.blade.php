@@ -49,7 +49,7 @@
                             <a href="{{ route('blog') }}" class="footer-menu__link">@lang('Blog')</a>
                         </li>
                         <li class="footer-menu__item">
-                            <a href="{{ route('contact) }}" class="footer-menu__link">@lang('Contact')</a>
+                            <a href="{{ route('contact') }}" class="footer-menu__link">@lang('Contact')</a>
                         </li>
                     </ul>
                 </div>
