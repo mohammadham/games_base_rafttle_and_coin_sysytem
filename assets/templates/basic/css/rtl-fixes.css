@@ -24,7 +24,11 @@
     left: 0 !important;
 }
 
-
+/* Fix FAQ Column Padding Flip */
+div[class*="col"]:nth-child(even) > .faq-item {
+    padding-left: 10px !important; /* Reset LTR padding */
+    padding-right: 25px !important; /* Apply RTL padding */
+}
 
 /* Testimonial Section - Fix Text Sticking to Image */
 .testimonial-item__thumb {
