@@ -175,6 +175,10 @@ Route::middleware('admin')->group(function () {
         Route::get('robot', 'robot')->name('setting.robot');
         Route::post('robot', 'robotSubmit');
 
+        //Enamad
+        Route::get('enamad', 'enamad')->name('setting.enamad');
+        Route::post('enamad', 'enamadSubmit');
+
         //Cookie
         Route::get('cookie', 'cookie')->name('setting.cookie');
         Route::post('cookie', 'cookieSubmit');

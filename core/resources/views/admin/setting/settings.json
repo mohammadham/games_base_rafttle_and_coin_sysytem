@@ -357,4 +357,17 @@
         "icon": "las la-robot",
         "route_name": "admin.setting.robot"
     }
+    ,
+    "enamad": {
+        "keyword": [
+            "enamad",
+            "trust symbol",
+            "enamad logo",
+            "trust seal"
+        ],
+        "title": "Enamad Setting",
+        "subtitle": "Configure Enamad trust symbol script and status.",
+        "icon": "las la-certificate",
+        "route_name": "admin.setting.enamad"
+    }
 }

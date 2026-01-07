@@ -28,6 +28,11 @@
                             @endforeach
                         </ul>
                     </div>
+                    @if(gs()->enamad_status)
+                        <div class="mt-3">
+                            @php echo gs()->enamad_script; @endphp
+                        </div>
+                    @endif
                     <div class="footer-item">
                         <h6 class="footer-item__title">@lang('Quick Links') </h6>
                         <ul class="footer-menu">

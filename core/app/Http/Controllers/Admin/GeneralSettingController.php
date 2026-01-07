@@ -233,6 +233,22 @@ class GeneralSettingController extends Controller
         return back()->withNotify($notify);
     }
 
+    public function enamad()
+    {
+        $pageTitle = 'Enamad Setting';
+        return view('admin.setting.enamad', compact('pageTitle'));
+    }
+
+    public function enamadSubmit(Request $request)
+    {
+        $general = gs();
+        $general->enamad_script = $request->enamad_script;
+        $general->enamad_status = $request->enamad_status ? Status::ENABLE : Status::DISABLE;
+        $general->save();
+        $notify[] = ['success', 'Enamad setting updated successfully'];
+        return back()->withNotify($notify);
+    }
+
     public function cookie()
     {
         $pageTitle = 'GDPR Cookie';
