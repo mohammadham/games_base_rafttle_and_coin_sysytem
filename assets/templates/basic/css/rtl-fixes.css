@@ -116,14 +116,14 @@ div[class*="col"]:nth-child(even) > .faq-item {
 }
 
 /* Slick Arrows */
-.slick-arrow.arrow-left {
+/* .slick-arrow.arrow-left {
     left: auto !important;
     right: 15px !important;
 }
 .slick-arrow.arrow-right {
     right: auto !important;
     left: 15px !important;
-}
+} */
 
 /* Breadcrumbs */
 .breadcrumbs li a {
