@@ -110,10 +110,10 @@ div[class*="col"]:nth-child(even) > .faq-item {
 } */
 
 /* Input Group Text */
-.input-group .input-group-text {
+/* .input-group .input-group-text {
     border-right: 1px solid hsl(var(--white) / 0.2) !important;
     border-left: 0 !important;
-}
+} */
 
 /* Slick Arrows */
 /* .slick-arrow.arrow-left {
@@ -137,7 +137,7 @@ div[class*="col"]:nth-child(even) > .faq-item {
 }
 
 /* Navbar Dropdown */
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
     .header .dropdown-menu {
         left: auto !important;
         right: 0 !important;
@@ -150,7 +150,7 @@ div[class*="col"]:nth-child(even) > .faq-item {
     .header .nav-menu .nav-item:last-child {
         margin-left: 0 !important;
     }
-}
+} */
 
 /* Header Cart & Buttons */
 .header-cart {
