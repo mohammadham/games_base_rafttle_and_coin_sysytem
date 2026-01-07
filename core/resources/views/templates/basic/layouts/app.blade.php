@@ -24,8 +24,8 @@
     <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/main.css') }}" />
     <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/custom.css') }}">
     @if(in_array(session('lang', config('app.locale')), ['fa', 'ar', 'he', 'ur', 'ps', 'ku']))
-    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/rtl-fixes.css') }}">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/rtl-fixes.css') }}">
     @endif
 
     @stack('style-lib')
