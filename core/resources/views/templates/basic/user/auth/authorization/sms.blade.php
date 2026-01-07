@@ -7,7 +7,7 @@
                     <div class="verification-area">
                         <form action="{{ route('user.verify.mobile') }}" method="POST" class="submit-form">
                             @csrf
-                            <p class="mb-3">@lang('A 6 digit verification code sent to your mobile number') : +{{ showMobileNumber(auth()->user()->mobileNumber) }}</p>
+                            <p class="mb-3">@lang('A 6 digit verification code sent to your mobile number') : <span class="d-inline-block" dir="ltr">+{{ showMobileNumber(auth()->user()->mobileNumber) }}</span></p>
                             @include($activeTemplate . 'partials.verification_code')
                             <button type="submit" class="cmn--btn w-100">@lang('Submit')</button>
                             <div class="mt-3">

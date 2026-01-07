@@ -7,7 +7,7 @@
                     <div class="verification-area">
                         <form action="{{ route('user.verify.email') }}" method="POST" class="submit-form">
                             @csrf
-                            <p class="mb-3">@lang('A 6 digit verification code sent to your email address'): {{ showEmailAddress(auth()->user()->email) }}</p>
+                            <p class="mb-3">@lang('A 6 digit verification code sent to your email address'): <span class="d-inline-block" dir="ltr">{{ showEmailAddress(auth()->user()->email) }}</span></p>
 
                             @include($activeTemplate . 'partials.verification_code')
 

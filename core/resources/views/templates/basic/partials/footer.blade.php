@@ -27,18 +27,7 @@
                             </li>
                         @endforeach
                     </ul>
-                </div>
-                
-                <!-- Enamad Trust Seal - Properly integrated with consistent styling -->
-                @if(gs()->enamad_status)
-                    <div class="footer-item">
-                        <h6 class="footer-item__title">@lang('Trust & Certification')</h6>
-                        <div class="enamad-wrapper d-flex justify-content-center align-items-center">
-                            @php echo gs()->enamad_script; @endphp
-                        </div>
-                    </div>
-                @endif
-                
+                </div>         
                 <div class="footer-item">
                     <h6 class="footer-item__title">@lang('Quick Links')</h6>
                     <ul class="footer-menu">
@@ -73,6 +62,15 @@
                         @endforeach
                     </ul>
                 </div>
+                <!-- Enamad Trust Seal - Properly integrated with consistent styling -->
+                @if(gs()->enamad_status)
+                    <div class="footer-item">
+                        <h6 class="footer-item__title">@lang('Trust & Certification')</h6>
+                        <div class="enamad-wrapper d-flex justify-content-center align-items-center">
+                            @php echo gs()->enamad_script; @endphp
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
